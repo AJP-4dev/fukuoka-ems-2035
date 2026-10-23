@@ -45,3 +45,16 @@ def test_ward_cards_three_types():
     for k in ('都心・来街型', '伸びる住宅地型', '成熟型'):
         assert k in body, k
         assert k in t
+
+
+def test_method_page_and_sources():
+    t = _t()
+    for k in ('救急・救助の現況', '横浜', '0.35', '答え合わせ', '推定', '借りた値', '実例'):
+        assert k in t, k
+    # 出典行は静的HTML(class="src")と srcLine() の呼び出しで描画される。実DOM側の数は目視監査で確認
+    assert t.count('class="src"') + t.count('srcLine(') >= 20
+    assert 'safe(' not in t and 'legacy-guard' not in t
+    for dead in ('A40', 'T24', 'annualT', 'data-time', '#page-slides', 'm=arrive', 'm=density'):
+        assert dead not in t, dead
+    for k in ('式を文章で', '図解', '実例の手計算', '使ったデータ一覧', '留意点'):
+        assert k in t, k
