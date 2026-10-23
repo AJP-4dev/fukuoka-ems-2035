@@ -333,7 +333,7 @@ tr.hotrow td{background:#fff4f5}
   <div class="card"><h4><span class="yb mid">2013→2024</span>答え合わせ — コロナ前の傾きで2022〜24年を当てると</h4><svg class="chart" id="chBack" viewBox="0 0 600 320"></svg><div id="backLeg"></div><p class="m" id="backNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表 出場件数 平成25〜令和6年）、福岡市 登録人口（各年9月末・年齢別）。差(%)＝（予測−実績）÷実績。</div></div>
   <div class="card"><h4><span class="yb mid">2013→2024</span>救急隊数の推移と、整備指針の基準隊数</h4><svg class="chart" id="chUnits" viewBox="0 0 600 260"></svg><p class="m" id="unitsNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表 隊数、第1-4-2表 令和7年3月31日現在 34隊）。◆の基準隊数は消防力の整備指針の式（横浜市の算定例）と福岡の搬送率で本サイトが算出。</div></div>
   <div class="card"><h4><span class="yb">2025→2050</span>基準隊数と現行隊数（シナリオ別）</h4><div id="tblStd"></div><p class="m" id="stdNote"></p><div class="src">出典：本サイトの推計（整備指針の算式（横浜市の算定例）、福岡の搬送率、福岡市の将来人口推計）。（ ）内は現行34隊との差。中間・上限は使われ方の倍率を掛けた参考値。</div></div>
-  <div class="card"><h4><span class="yb mid">2024 実績</span>何で出動しているか — 事故種別（市全体）</h4><svg class="chart" id="chType" viewBox="0 0 600 300"></svg><p class="m" id="typeNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第2-2-1表（事故種別出動件数）。市全体の数字で、区別の内訳はありません。</div></div>
+  <div class="card"><h4><span class="yb mid">2024 実績</span>何で出動しているか — 事故種別（市全体）</h4><svg class="chart" id="chType" viewBox="0 0 600 300"></svg><p class="m" id="evtNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第2-2-1表（事故種別出動件数）。市全体の数字で、区別の内訳はありません。</div></div>
   <div class="card"><h4><span class="yb mid">2024 実績</span>誰が搬送されているか — 年齢5区分（市全体）</h4><svg class="chart" id="chAgeDonut" viewBox="0 0 600 240"></svg><p class="m" id="ageNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第2-2-4表（年齢区分別搬送人員）、福岡市 登録人口（2025年の65歳以上の割合）。</div></div>
   <div class="card"><h4><span class="yb mid">2013→2024</span>不搬送率の推移（市全体）</h4><svg class="chart" id="chNonTr" viewBox="0 0 600 230"></svg><p class="m" id="nontrNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表の出場件数と搬送者数から算出）。区別・時間帯別の不搬送率は公表されていません。</div></div>
   <button class="next" data-go="wards">区ごとの特徴を見る<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
@@ -412,7 +412,7 @@ const man=n=>(n/10000).toFixed(1)+'万';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const SCN={L:DATA.scn.L.name,M:DATA.scn.M.name,H:DATA.scn.H.name}, SCK=['L','M','H'];
 /* 区タイプの分類閾値（ここだけ変えれば分類が変わる）: 昼夜間比 >= dnMin → 都心・来街型 / 2035年の高齢化率(%) >= agingMin → 成熟型 / それ以外 → 伸びる住宅地型 */
-const TYPE_RULE={dnMin:1.30,agingMin:30};
+const TYPE_RULE={dnMin:1.30,agingMin:27};
 const TR=DATA.trend, CAPY=TR.capYear;/* コロナ前トレンドは capYear 以降で伸びを止める */
 const annualMult=(sc,y)=>{y=+y;if(sc==='M')return Math.pow(1+TR.slopePre,Math.min(y,CAPY)-2024);if(sc==='H')return Math.pow(1+TR.slopeAll,y-2024);return 1};
 const annualOf=(w,y,sc)=>w.disp[y]*annualMult(sc||state.sc,y);
@@ -799,7 +799,7 @@ function buildWards(){
   const rule={core:`昼夜間人口比が${TYPE_RULE.dnMin.toFixed(2)}以上`,mature:`2035年の高齢化率が${TYPE_RULE.agingMin}%以上`,grow:'上の2つに当てはまらない区'};
   const maxAg=W.slice().sort((a,b)=>agingRate(b,'2035')-agingRate(a,'2035'))[0];
   document.getElementById('typeLegend').innerHTML=`<div class="tl" style="flex-direction:column">${Object.entries(TYPES).map(([k,[n,c]])=>`<span><b style="background:${c}"></b><b style="width:auto;height:auto;border-radius:0;background:none;font-weight:700">${n}</b>：${rule[k]} → ${by[k].length?by[k].map(w=>w.name).join('・'):'該当なし'}</span>`).join('')}</div>`;
-  document.getElementById('typeNote').textContent=`順に判定します（昼夜間人口比 → 2035年の高齢化率 → それ以外）。${by.mature.length?'':`福岡市は2035年でも高齢化率が最も高い${maxAg.name}区で${agingRate(maxAg,'2035').toFixed(1)}%（市全体${CB.ag35.toFixed(1)}%）と、基準の${TYPE_RULE.agingMin}%に届く区がなく、成熟型に当てはまる区はありません。`}`;
+  document.getElementById('typeNote').textContent=`順に判定します（昼夜間人口比 → 2035年の高齢化率 → それ以外）。福岡市は若い都市なので、成熟型の閾値は横浜版（34%）より低い ${TYPE_RULE.agingMin}% に置いた（福岡市全体の2035年は${CB.ag35.toFixed(1)}%）。`;
   document.getElementById('wardJump').innerHTML=W.map((w,i)=>`<button data-i="${i}">${w.name}</button>`).join('');
   document.querySelectorAll('#wardJump button').forEach(b=>b.onclick=()=>{const el=document.getElementById('wc-'+b.dataset.i),sc=document.querySelector('#page-wards .scroll');sc.scrollTop=el.offsetTop-70});
   document.getElementById('wardCards').innerHTML=W.map((w,i)=>{const t=wardType(w),[tn,tc]=TYPES[t];
@@ -973,7 +973,7 @@ function buildCity(){
   /* (4) 事故種別・年齢・不搬送 */
   const ty=Object.entries(NEN.typeDispatch).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]),tt=ty.reduce((s,e)=>s+e[1],0);
   hBars('chType',ty.map(([n,v],i)=>({n,v,c:i===0?'#14213d':'#7fa6d6',t:`${fmt(v)}件（${(v/tt*100).toFixed(1)}%）`})),{lw:70,x1:420});
-  document.getElementById('typeNote').textContent=`2024年の出場${fmt(tt)}件の${(ty[0][1]/tt*100).toFixed(0)}%が${ty[0][0]}、次いで${ty[1][0]}（${(ty[1][1]/tt*100).toFixed(0)}%）、${ty[2][0]}（${(ty[2][1]/tt*100).toFixed(0)}%）。事故種別は市全体の数字で、区別・年齢別の内訳は公表されていません。`;
+  document.getElementById('evtNote').textContent=`2024年の出場${fmt(tt)}件の${(ty[0][1]/tt*100).toFixed(0)}%が${ty[0][0]}、次いで${ty[1][0]}（${(ty[1][1]/tt*100).toFixed(0)}%）、${ty[2][0]}（${(ty[2][1]/tt*100).toFixed(0)}%）。事故種別は市全体の数字で、区別・年齢別の内訳は公表されていません。`;
   const TA=NEN.transportAge,ta=Object.values(TA).reduce((a,b)=>a+b,0),AC={新生児:'#bfe3f7',乳幼児:'#6aa9e8',少年:'#9ad0f5',成人:'#3a7bd5',高齢者:'#e63946'};
   donut('chAgeDonut',Object.entries(TA).map(([n,v])=>({n:{新生児:'新生児（生後28日未満）',乳幼児:'乳幼児（0〜6歳）',少年:'少年（7〜17歳）',成人:'成人（18〜64歳）',高齢者:'高齢者（65歳以上）'}[n],v,c:AC[n]})),['搬送人員',fmt(ta)]);
   const e65=cityPop('2025','e1')+cityPop('2025','e2')+cityPop('2025','e3');
@@ -1017,7 +1017,7 @@ function buildInsight(){
    `国勢調査2020 従業地・通学地集計（昼夜間人口、福岡市統計書 第19表）、${S_NENPO}（区別出動件数）、${S_MODEL}。`);
   /* 4 */
   const gr=W.map(w=>({w,g:(w.disp['2035']/w.disp['2025']-1)*100,d:w.disp['2035']-w.disp['2025']})),byG=gr.slice().sort((a,b)=>b.g-a.g),byD=gr.slice().sort((a,b)=>b.d-a.d);
-  sec('2035','伸びる区は'+byG.slice(0,3).map(x=>x.w.name).join('・')+'（2035年の増減率の順位）',`<svg class="chart" id="ins4" viewBox="0 0 600 200"></svg>${legendHTML([['都心・来街型',TYPES.core[1]],['伸びる住宅地型',TYPES.grow[1]]])}`,
+  sec('2035','伸びる区は'+byG.slice(0,3).map(x=>x.w.name).join('・')+'、'+byG[6].w.name+'は最も小さい（2035年の増減率の順位）',`<svg class="chart" id="ins4" viewBox="0 0 600 200"></svg>${legendHTML([['都心・来街型',TYPES.core[1]],['成熟型',TYPES.mature[1]],['伸びる住宅地型',TYPES.grow[1]]])}`,
    `<p>2025→2035年の出場の増加率（人口変化のみ）は、${byG.map(x=>`${x.w.name}${pct(x.g)}`).join('、')}の順。増える件数でみると${byD.slice(0,3).map(x=>`${x.w.name}区（${sgn(x.d)}件）`).join('・')}が大きく、率で最下位の${byG[6].w.name}区は${byG[6].w.dn>=1?`昼間補正が出場の${f1(Math.abs(byG[6].w.dayExtra)/byG[6].w.disp['2025']*100,0)}%を占め（昼間補正は将来も一定のため）伸びが薄まる区`:`85歳以上の増え方が相対的に小さい区`}です。</p><p>7区すべてで増加し、最小でも${pct(byG[6].g)}。85歳以上の増え方（${W.map(w=>w.name+' '+f1(w.pop['2035'].e3/w.pop['2025'].e3,2)+'倍').join('、')}）が差を作っています。</p>`,
    `${S_MODEL}、${S_POP}。`);
   post.push(()=>hBars('ins4',byG.map(x=>({n:x.w.name+'区',v:x.g,c:TYPES[wardType(x.w)][1],t:`${pct(x.g)}（${sgn(x.d)}件）`})),{lw:56,x1:420,max:byG[0].g*1.0}));
@@ -1041,7 +1041,7 @@ function buildInsight(){
   /* 8 */
   const idx=f=>YEARS.map(y=>f(y)/f('2025')*100),tp=idx(y=>cityPop(y)),e3p=idx(y=>cityPop(y,'e3')),dp=idx(y=>cityL(+y)),pkI=tp.indexOf(Math.max(...tp));
   const pk0=YEARS[pkI],c0=cityBy(pk0),c1=cityBy('2050'),dB=AGES.map(a=>({a,d:c1[a]-c0[a]})),posB=dB.filter(x=>x.d>0),negB=dB.filter(x=>x.d<0),eldPos=posB.filter(x=>['e1','e2','e3'].includes(x.a)).map(x=>LAB[x.a]);
-  sec('2040以降','2040年以降は人口が減っても出場は減らない'+(eldPos.length?'（'+eldPos.join('・')+'が増えるため）':''),`<svg class="chart" id="ins8" viewBox="0 0 600 300"></svg>${legendHTML([['総人口','#14213d'],['85歳以上人口','#8e3b8f'],['出場件数（下限）','#e63946']])}`,
+  sec('2040以降','2040年以降は人口が減っても出場は減らない（増加は'+(posB.length?LAB[posB.slice().sort((x,y)=>y.d-x.d)[0].a]:'年齢構成の変化')+'が主）',`<svg class="chart" id="ins8" viewBox="0 0 600 300"></svg>${legendHTML([['総人口','#14213d'],['85歳以上人口','#8e3b8f'],['出場件数（下限）','#e63946']])}`,
    `<p>総人口は${pk0}年の${fmt(cityPop(pk0))}人をピークに減り、2050年は${fmt(cityPop('2050'))}人（ピーク比${pct((cityPop('2050')/cityPop(pk0)-1)*100)}）。一方、出場（下限）は2025年の${f1(dp[25]/100,2)}倍で、${pk0}年から2050年までも${pct((cityL(2050)/cityL(+pk0)-1)*100)}増えます。</p><p>${pk0}→2050年の出場への寄与は、増えるのが${posB.map(x=>LAB[x.a]+sgn(x.d)+'件').join('・')}、減るのが${negB.map(x=>LAB[x.a]+sgn(x.d)+'件').join('・')}。搬送率は75〜84歳が${f1(DATA.rates.e2*100,1)}%、85歳以上が${f1(DATA.rates.e3*100,1)}%と、18〜64歳の${f1(DATA.rates.w*100,1)}%の${f1(DATA.rates.e2/DATA.rates.w,1)}〜${f1(DATA.rates.e3/DATA.rates.w,1)}倍なので、働く世代が減っても、搬送率の高い層が増える分が上回ります。</p><p class="m">注：2034→2035年に区別の年齢構成の算出方法が切り替わり、2036年以降は社人研の推計に基づく参考値です。85歳以上人口そのものは${pk0}年の${fmt(cityPop(pk0,'e3'))}人から2050年の${fmt(cityPop('2050','e3'))}人へ${pct((cityPop('2050','e3')/cityPop(pk0,'e3')-1)*100)}と、この期間はほぼ横ばいです。</p>`,
    `${S_POP}、${S_MODEL}。指数は2025年＝100。`);
   post.push(()=>lineChart('ins8',{series:[{name:'総人口',v:tp,c:'#14213d',w:2.4},{name:'85歳以上',v:e3p,c:'#8e3b8f',w:2.4},{name:'出場',v:dp,c:'#e63946',w:2.4}],lo:80,hi:Math.ceil(Math.max(...e3p)/20)*20,ticks:[80,100,120,140,160,180,200,220,240].filter(v=>v<=Math.ceil(Math.max(...e3p)/20)*20),fy:v=>Math.round(v),h:300}));
@@ -1162,7 +1162,7 @@ function buildMethod(){
     ['経済センサス-活動調査 2021','総務省・経済産業省','2021','1kmメッシュの従業者数（署所按分の昼間側のキー）',A('https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001149&code=40&downloadType=2','e-Stat メッシュ従業者数')],
     ['全国都道府県市区町村別面積調','国土交通省 国土地理院','令和6年1月1日','区の面積（件/km²）',A('https://www.gsi.go.jp/KOKUJYOHO/MENCHO-title.htm','MENCHO-title.htm')],
     ['行政区域データ（国土数値情報）／JapanCityGeoJson','国土交通省／niiyz（加工・簡略化）','2020ころ','区界ポリゴン（地図）',A('https://nlftp.mlit.go.jp/ksj/','国土数値情報')+'<br>'+A('https://github.com/niiyz/JapanCityGeoJson','JapanCityGeoJson')],
-    ['消防力の整備指針 第13条（算定例：横浜市 整備指針 令和5年9月改正）','総務省 消防庁／横浜市','2023','基準隊数の算式（需要人口−10万）÷5万＋5。係数は福岡の搬送率から作成','消防庁ホーム '+A('https://www.fdma.go.jp/')+' で「消防力の整備指針」を参照（横浜市の算定例は同市の公表PDF）'],
+    ['消防力の整備指針 第13条（算定例：横浜市 整備指針 令和5年9月改正）','総務省 消防庁／横浜市','2023','基準隊数の算式（需要人口−10万）÷5万＋5。係数は福岡の搬送率から作成','消防庁ホーム '+A('https://www.fdma.go.jp/')+' で「消防力の整備指針」を参照。算定例は横浜市消防力の整備指針（令和5年9月改正）p.24（URLなし）'],
     ['福岡市 消防署・出張所の所在地','福岡市 消防局','2025','署所の位置（座標は国土地理院ジオコーダ等で付与）',A('https://www.city.fukuoka.lg.jp/syobo/somu/about/syozaiti.html','syozaiti.html')]];
   const borrowed=[
     ['全国の高齢者内比率（65–74／75–84／85歳以上の搬送率の形）','福岡の年報は65歳以上を一括でしか公表していないため。水準は福岡の実測に合わせ、形だけを全国の実測（消防庁 令和7年版）から借りています。'],
@@ -1177,6 +1177,7 @@ function buildMethod(){
   <div class="card"><h3>留意点</h3><ul>
    <li><b>人口の基準</b>：登録人口（住民基本台帳）は国勢調査ベースの推計人口より約5万人少ない住基ベースです。</li>
    <li><b>2034→2035年の切替</b>：区別の年齢帯別人口は、2034年まで福岡市推計の表、2035年以降は社人研の区シェアで配分した推計です。段差は2050年にかけて解消する設計で、2035年の区別の数字は社人研の構成に寄ります。</li>
+   <li><b>区のタイプの閾値</b>：福岡市は若い都市なので、成熟型の閾値は横浜版（34%）より低い27%（2035年の高齢化率）に置いています。</li>
    <li><b>署所は推定</b>：最寄り按分の推定で上限寄り。公式の署所別統計ではありません。</li>
    <li><b>上限シナリオの強さ</b>：伸びが複利で続く前提で、2050年には2025年の約${f1(cityS(2050,'H')/cityL(2025),1)}倍になります。2036年以降は参考値です。</li>
    <li><b>公表の無いもの</b>：不搬送率・時間帯別の出場・事故種別は、区別の数字が年報に無く市全体のみです。</li>
