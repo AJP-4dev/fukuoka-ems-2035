@@ -121,6 +121,22 @@ th{color:var(--ink2);font-weight:500;font-size:11px;position:sticky;top:0;backgr
 .lg b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .c-k{background:var(--c-k)}.c-j{background:var(--c-j)}.c-c{background:var(--c-c)}.c-w{background:var(--c-w)}.c-e1{background:var(--c-e1)}.c-e2{background:var(--c-e2)}.c-e3{background:var(--c-e3)}
 
+.banner{border-left:4px solid var(--amber);background:#fff7ea;padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;line-height:1.7;font-weight:700}
+.tg{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--surface2);color:var(--ink2);margin-left:6px;white-space:nowrap}
+.tg.no{background:#fde8ea;color:var(--red)}.tg.kd{background:#f1e4f2;color:#8e3b8f}
+#stTable th{cursor:pointer;user-select:none}
+#stTable th[aria-sort="ascending"]:after{content:' ▲';font-size:9px}#stTable th[aria-sort="descending"]:after{content:' ▼';font-size:9px}
+#stTable tr.st0 td{color:var(--ink3)}
+#stTable td.hot{color:var(--red);font-weight:700}
+#stTable td.nm{white-space:nowrap}
+.segline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.segline .seg{box-shadow:none}
+.segline .cap{font-size:12px;color:var(--ink2)}
+#stTip{position:absolute;z-index:9;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px;line-height:1.55;box-shadow:0 6px 20px rgba(20,33,61,.18);max-width:240px;display:none}
+#stTip b{font-size:13px}
+#stLeg{margin-top:8px;border-top:1px solid var(--line);padding-top:6px;font-size:10.5px;line-height:1.5;max-width:190px}
+#stLeg[hidden]{display:none}
+#stLeg .bar2{height:8px;width:130px;border-radius:4px;margin:4px 0 2px}
 /* ---------- map page ---------- */
 #page-map{padding-bottom:0}
 #stage{position:absolute;inset:0;touch-action:none;cursor:grab;background:var(--paper)}
@@ -310,6 +326,7 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
       <div class="prow" id="rowView"><span class="lbl">表示<button class="q" data-q="view" aria-label="表示の説明">?</button></span><div class="seg" id="viewSeg"><button aria-pressed="true" data-v="abs">実数</button><button aria-pressed="false" data-v="diff">2025年比の増減率</button></div><span class="tag">影響なし</span></div>
       <div class="prow" id="rowYear"><span class="lbl">年<button class="q" data-q="year" aria-label="年の説明">?</button></span><div class="yr"><input type="range" id="yearRange" min="2025" max="2035" step="1" value="2025" aria-label="年"><div class="yrv num" id="yearV">2025<small>基準＝2024年実績</small></div><div class="yq" id="yearQuick"></div></div><span class="tag">影響なし</span></div>
       <div class="prow" id="rowSc"><span class="lbl">シナリオ<button class="q" data-q="sc" aria-label="シナリオの説明">?</button></span><div class="seg alt" id="scSeg"><button aria-pressed="true" data-s="L">人口変化のみ</button><button aria-pressed="false" data-s="M">コロナ前のトレンドが続く</button><button aria-pressed="false" data-s="H">コロナ後の伸びも続く</button></div><span class="tag">影響なし</span></div>
+      <div class="prow" id="rowSt"><span class="lbl">署所<button class="q" data-q="st" aria-label="署所の説明">?</button></span><div class="seg"><button id="stBtn" aria-pressed="false">署所を表示</button></div></div>
       <div id="qbox" hidden><button id="qclose" aria-label="閉じる">×</button><div id="qtext"></div></div>
     </div>
     <div id="status"><div class="txt"><div class="s1" id="stL1"></div><div class="s2" id="stL2"></div></div><button id="ctlToggle" aria-expanded="true">条件を閉じる</button></div>
@@ -323,7 +340,8 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
     <button id="reset" aria-label="視点をリセット"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
     <button id="spin" aria-label="自動回転" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="6"/></svg></button>
   </div>
-  <div id="legend"><div id="legT">件/年</div><div class="bar2" id="legBar"></div><div class="lab"><span id="legLo"></span><span id="legHi"></span></div><div class="h" id="legH">高さも同じ指標</div></div>
+  <div id="legend"><div id="legT">件/年</div><div class="bar2" id="legBar"></div><div class="lab"><span id="legLo"></span><span id="legHi"></span></div><div class="h" id="legH">高さも同じ指標</div><div id="stLeg" hidden><b>署所の点</b>（推定）<div class="bar2" id="stLegBar"></div><div class="lab"><span>0</span><span>7,000件/隊</span></div>大きさ＝隊数／色＝隊あたり出場<br>○＝救急隊なし　◆＝機動救急</div></div>
+  <div id="stTip"></div>
   <button id="pickBtn">区を選ぶ</button>
   <div id="picker"></div>
   <div id="sheet" role="dialog" aria-label="区の詳細">
@@ -382,8 +400,14 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
 
 <!-- ================= STATIONS ================= -->
 <section class="page" id="page-st"><div class="scroll"><div class="wrap" id="tab-st">
-  <h2>署所 — 救急隊の配置</h2>
-  <p class="lead">署所ごとの推定出場件数と隊あたりの負担を、ここに載せます（準備中）。</p>
+  <h2>署所 — 救急隊の配置と負担</h2>
+  <p class="lead" id="stLead"></p>
+  <div class="banner" id="stBanner">署所別の数字は推定値（町丁目ではなく1kmメッシュの人口を最寄り署所に按分）であり、公式の統計ではありません</div>
+  <div class="segline"><span class="cap">シナリオ</span><div class="seg alt" id="stScSeg"><button aria-pressed="true" data-s="L">人口変化のみ</button><button aria-pressed="false" data-s="M">コロナ前のトレンドが続く</button><button aria-pressed="false" data-s="H">コロナ後の伸びも続く</button></div><span class="cap">地図のシナリオと連動します</span></div>
+  <div class="card"><h4><span class="yb">2035</span>署所一覧（推定値）</h4><div class="tbl"><table id="stTable"></table></div><p class="m" id="stTblNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第1-4-2表（救急自動車等の配置状況、令和7年3月31日現在）の隊数、国勢調査2020・経済センサス2021の1kmメッシュ、福岡市の将来人口推計（令和6年4月）から本サイトが推定。到着時間の目安は横浜市87隊の回帰からの外挿で、公式値ではありません。列の見出しをクリックすると並べ替えます。</div></div>
+  <div class="card"><h4><span class="yb">2035</span>署所ごとの隊あたり出場（推定・多い順）</h4><svg class="chart" id="chSt" viewBox="0 0 600 520"></svg><p class="m" id="stBarNote"></p><div class="src">出典：上表と同じ（推定）。縦線＝3,000件。福岡市消防年報 令和6年版の「一隊当たり平均出動件数」2,968件と、横浜版の考察で使った目安3,000件/隊に合わせた目安線で、法令上の基準ではありません。</div></div>
+  <div class="card"><h4>どこが先に逼迫するか</h4><div id="stRead"></div><div class="src">出典：上表（推定）。小地域按分の注意は src/small_areas.json の注記による。</div></div>
+  <button class="next" data-go="insight">考察を読む<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </div></div></section>
 
 <!-- ================= INSIGHT ================= -->
@@ -583,7 +607,7 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
 const W=DATA.wards, rates=DATA.rates, DR=DATA.dispRatio;
 const guarded=[];/* 横浜版の未改修セクション（10d/10e で書き直す）を落とさず読み込むためのガード */
 function safe(name,fn){try{return fn()}catch(e){guarded.push(name);console.warn('[legacy-guard] '+name+': '+e.message)}}
-const state={year:'2025',sc:'L',metric:'disp',view:'abs',mode:'ten',sel:null};
+const state={year:'2025',sc:'L',metric:'disp',view:'abs',mode:'ten',sel:null,st:false};
 const MODE={ten:{lo:2025,hi:2035,name:'10年'},long:{lo:2035,hi:2050,name:'長期'}};
 const modeYears=m=>{const a=[];for(let y=MODE[m].lo;y<=MODE[m].hi;y++)a.push(String(y));return a};
 const isLong=()=>state.mode==='long';
@@ -641,6 +665,7 @@ function applyState(q){const h=new URLSearchParams(q);
   if(SCK.includes(h.get('s'))){state.sc=h.get('s');pressSeg('scSeg','s',state.sc)}
   if(Object.keys(MET).includes(h.get('m'))){state.metric=h.get('m');pressSeg('modeSeg','m',state.metric)}
   if(['abs','diff'].includes(h.get('v'))){state.view=h.get('v');pressSeg('viewSeg','v',state.view)}
+  if(h.get('st')==='1')setStations(true);
   if(h.has('w')){const i=W.findIndex(w=>w.name===h.get('w'));state.sel=i>=0?i:(W[+h.get('w')]?+h.get('w'):null)}}
 function bindMapLinks(root){(root||document).querySelectorAll('a.mapgo').forEach(a=>a.onclick=e=>{e.preventDefault();applyState(a.dataset.state);go('map');if(innerWidth<700||innerHeight<760)setCollapsed(true);if(state.sel!==null){fillSheet(W[state.sel]);sheet.classList.add('open');safe('buildExample',()=>buildExample(W[state.sel]))}else sheet.classList.remove('open');applyMetric()})}
 function go(id){
@@ -708,6 +733,33 @@ W.forEach((w,i)=>{
   const line=new THREE.LineSegments(new THREE.EdgesGeometry(geo,20),new THREE.LineBasicMaterial({color:0x14213d,transparent:true,opacity:.28})); m.add(line); m.userData.line=line;
   const [cx,cz]=px(w.c[0],w.c[1]); const spr=makeLabel(); spr.position.set(cx,1.8,cz); group.add(spr); m.userData.label=spr; m.userData.cx=cx; m.userData.cz=cz;
 });
+/* ---------- 署所レイヤー（地図）: 区の柱の上に浮かべるスプライト。大きさ=隊数、色=選択年の隊あたり出場（固定 0–7,000）、隊なし=中空、機動救急=ひし形 ---------- */
+const ST=DATA.stations, ST_RANGE=7000, ST_GUIDE=3000, ST_NENPO_AVG=2968;/* 2,968 = 福岡市消防年報 令和6年版「一隊当たり平均出動件数」 */
+const stMult=y=>annualMult(state.sc,y);
+const stLoad=(s,y)=>s.load[y]*stMult(y);
+const stPU=(s,y)=>s.perUnit[y]==null?null:s.perUnit[y]*stMult(y);
+const stColor=v=>ramp(BLUE,v/ST_RANGE);
+const stSprites=[];
+ST.forEach(s=>{
+  const m=meshes.find(mm=>W[mm.userData.i].name===s.ward),[x,z]=px(s.lon,s.lat),c=document.createElement('canvas');c.width=c.height=96;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false,depthWrite:false}));
+  sp.renderOrder=9;sp.visible=false;sp.position.set(x+(s.id==='kido'?0.55:0),1,z);
+  sp.userData={s,m,c,px:s.units===0||s.id==='kido'?16:11+5*s.units};group.add(sp);stSprites.push(sp)});
+function drawStation(sp){const {s,c}=sp.userData,g=c.getContext('2d');g.clearRect(0,0,96,96);g.lineJoin='round';
+  if(s.id==='kido'){g.beginPath();g.moveTo(48,8);g.lineTo(88,48);g.lineTo(48,88);g.lineTo(8,48);g.closePath();g.lineWidth=9;g.strokeStyle='#fff';g.stroke();g.fillStyle='#8e3b8f';g.fill()}
+  else if(s.units===0){g.beginPath();g.arc(48,48,28,0,7);g.lineWidth=17;g.strokeStyle='#fff';g.stroke();g.lineWidth=8;g.strokeStyle='#14213d';g.stroke()}
+  else{g.beginPath();g.arc(48,48,32,0,7);g.fillStyle=stColor(stPU(s,+state.year));g.fill();g.lineWidth=7;g.strokeStyle='#fff';g.stroke();g.lineWidth=2;g.strokeStyle='#14213d';g.beginPath();g.arc(48,48,35.5,0,7);g.stroke()}
+  sp.material.map.needsUpdate=true}
+function sizeStations(){const k=dist/innerHeight;stSprites.forEach(sp=>{const u=sp.userData.px/0.73*k;sp.scale.set(u,u,1)})}
+function applyStations(){stSprites.forEach(sp=>{sp.visible=state.st;if(state.st)drawStation(sp)});document.getElementById('stLeg').hidden=!state.st;document.getElementById('stLegBar').style.background=`linear-gradient(90deg,${BLUE.join(',')})`;if(!state.st)hideStTip()}
+function setStations(v){state.st=v;document.getElementById('stBtn').setAttribute('aria-pressed',v);applyStations();try{history.replaceState(null,'',location.hash.replace(/&st=1/,'')+(v?'&st=1':''))}catch(e){}}
+function stationAt(x,y){if(!state.st)return null;let best=null,bd=1e9;stSprites.forEach(sp=>{const p=sp.position.clone().project(cam),sx=(p.x+1)/2*innerWidth,sy=(1-p.y)/2*innerHeight,d=Math.hypot(sx-x,sy-y);if(d<Math.max(13,sp.userData.px/2+5)&&d<bd){bd=d;best=sp.userData.s}});return best}
+const stTip=document.getElementById('stTip');
+function hideStTip(){stTip.style.display='none'}
+function showStTip(s,x,y){const yr=+state.year,l=stLoad(s,yr),pu=stPU(s,yr);
+  const body=s.units===0?`救急隊なし。受け持ち分は最寄りの隊のある署所に含めて推定しています。`:s.id==='kido'?`機動救急（移動待機）。出場件数は区の署所に含めず、按分していません。`:`${yr}年の推定出場 <b>${fmt(l)}件</b>／隊あたり <b>${fmt(pu)}件</b>（${s.units}隊）。${pu>ST_GUIDE?`目安${fmt(ST_GUIDE)}件を超えます。`:`目安${fmt(ST_GUIDE)}件以内。`}`;
+  stTip.innerHTML=`<b>${s.name}</b>（${s.ward}区）<br>${body}<br><span style="color:var(--ink3)">推定値（最寄り按分）</span>`;stTip.style.display='block';
+  const r=document.getElementById('page-map').getBoundingClientRect();stTip.style.left=Math.min(innerWidth-250,Math.max(8,x+12-r.left))+'px';stTip.style.top=Math.max(70,y-90-r.top)+'px'}
 function makeLabel(){const c=document.createElement('canvas');const s=2;c.width=256*s;c.height=96*s;const t=new THREE.CanvasTexture(c);t.minFilter=THREE.LinearFilter;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));sp.scale.set(4.4,1.65,1);sp.renderOrder=10;sp.userData.canvas=c;return sp}
 function setLabel(spr,text,sub,hot){const c=spr.userData.canvas,s=2,g=c.getContext('2d');g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,c.width,c.height);g.scale(s,s);g.textAlign='center';g.textBaseline='middle';g.lineJoin='round';
   const cs=getComputedStyle(document.documentElement);g.font='700 30px "Zen Kaku Gothic New",sans-serif';g.lineWidth=7;g.strokeStyle=cs.getPropertyValue('--halo').trim();g.strokeText(text,128,34);g.fillStyle=hot?'#e63946':cs.getPropertyValue('--labt').trim();g.fillText(text,128,34);
@@ -722,7 +774,7 @@ function fitOffset(){/* 条件パネルを閉じた状態の高さを基準に�
   const c=document.getElementById('ctl');if(c.classList.contains('collapsed'))cbCollapsed=c.getBoundingClientRect().bottom;const cb=cbCollapsed!==null?cbCollapsed:(c?c.getBoundingClientRect().bottom:0),nav=document.getElementById('nav'),nb=(nav&&getComputedStyle(nav).display!=='none')?nav.getBoundingClientRect().top:innerHeight;
   const want=(cb+nb)/2,px=want-innerHeight/2,k=(dist*0.5*2)/innerHeight;return px*k/Math.max(0.2,Math.sin(phi))}
 let panX=0,panZ=0;
-const updCam=()=>{setFrustum();const D=80,cx=tx+panX,cz=tz+panZ;cam.position.set(cx+D*Math.sin(phi)*Math.sin(theta),D*Math.cos(phi),cz+D*Math.sin(phi)*Math.cos(theta));cam.lookAt(cx,0.5+fitOffset(),cz)};
+const updCam=()=>{setFrustum();sizeStations();const D=80,cx=tx+panX,cz=tz+panZ;cam.position.set(cx+D*Math.sin(phi)*Math.sin(theta),D*Math.cos(phi),cz+D*Math.sin(phi)*Math.cos(theta));cam.lookAt(cx,0.5+fitOffset(),cz)};
 function panBy(dx,dy){const k=(dist*0.5*2)/innerHeight;const rx=Math.cos(theta),rz=-Math.sin(theta),fx=-Math.sin(theta),fz=-Math.cos(theta);panX+=-dx*k*rx+dy*k/Math.max(0.3,Math.cos(phi))*fx;panZ+=-dx*k*rz+dy*k/Math.max(0.3,Math.cos(phi))*fz}
 const ptr=new Map(); let lastD=0,moved=false,downT=0,lastC=null,panMode=false;
 const el=renderer.domElement;
@@ -741,12 +793,12 @@ el.addEventListener('pointerup',up); el.addEventListener('pointercancel',e=>ptr.
 el.addEventListener('wheel',e=>{e.preventDefault();dist=Math.max(18,Math.min(90,dist*(1+e.deltaY*0.001)));setAuto(false);updCam()},{passive:false});
 const ray=new THREE.Raycaster(),v2=new THREE.Vector2();
 const hitAt=(x,y)=>{v2.set(x/innerWidth*2-1,-(y/innerHeight)*2+1);ray.setFromCamera(v2,cam);const h=ray.intersectObjects(meshes,false)[0];return h?h.object.userData.i:null};
-function pick(x,y){const i=hitAt(x,y);select(i)}
+function pick(x,y){const s=stationAt(x,y);if(s){showStTip(s,x,y);return}hideStTip();const i=hitAt(x,y);select(i)}
 let hov=null;
-function hover(x,y){const i=hitAt(x,y);if(i===hov)return;hov=i;el.style.cursor=i===null?'grab':'pointer';meshes.forEach(m=>{m.userData.line.material.opacity=(state.sel===m.userData.i)?.95:(hov===m.userData.i?.7:.28)})}
+function hover(x,y){const st=stationAt(x,y);if(st){el.style.cursor='pointer';hov=null;return}const i=hitAt(x,y);if(i===hov)return;hov=i;el.style.cursor=i===null?'grab':'pointer';meshes.forEach(m=>{m.userData.line.material.opacity=(state.sel===m.userData.i)?.95:(hov===m.userData.i?.7:.28)})}
 addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);cbCollapsed=null;if(!ctl.classList.contains('collapsed')){ctl.classList.add('collapsed');cbCollapsed=ctl.getBoundingClientRect().bottom;ctl.classList.remove('collapsed')}updCam()});
 if(window.ResizeObserver)new ResizeObserver(()=>updCam()).observe(document.getElementById('ctl'));
-addEventListener('keydown',e=>{if(!document.getElementById('page-map').classList.contains('show'))return;if(e.key==='ArrowLeft'){if(e.shiftKey)panBy(-30,0);else theta+=0.08;setAuto(false);updCam()}if(e.key==='ArrowRight'){if(e.shiftKey)panBy(30,0);else theta-=0.08;setAuto(false);updCam()}if(e.key==='ArrowUp'&&e.shiftKey){panBy(0,-30);updCam()}if(e.key==='ArrowDown'&&e.shiftKey){panBy(0,30);updCam()}if(e.key==='+'||e.key==='=')zoom(0.85);if(e.key==='-')zoom(1.18);if(e.key==='Escape')select(null)});
+addEventListener('keydown',e=>{if(!document.getElementById('page-map').classList.contains('show'))return;if(e.key==='ArrowLeft'){if(e.shiftKey)panBy(-30,0);else theta+=0.08;setAuto(false);updCam()}if(e.key==='ArrowRight'){if(e.shiftKey)panBy(30,0);else theta-=0.08;setAuto(false);updCam()}if(e.key==='ArrowUp'&&e.shiftKey){panBy(0,-30);updCam()}if(e.key==='ArrowDown'&&e.shiftKey){panBy(0,30);updCam()}if(e.key==='+'||e.key==='=')zoom(0.85);if(e.key==='-')zoom(1.18);if(e.key==='Escape'){hideStTip();select(null)}});
 const zoom=f=>{dist=Math.max(18,Math.min(90,dist*f));setAuto(false);updCam()};
 document.getElementById('zin').onclick=()=>zoom(0.8); document.getElementById('zout').onclick=()=>zoom(1.25);
 document.getElementById('reset').onclick=()=>{theta=DEF.theta;phi=DEF.phi;dist=DEF.dist;panX=0;panZ=0;setAuto(true);updCam()};
@@ -802,8 +854,9 @@ function applyMetric(){
   document.getElementById('legH').textContent=isDiff()?'高さも増減率（中間の色・高さ＝変化なし）':'高さも同じ指標（平行投影で比較可）';
   const [l1,l2]=statusText();document.getElementById('stL1').textContent=l1;document.getElementById('stL2').textContent=l2;
   const af=affects();[['rowYear','year'],['rowSc','sc'],['rowView','view']].forEach(([id,k])=>{const r=document.getElementById(id);r.classList.toggle('off',!af[k]);r.querySelectorAll('button:not(.q),input').forEach(b=>b.disabled=!af[k])});
-  try{history.replaceState(null,'',`#mode=${state.mode}&y=${state.year}&s=${state.sc}&m=${state.metric}&v=${state.view}`+(state.sel!==null?`&w=${state.sel}`:''))}catch(e){}
+  try{history.replaceState(null,'',`#mode=${state.mode}&y=${state.year}&s=${state.sc}&m=${state.metric}&v=${state.view}`+(state.st?'&st=1':'')+(state.sel!==null?`&w=${state.sel}`:''))}catch(e){}
   if(state.sel!==null)fillSheet(W[state.sel]);
+  applyStations();
   drawMini();
 }
 /* ---------- mini trend chart ---------- */
@@ -848,6 +901,7 @@ const QTEXT={
  mode:'<b>何を見るか。</b>出場件数＝救急車が出動した年間件数（区内で発生。2025年は2024年実績に合わせた値、以降は推計）。出場件数/千人＝出場件数÷区の人口×1,000。件/km²＝出場件数÷区の面積。人口＝総人口。高齢者人口＝65歳以上。高齢化率＝65歳以上÷総人口。昼夜間比＝昼間人口÷夜間人口×100（2020年固定）。基準隊数充足＝区の現有隊数 ÷ 区に按分した基準隊数（整備指針の式で出した市の隊数を、区の需要人口で按分）。100%未満は基準に足りない区です。',
  view:'<b>実数</b>はその年の値そのもの。<b>2025年比の増減率</b>は2025年からの変化率で、色は±'+PCT_RANGE+'%で飽和します（それを超えても端の色）。負は寒色、正は暖色。出場件数・人口・高齢者人口などで使えます。',
  year:'<b>10年モード</b>（2025〜2035）が既定です。2035年がこのレポートの中心年。<b>「長期を見る」</b>で2035〜2050年に切り替わり、色の尺度も長期用に固定されます（モードを切り替えない限り、年やシナリオを動かしても尺度は変わりません）。2036年以降は参考値です。',
+ st:'<b>署所の点（推定）。</b>点の大きさ＝救急隊数（2025年）、色＝選択年の<b>隊あたり出場</b>（0〜7,000件に固定した同じ青の尺度）、中空の○＝救急隊のない出張所、◆＝機動救急（移動待機、按分に入れない）。値は区の出場件数を、国勢調査2020の1kmメッシュ人口（夜間×0.65＋従業者×0.35）で最寄りの署所に按分した<b>推定</b>で、公式の統計ではありません。点をクリックすると名称と数値が出ます。出典：福岡市消防年報 令和6年版 第1-4-2表（隊数）、国勢調査2020、経済センサス2021。',
  sc:'将来の「年齢別の利用率」をどう置くかで、出場件数だけが変わります（人口の将来値はどのシナリオでも市の推計で共通）。<br><b>人口変化のみ</b>：利用率を現在のまま固定。人口の増減と年齢構成だけで決まる下限。<br><b>コロナ前のトレンドが続く</b>：2013〜2019年の傾向（年+'+(TR.slopePre*100).toFixed(2)+'%）を'+TR.capYear+'年まで延長し、以降は一定。<br><b>コロナ後の伸びも続く</b>：2013〜2024年の傾向（年+'+(TR.slopeAll*100).toFixed(2)+'%）が2050年まで続く仮定。'};
 const qbox=document.getElementById('qbox'),qtext=document.getElementById('qtext');
 let qOpen=null;
@@ -861,7 +915,8 @@ function buildQuick(){const ys=isLong()?[2035,2040,2045,2050]:[2025,2030,2035];y
   yq.querySelectorAll('button[data-y]').forEach(b=>b.onclick=()=>setYear(+b.dataset.y));document.getElementById('modeBtn').onclick=()=>setMode(isLong()?'ten':'long')}
 function setMode(mm,silent){state.mode=mm;yr.min=MODE[mm].lo;yr.max=MODE[mm].hi;buildQuick();const y=clamp(+state.year,MODE[mm].lo,MODE[mm].hi);if(silent){state.year=String(y);yr.value=y;return}setYear(y)}
 yr.addEventListener('input',()=>setYear(+yr.value));
-seg('scSeg','s',v=>{state.sc=v;applyMetric();safe('buildCity',buildCity)});
+seg('scSeg','s',v=>{state.sc=v;pressSeg('stScSeg','s',v);applyMetric();buildSt()});
+document.getElementById('stBtn').onclick=()=>setStations(!state.st);
 seg('modeSeg','m',v=>{state.metric=v;applyMetric()});
 seg('viewSeg','v',v=>{state.view=v;applyMetric()});
 function pressSeg(id,attr,val){document.querySelectorAll('#'+id+' button').forEach(b=>b.setAttribute('aria-pressed',b.dataset[attr]===val))}
@@ -1198,13 +1253,58 @@ function buildPop(){
 buildPop();
 /* ---------- /pop tab ---------- */
 
+/* ---------- 署所タブ ---------- */
+const mmss=sec=>sec==null?'—':Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+const WARD_ORD=W.map(w=>w.name);
+let stSort={k:'ord',d:1};
+const STCOLS=[['ord','署所'],['ward','区'],['units','隊'],['l25','推定出場 2025'],['l35','推定出場 2035'],['p25','隊あたり 2025'],['p35','隊あたり 2035'],['arr','到着の目安 分:秒'],['note','備考']];
+function stKey(s,i,k){switch(k){case 'ord':return i;case 'ward':return WARD_ORD.indexOf(s.ward)*100+i;case 'units':return s.units;case 'l25':return s.units?stLoad(s,2025):null;case 'l35':return s.units?stLoad(s,2035):null;case 'p25':return stPU(s,2025);case 'p35':return stPU(s,2035);case 'arr':return s.arriveEst;case 'note':return s.note||'';}}
+const STACT=ST.filter(s=>s.perUnit['2035']!=null);
+function buildSt(){
+  const sc=state.sc,scn=SCN[sc];
+  const act=ST.filter(s=>s.units>0&&s.id!=='kido'),no=ST.filter(s=>s.units===0),kd=ST.find(s=>s.id==='kido');
+  document.getElementById('stLead').textContent=`福岡市の救急隊${DATA.standard.current}隊は、7署のほか23出張所と機動救急に置かれています。区の出場件数を最寄りの署所に割り振り、「隊あたり何件か」を推定しました（${scn}）。署所別の公式な出場件数はありません。`;
+  document.querySelectorAll('#stScSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===sc));
+  /* table */
+  const rows=ST.map((s,i)=>({s,i,v:stKey(s,i,stSort.k)}));
+  rows.sort((a,b)=>{const x=a.v,y=b.v;if(x==null&&y==null)return a.i-b.i;if(x==null)return 1;if(y==null)return -1;return (typeof x==='string'?x.localeCompare(y,'ja'):x-y)*stSort.d||a.i-b.i});
+  let h='<thead><tr>'+STCOLS.map(([k,l])=>`<th data-k="${k}" aria-sort="${stSort.k===k?(stSort.d>0?'ascending':'descending'):'none'}">${l}</th>`).join('')+'</tr></thead><tbody>';
+  rows.forEach(({s})=>{const none=s.units===0,kido=s.id==='kido',p25=stPU(s,2025),p35=stPU(s,2035);
+    h+=`<tr class="${none?'st0':''}"><td class="nm">${s.name}${none?'<span class="tg no">救急隊なし</span>':kido?'<span class="tg kd">機動救急</span>':s.kind==='署'?'<span class="tg">署</span>':''}</td><td>${s.ward}</td><td class="num">${s.units}</td>`+
+    (none||kido?`<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>`:`<td class="num">${fmt(stLoad(s,2025))}</td><td class="num">${fmt(stLoad(s,2035))}</td><td class="num">${fmt(p25)}</td><td class="num${p35>ST_GUIDE?' hot':''}">${fmt(p35)}</td><td class="num">${mmss(s.arriveEst)}</td>`)+
+    `<td style="text-align:left;white-space:normal;font-size:11px;color:var(--ink2)">${s.note||''}</td></tr>`});
+  const tb=document.getElementById('stTable');tb.innerHTML=h+'</tbody>';
+  tb.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;stSort=stSort.k===k?{k,d:-stSort.d}:{k,d:(k==='ord'||k==='ward'||k==='note')?1:-1};buildSt()});
+  document.getElementById('stTblNote').textContent=`${act.length}署所に${act.reduce((a,s)=>a+s.units,0)}隊、機動救急${kd.units}隊（按分の対象外）、救急隊のない出張所${no.length}（${no.map(s=>s.name.replace('出張所','')).join('・')}）。隊なしの受け持ち分は最寄りの隊のある署所に含まれています。赤字＝隊あたり${fmt(ST_GUIDE)}件超（目安）。到着の目安は横浜市87隊の回帰（分＝1.753×走行距離km＋3.949）からの外挿で、公式値ではありません。`;
+  /* bars */
+  const bars=act.map(s=>({s,v:stPU(s,2035)})).sort((a,b)=>b.v-a.v),n=bars.length,rh=17,top=34,Wd=600,x0=118,x1=548,hh=top+n*rh+26,mx=Math.max(ST_RANGE,Math.max(...bars.map(b=>b.v))*1.04);
+  const X=v=>x0+v/mx*(x1-x0);
+  let g=`<g stroke="#e3e8ef">${[0,2000,4000,6000].map(v=>`<line x1="${X(v)}" x2="${X(v)}" y1="${top-6}" y2="${top+n*rh}"/>`).join('')}</g>`+[0,2000,4000,6000].map(v=>`<text x="${X(v)}" y="${top+n*rh+14}" font-size="10" fill="#8e9bae" text-anchor="middle">${fmt(v)}</text>`).join('');
+  bars.forEach((b,i)=>{const y=top+i*rh;g+=`<text x="${x0-6}" y="${y+11}" font-size="10.5" text-anchor="end" fill="#14213d">${b.s.name.replace('出張所','').replace('消防署','署')}${b.s.units>1?'×'+b.s.units:''}</text><rect x="${x0}" y="${y+2}" width="${X(b.v)-x0}" height="${rh-5}" rx="3" fill="${stColor(Math.min(b.v,ST_RANGE))}"/><text x="${X(b.v)+4}" y="${y+11}" font-size="10" font-weight="700" fill="${b.v>ST_GUIDE?'#e63946':'#5b6b82'}">${fmt(b.v)}</text>`});
+  g+=`<line x1="${X(ST_GUIDE)}" x2="${X(ST_GUIDE)}" y1="${top-8}" y2="${top+n*rh}" stroke="#e63946" stroke-width="1.6" stroke-dasharray="5 3"/><text x="${X(ST_GUIDE)+4}" y="${top-12}" font-size="10.5" font-weight="700" fill="#e63946">目安 ${fmt(ST_GUIDE)}件/隊</text>`;
+  const svg=document.getElementById('chSt');svg.setAttribute('viewBox',`0 0 ${Wd} ${hh}`);svg.innerHTML=g;
+  const over=bars.filter(b=>b.v>ST_GUIDE).length;
+  document.getElementById('stBarNote').textContent=`${scn}の2035年、隊あたりが${fmt(ST_GUIDE)}件を超える署所は${n}か所中${over}か所（2025年は${act.filter(s=>stPU(s,2025)>ST_GUIDE).length}か所）。棒の色は地図の署所と同じ尺度（0〜${fmt(ST_RANGE)}件）。`;
+  /* reading */
+  const t5=bars.slice(0,5),low=bars[n-1],o25=act.filter(s=>stPU(s,2025)>ST_GUIDE).length;
+  const ex=act.filter(s=>stPU(s,2025)<=ST_GUIDE&&stPU(s,2035)>ST_GUIDE);
+  const saito=ST.find(s=>s.id==='saitozaki');
+  document.getElementById('stRead').innerHTML=
+   `<p><b>隊あたりの多い5署所（${scn}・2035年）</b>：${t5.map((b,i)=>`${i+1}. ${b.s.name}（${b.s.ward}区）${fmt(b.v)}件`).join('、')}。</p>`+
+   `<p>2035年に隊あたり${fmt(ST_GUIDE)}件を超える署所は<b>${over}か所</b>（隊のある${n}か所のうち）。2025年の時点で超えているのは${o25}か所で、${ex.length?`2025〜2035年の間に新たに超えるのは${ex.map(s=>s.name.replace('出張所','')).join('・')}の${ex.length}か所です。`:'新たに超える署所はありません。'}</p>`+
+   `<p>上位5か所のうち${t5.filter(b=>b.s.units===1).length}か所は1隊だけで受け持つ出張所です。2隊以上の署所の隊あたりは${fmt(Math.min(...bars.filter(b=>b.s.units>1).map(b=>b.v)))}〜${fmt(Math.max(...bars.filter(b=>b.s.units>1).map(b=>b.v)))}件、最も少ないのは${low.s.name}（${fmt(low.v)}件）です。</p>`+
+   `<p class="m"><b>読むときの注意</b>：町丁目別の従業地人口が公表されていないため、1kmメッシュの人口を最寄りの署所に割り振る方式です。${saito.name}（${fmt(stPU(saito,2025))}件/隊・2025年）のように小さな半島の受け持ちは低めに、${ST.find(s=>s.id==='katakasu').name}（${fmt(stPU(ST.find(s=>s.id==='katakasu'),2025))}件/隊・2025年）のように博多駅東側のオフィス街が1隊の署所に集中すると高めに出ます。実際の出場は署所をまたいで最寄りの空き隊が対応するため、<b>上限寄りの推定</b>です。到着時間の目安は横浜市87隊の回帰を福岡の距離に当てはめた値で、公式の署所別到着時間は公表されていません。</p>`;
+  bindMapLinks(document.getElementById('tab-st'));
+}
+
 /* ---------- loop ---------- */
 let t0=performance.now();const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 function loop(now){const dt=Math.min(0.05,(now-t0)/1000);t0=now;if(auto&&!reduce){theta+=dt*0.06;updCam()}
   meshes.forEach(m=>{const d=m.userData.target-m.userData.h;if(Math.abs(d)>0.002||m.userData.dirty!==m.userData.split){m.userData.h+=d*Math.min(1,dt*6);const h=m.userData.h,sp=m.userData.split;m.scale.y=h*(1-sp);m.position.y=h*sp;m.userData.top.scale.y=Math.max(0.001,h*sp);m.userData.top.position.y=0;m.userData.label.position.y=h+0.9;m.userData.dirty=sp}});
+  if(state.st)stSprites.forEach(sp=>{sp.position.y=sp.userData.m.userData.h+0.7});
   if(document.getElementById('page-map').classList.contains('show'))renderer.render(scene,cam);requestAnimationFrame(loop)}
 (function restore(){try{applyState(location.hash.slice(1))}catch(e){}})();
-applyTheme();updCam();applyMetric();safe('buildCity',buildCity);bindMapLinks();if(state.sel!==null){fillSheet(W[state.sel]);sheet.classList.add('open');safe('buildExample',()=>buildExample(W[state.sel]))}meshes.forEach(m=>{m.userData.h=0.05;m.scale.y=0.05});requestAnimationFrame(loop);
+applyTheme();updCam();applyMetric();safe('buildCity',buildCity);buildSt();bindMapLinks();if(state.sel!==null){fillSheet(W[state.sel]);sheet.classList.add('open');safe('buildExample',()=>buildExample(W[state.sel]))}meshes.forEach(m=>{m.userData.h=0.05;m.scale.y=0.05});requestAnimationFrame(loop);
 if(guarded.length)console.warn('[legacy-guard] skipped sections (10d/10e to rewrite): '+guarded.join(', '));
 setTimeout(()=>document.getElementById('loading').classList.add('hide'),300);
 })();

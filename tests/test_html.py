@@ -29,3 +29,10 @@ def test_pop_tab_present():
     assert t.count('class="src"') >= 3
     order = [t.index("['%s'," % k) for k in ('map', 'pop', 'city', 'wards', 'st', 'insight', 'method')]
     assert order == sorted(order)
+
+
+def test_stations_tab_and_layer():
+    t = _t()
+    assert 'id="tab-st"' in t and 'DATA.stations' in t and '推定' in t
+    assert '署所を表示' in t and '公式の統計ではありません' in t
+    assert 'ST_RANGE=7000' in t and 'class="src"' in t
