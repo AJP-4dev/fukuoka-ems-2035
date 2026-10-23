@@ -98,8 +98,10 @@ th{color:var(--ink2);font-weight:500;font-size:11px;position:sticky;top:0;backgr
 .wcard h3{margin:0 0 2px;font-size:20px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .wcard h3 .typ{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:999px;color:#fff}
 .wcard .one{font-size:14.5px;line-height:1.7;margin:6px 0 10px;color:var(--ink)}
-.prof{display:grid;grid-template-columns:118px 1fr 64px;gap:4px 8px;align-items:center;font-size:12px;margin:8px 0}
+.prof{display:grid;grid-template-columns:176px 1fr 84px;gap:4px 8px;align-items:center;font-size:12px;margin:8px 0}
 .prof .pl{color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:520px){.prof{grid-template-columns:112px 1fr 76px}.prof .pl{white-space:normal;line-height:1.25}}
+.wp{display:block;margin:0 0 8px}
 .prof .pb{position:relative;height:12px;background:var(--surface2);border-radius:6px}
 .prof .pb:before{content:'';position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--ink3)}
 .prof .pb i{position:absolute;top:0;height:100%;border-radius:6px}
@@ -388,11 +390,10 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
 </div></div></section>
 
 <!-- ================= WARDS ================= -->
-<section class="page" id="page-wards"><div class="scroll"><div class="wrap">
-  <h2>区ごとの特徴</h2>
-  <p class="lead">18区を4つのタイプに分け、市平均との差で「何が多く、何が少ない区か」を見ます。棒は市平均を中心に、右が市平均より多い（長い・遅い）、左が少ない。</p>
-  <div class="yguide"><span class="k"><span class="yb">2035</span>このレポートの中心年。数字は断りがなければ2035年</span><span class="k"><span class="yb mid">2024 実績</span>基準年（人口は2025年1月1日）</span><span class="k"><span class="yb mid">2040</span>中期の確認点</span><span class="k"><span class="yb long">2058・2061</span>長期の山＝出場ピーク・85歳以上ピーク。2041年以降は参考値</span></div>
-  <div class="card"><h4>4つのタイプ</h4><div id="typeLegend"></div><p class="m">タイプは、昼夜間人口比率・2035年の高齢化率・出場件数の増減率で機械的に分けています。</p></div>
+<section class="page" id="page-wards"><div class="scroll"><div class="wrap" id="tab-wards">
+  <h2>区ごとの特徴 — 2035年の7区</h2>
+  <p class="lead">7区を3つのタイプに分け、市平均との差で「何が多く、何が少ない区か」を見ます。棒は市平均＝100を中心に、右が市平均より大きい、左が小さい。文章は数字からルールで自動生成しています。</p>
+  <div class="card"><h4>3つのタイプ（分類ルール）</h4><div id="typeLegend"></div><p class="m" id="typeNote"></p><div class="src">出典：国勢調査2020（昼夜間人口）、福岡市の将来人口推計（令和6年4月）と社人研 令和5年推計（2035年の高齢化率）。分類ルールは本サイトの定義で、閾値は template.html 上部の TYPE_RULE にまとめています。</div></div>
   <div id="wardJump" class="jump"></div>
   <div id="wardCards"></div>
   <button class="next" data-go="insight">考察を読む<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
@@ -618,6 +619,8 @@ const pct=(v,d=1)=>(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(d)+'%';
 const man=n=>(n/10000).toFixed(1)+'万';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const SCN={L:DATA.scn.L.name,M:DATA.scn.M.name,H:DATA.scn.H.name}, SCK=['L','M','H'];
+/* 区タイプの分類閾値（ここだけ変えれば分類が変わる）: 昼夜間比 >= dnMin → 都心・来街型 / 2035年の高齢化率(%) >= agingMin → 成熟型 / それ以外 → 伸びる住宅地型 */
+const TYPE_RULE={dnMin:1.30,agingMin:30};
 const TR=DATA.trend, CAPY=TR.capYear;/* コロナ前トレンドは capYear 以降で伸びを止める */
 const annualMult=(sc,y)=>{y=+y;if(sc==='M')return Math.pow(1+TR.slopePre,Math.min(y,CAPY)-2024);if(sc==='H')return Math.pow(1+TR.slopeAll,y-2024);return 1};
 const annualOf=(w,y,sc)=>w.disp[y]*annualMult(sc||state.sc,y);
@@ -1162,63 +1165,60 @@ function buildAnalysis(){
 }
 safe('buildAnalysis',buildAnalysis);
 
-/* ---------- ward profiles ---------- */
-const TYPES={core:['都心・来街型','#e63946'],grow:['件数が伸びる住宅地型','#d9822b'],urban:['都市部住宅型','#3a7bd5'],mature:['成熟した郊外住宅地型','#1b998b']};
-function wardType(w){const ag35=agingRate(w,'2035'),dg=(w.disp['2035']/w.disp24-1)*100;if(w.dn>=120)return 'core';if(ag35>=34)return 'mature';if(dg>=9.5)return 'grow';return 'urban'}
-function wardMetrics(w){
-  const pop=popTot(w,'2025'),cityPop25=cityPop('2025'),cityDisp=cityTotal('2025');
-  const share=k=>w.types[k]/w.disp24*100,cshare=k=>W.reduce((s,x)=>s+x.types[k],0)/cityDisp*100;
-  const cityDN=W.reduce((s,x)=>s+x.day20,0)/W.reduce((s,x)=>s+x.night20,0)*100;
-  const e3g=(w.pop['2035'].e3/w.pop['2025'].e3-1)*100,ce3g=(cityPop('2035','e3')/cityPop('2025','e3')-1)*100;
+/* ---------- 区別カード（10d） ---------- */
+const TYPES={core:['都心・来街型','#e63946'],mature:['成熟型','#8e3b8f'],grow:['伸びる住宅地型','#d9822b']};
+function wardType(w){if(w.dn>=TYPE_RULE.dnMin)return 'core';if(agingRate(w,'2035')>=TYPE_RULE.agingMin)return 'mature';return 'grow'}
+const pcOf=(w,y)=>w.disp[y]/popTot(w,y)*1000;
+/* 2025年の水準の分解: 件数/千人 = 年齢構成 × 昼間補正 × 校正。E_age=Σ人口×搬送率×出場/搬送比、E_day=昼間補正（校正前）。 */
+const eAge=w=>AGES.reduce((s,a)=>s+w.pop['2025'][a]*DATA.rates[a],0)*DR;
+const eDay=w=>w.dayExtra/w.fac;
+function cityBase(){const ws=W,pop=ws.reduce((s,w)=>s+popTot(w,'2025'),0),ea=ws.reduce((s,w)=>s+eAge(w),0),ed=ws.reduce((s,w)=>s+eDay(w),0),d=ws.reduce((s,w)=>s+w.disp24,0);
+  return {pop,ea,ed,fac:d/(ea+ed),pc:d/pop*1000,agePc:ea/pop*1000,dayR:(ea+ed)/ea,disp:d,units:ws.reduce((s,w)=>s+w.unitsPerWard,0),
+    ag35:cityVal(ws,'2035','L','aging'),e3g:(cityPop('2035','e3')/cityPop('2025','e3')-1)*100,dg:(cityOf(2035,'L')/cityOf(2025,'L')-1)*100,dn:cityVal(ws,'2025','L','day')/100,std:DATA.standard.units['2035']}}
+const CB=cityBase();
+function wardDecomp(w){const pop=popTot(w,'2025'),ea=eAge(w),ed=eDay(w);return {pc:pcOf(w,'2025'),ageR:(ea/pop*1000)/CB.agePc,dayR:((ea+ed)/ea)/CB.dayR,facR:w.fac/CB.fac,ratio:pcOf(w,'2025')/CB.pc}}
+function wardMetrics(w){const e3g=(w.pop['2035'].e3/w.pop['2025'].e3-1)*100,dg=(w.disp['2035']/w.disp['2025']-1)*100,sw=stdWard(w,'2035');
   return [
-   {k:'percap',l:'出場件数/千人',v:w.disp24/pop*1000,c:cityDisp/cityPop25*1000,f:v=>v.toFixed(0)+'件'},
-   {k:'nontr',l:'不搬送率',v:w.nonTr*100,c:DATA.cityNonTr*100,f:v=>v.toFixed(0)+'%'},
-   {k:'arrive',l:'現場到着時間',v:w.arrive,c:DATA.cityArrive,f:v=>v.toFixed(1)+'分'},
-   {k:'kmu',l:'1隊あたり面積',v:w.area/unitsOf(w),c:AREA_CITY/W.reduce((s,x)=>s+unitsOf(x),0),f:v=>v.toFixed(1)+'km²'},
-   {k:'pu',l:'1隊あたり件数',v:w.disp24/unitsOf(w),c:cityDisp/W.reduce((s,x)=>s+unitsOf(x),0),f:v=>fmt(v)+'件'},
-   {k:'aging',l:'高齢化率 2035',v:agingRate(w,'2035'),c:(cityPop('2035','e1')+cityPop('2035','e2')+cityPop('2035','e3'))/cityPop('2035')*100,f:v=>v.toFixed(1)+'%'},
-   {k:'e3g',l:'85歳以上の増加 →2035',v:e3g,c:ce3g,f:v=>pct(v,0),ratio:false},
-   {k:'dg',l:'出場の増減 →2035',v:(w.disp['2035']/w.disp24-1)*100,c:(A35/cityDisp-1)*100,f:v=>pct(v,1),ratio:false},
-   {k:'transfer',l:'転院搬送の割合',v:share('転院搬送'),c:cshare('転院搬送'),f:v=>v.toFixed(1)+'%'},
-   {k:'dn',l:'昼夜間人口比',v:w.dn,c:cityDN,f:v=>v.toFixed(0)},
-   {k:'hogo',l:'生活保護率',v:w.hogo,c:W.reduce((s,x)=>s+x.hogo*popTot(x,'2025'),0)/cityPop25,f:v=>v.toFixed(2)+'%'},
-   {k:'frn',l:'外国人住民の割合',v:w.foreign/pop*100,c:W.reduce((s,x)=>s+x.foreign,0)/cityPop25*100,f:v=>v.toFixed(1)+'%'}]}
-function rankOf(k,w,desc=true){const vals=W.map(x=>({n:x.name,v:wardMetrics(x).find(m=>m.k===k).v})).sort((a,b)=>desc?b.v-a.v:a.v-b.v);return vals.findIndex(x=>x.n===w.name)+1}
-function profHTML(ms){return `<div class="prof">${ms.map(m=>{let t;if(m.ratio===false){t=(m.v-m.c)/Math.max(1,Math.abs(m.c)*1.2)}else{t=Math.log(m.v/m.c)/Math.log(2.2)}t=Math.max(-1,Math.min(1,t));const w=Math.abs(t)*50,left=t>=0?50:50-w,col=t>=0?'#e63946':'#1b998b';return `<div class="pl">${m.l}</div><div class="pb"><i style="left:${left}%;width:${w}%;background:${col};opacity:.8"></i></div><div class="pv">${m.f(m.v)}<small>市 ${m.f(m.c)}</small></div>`}).join('')}</div>`}
+   {l:'出場件数/千人（2025）',v:pcOf(w,'2025'),c:CB.pc,f:v=>v.toFixed(0)+'件'},
+   {l:'校正係数',v:w.fac,c:CB.fac,f:v=>v.toFixed(2)},
+   {l:'高齢化率（2035）',v:agingRate(w,'2035'),c:CB.ag35,f:v=>v.toFixed(1)+'%'},
+   {l:'85歳以上の増加（2025→35）',v:e3g,c:CB.e3g,f:v=>pct(v,0)},
+   {l:'昼夜間人口比',v:w.dn*100,c:CB.dn*100,f:v=>v.toFixed(0)},
+   {l:'出場の増減（2035・人口のみ）',v:dg,c:CB.dg,f:v=>pct(v)},
+   {l:'1隊あたり出場（2024実績）',v:w.loadPerUnit24,c:CB.disp/CB.units,f:v=>fmt(v)+'件',hot:1},
+   {l:'基準隊数の充足率（2035）',v:w.unitsPerWard/sw*100,c:CB.units/CB.std*100,f:v=>v.toFixed(0)+'%',s:`現行${w.unitsPerWard}隊／基準${sw.toFixed(1)}隊`,low:1}]}
+function profHTML(ms){return `<div class="prof">${ms.map(m=>{const idx=m.v/m.c*100,tt=clamp((idx-100)/60,-1,1),up=tt>=0,col=m.low?(up?'#3a7bd5':'#e63946'):m.hot?(up?'#e63946':'#3a7bd5'):(up?'#d9822b':'#3a7bd5');
+  return `<div class="pl">${m.l}</div><div class="pb"><i style="${up?'left':'right'}:50%;width:${Math.abs(tt)*50}%;background:${col}"></i></div><div class="pv">${m.f(m.v)}<small>${m.s||'市平均比 '+idx.toFixed(0)}</small></div>`}).join('')}</div>`}
 function wardText(w){
-  const ms=wardMetrics(w),g=k=>ms.find(m=>m.k===k),out=[];
-  const fac=w.fac,pop=popTot(w,'2025'),net=w.in-w.out;
-  // 1. 需要の水準
-  const rp=rankOf('percap',w);let s1=`出場件数/千人は${g('percap').f(g('percap').v)}で18区中${rp}位（市平均${g('percap').f(g('percap').c)}）。`;
-  if(fac>=1.12){const why=[];if(w.nonTr>DATA.cityNonTr+0.03)why.push(`不搬送率が市平均より${((w.nonTr-DATA.cityNonTr)*100).toFixed(0)}pt高い（辞退・軽症が多い）`);if(net>20000)why.push(`通勤・通学で${man(net)}人の流入超過`);if(g('transfer').v>g('transfer').c*1.3)why.push(`転院搬送が市平均の${(g('transfer').v/g('transfer').c).toFixed(1)}倍（病院立地）`);s1+=`人口と年齢構成から期待される件数の<b>${fac.toFixed(2)}倍</b>で、${why.length?why.join('、')+'が押し上げている。':'人口では説明できない需要が大きい。'}`}
-  else if(fac<=0.9){s1+=`人口と年齢構成から期待される件数より<b>${((1-fac)*100).toFixed(0)}%少ない</b>。${w.dn<85?'昼間に人口が流出し、':''}若く健康な年齢構成で救急利用が少ない区。`}
-  else s1+=`人口から期待される件数とほぼ一致（校正係数${fac.toFixed(2)}）。`;
-  const hr=rankOf('hogo',w);if(hr<=4)s1+=`生活保護率${w.hogo.toFixed(2)}%は18区中${hr}位で、年齢で説明できない需要の一因と考えられる。`;
-  out.push(s1);
-  // 2. 需要の質（事故種別）
-  const keys=['急病','一般負傷','交通事故','転院搬送','加害','労働災害','運動競技','自損行為','火災'],cityDisp=cityTotal('2025');
-  const odd=keys.map(k=>({k,r:(w.types[k]/w.disp24)/(W.reduce((s,x)=>s+x.types[k],0)/cityDisp),n:w.types[k]})).filter(o=>o.n>=40&&(o.r>=1.35||o.r<=0.7)).sort((a,b)=>b.r-a.r);
-  const HINT2={'加害':'繁華街など','転院搬送':'病院の立地','労働災害':'事業所・工場','運動競技':'運動施設','交通事故':'幹線道路','自損行為':'','火災':'','急病':'','一般負傷':''};
-  if(odd.length){out.push('出場の内訳では'+odd.map(o=>`${o.k}が市平均の${o.r.toFixed(1)}倍（${fmt(o.n)}件${HINT2[o.k]&&o.r>1?'、'+HINT2[o.k]:''}）`).join('、')+'。')}
-  else out.push(`出場の内訳は市平均に近く、急病${(w.types['急病']/w.disp24*100).toFixed(0)}%・一般負傷${(w.types['一般負傷']/w.disp24*100).toFixed(0)}%。`);
-  // 3. 将来
-  const dg=g('dg').v,e3g=g('e3g').v,pg=(popTot(w,'2035')/pop-1)*100,oA=overYear(w,'A'),oB=overYear(w,'B'),pu=w.disp24/unitsOf(w);
-  let s3=`2035年の出場は<b>${pct(dg)}</b>（人口${pct(pg)}、85歳以上${pct(e3g,0)}）。`;
-  if(dg>=9.5)s3+=pg>0?'人口増と高齢化の両方で増える。':'人口の減少を高齢化が大きく上回る。';else if(dg<=3)s3+='人口減少が高齢化をほぼ相殺し横ばい。';
-  s3+=`1隊あたり${fmt(pu)}件で、3,000件の目安を${oA===2025?'すでに超えている':oA?oA+'年に超える':'2070年まで超えない'}${oB&&oB!==oA?`（「利用増が続く」シナリオでは${oB===2025?'すでに超過':oB+'年'}）`:''}。`;
-  out.push(s3);
-  // 4. 供給側
-  const ra=rankOf('arrive',w),rk=rankOf('kmu',w);
-  out.push(`現場到着は平均${w.arrive.toFixed(1)}分（遅い順で18区中${ra}位${ra<=4?'、市内でも遅い':ra>=15?'、市内では速い':''}）、1隊あたりの面積は${(w.area/unitsOf(w)).toFixed(1)}km²（広い順で${rk}位）。不搬送率${(w.nonTr*100).toFixed(0)}%${w.nonTr>DATA.cityNonTr+0.03?'は市平均を大きく上回り、#7119 や軽症対策で減らせる余地が大きい':w.nonTr<DATA.cityNonTr-0.03?'は市平均より低く、出場の大半が実際の搬送につながる':'は市平均並み'}。`);
-  return out}
+  const t=wardType(w),d=wardDecomp(w),ag35=agingRate(w,'2035'),ag25=agingRate(w,'2025'),e3x=w.pop['2035'].e3/w.pop['2025'].e3,
+    L=w.disp['2035'],M=Math.round(L*annualMult('M',2035)),H=Math.round(L*annualMult('H',2035)),g=(L/w.disp['2025']-1)*100,net=w.in-w.out,u=w.unitsPerWard,sw=stdWard(w,'2035');
+  const future=`2035年の${w.name}区は、出場が${fmt(L)}件（2025年比${pct(g)}、人口変化のみ）と見込まれます。コロナ前のトレンドが続けば${fmt(M)}件、コロナ後の伸びも続けば${fmt(H)}件です。85歳以上は${e3x.toFixed(2)}倍、高齢化率は${ag25.toFixed(1)}%から${ag35.toFixed(1)}%になります。`;
+  let kind;
+  if(t==='core')kind=`【都心・来街型】昼夜間人口比が${w.dn.toFixed(2)}（基準${TYPE_RULE.dnMin.toFixed(2)}以上）で、昼は夜より人が${((w.dn-1)*100).toFixed(0)}%多い区です。`;
+  else if(t==='mature')kind=`【成熟型】2035年の高齢化率が${ag35.toFixed(1)}%（基準${TYPE_RULE.agingMin}%以上）の区です。`;
+  else kind=`【伸びる住宅地型】昼夜間人口比${w.dn.toFixed(2)}（基準${TYPE_RULE.dnMin.toFixed(2)}未満）で、2035年の高齢化率${ag35.toFixed(1)}%（基準${TYPE_RULE.agingMin}%未満）。都心でも成熟した区でもなく、人口構成の変化で出場が増える区です。`;
+  const lead=`2025年の出場は千人あたり${d.pc.toFixed(0)}件で、市平均（${CB.pc.toFixed(0)}件）の${d.ratio.toFixed(2)}倍。内訳は年齢構成で×${d.ageR.toFixed(2)}、昼間人口（通勤・通学の出入り）で×${d.dayR.toFixed(2)}、年齢でも昼間人口でも説明できない分（校正係数 ${w.fac.toFixed(3)}）で×${d.facR.toFixed(2)}です。`;
+  const big=[['age',Math.abs(Math.log(d.ageR))],['day',Math.abs(Math.log(d.dayR))],['fac',Math.abs(Math.log(d.facR))]].sort((a,b)=>b[1]-a[1])[0][0];
+  const why=big==='age'?`差の主因は年齢構成で、高齢者（搬送率の高い層）の${d.ageR>1?'多さ':'少なさ'}が水準を決めています。`
+    :big==='day'?`差の主因は昼間人口で、通勤・通学は${net>=0?'流入':'流出'}超過${fmt(Math.abs(net))}人、年${w.dayExtra>=0?'+':'−'}${fmt(Math.abs(w.dayExtra))}件ぶんです。`
+    :w.dn>=1?`差の主因は人口や通勤では説明しきれない需要（来街者・繁華街・病院など）で、昼間人口の上乗せ（年${w.dayExtra>=0?'+':'−'}${fmt(Math.abs(w.dayExtra))}件）と合わせて昼間の人の多さが効いています。`
+    :`差の主因は年齢構成でも昼間人口でも説明できない部分（校正係数）で、${w.fac<1?'人口から期待される件数より実績が少ない':'人口から期待される件数より実績が多い'}区です。`;
+  const supply=`現行${u}隊で、2024年実績は1隊あたり${fmt(w.loadPerUnit24)}件。2035年の出場（人口変化のみ）を現行隊数で受けると1隊あたり${fmt(L/u)}件（目安${fmt(ST_GUIDE)}件${L/u>ST_GUIDE?'超':'以内'}）、整備指針の式で按分した2035年の基準隊数は${sw.toFixed(1)}隊で現行の${(sw/u).toFixed(2)}倍です。隊は区をまたいで出場するため目安です。`;
+  return `<span class="wp">${future}</span><span class="wp">${kind} ${lead}${why}</span><span class="wp">${supply}</span>`}
 function buildWards(){
-  document.getElementById('typeLegend').innerHTML=`<div class="tl">${Object.entries(TYPES).map(([k,[n,c]])=>`<span><b style="background:${c}"></b>${n}：${W.filter(w=>wardType(w)===k).map(w=>w.name).join('・')}</span>`).join('')}</div>`;
+  const by={core:[],mature:[],grow:[]};W.forEach(w=>by[wardType(w)].push(w));
+  const rule={core:`昼夜間人口比が${TYPE_RULE.dnMin.toFixed(2)}以上`,mature:`2035年の高齢化率が${TYPE_RULE.agingMin}%以上`,grow:'上の2つに当てはまらない区'};
+  const maxAg=W.slice().sort((a,b)=>agingRate(b,'2035')-agingRate(a,'2035'))[0];
+  document.getElementById('typeLegend').innerHTML=`<div class="tl" style="flex-direction:column">${Object.entries(TYPES).map(([k,[n,c]])=>`<span><b style="background:${c}"></b><b style="width:auto;height:auto;border-radius:0;background:none;font-weight:700">${n}</b>：${rule[k]} → ${by[k].length?by[k].map(w=>w.name).join('・'):'該当なし'}</span>`).join('')}</div>`;
+  document.getElementById('typeNote').textContent=`順に判定します（昼夜間人口比 → 2035年の高齢化率 → それ以外）。${by.mature.length?'':`福岡市は2035年でも高齢化率が最も高い${maxAg.name}区で${agingRate(maxAg,'2035').toFixed(1)}%（市全体${CB.ag35.toFixed(1)}%）と、基準の${TYPE_RULE.agingMin}%に届く区がなく、成熟型に当てはまる区はありません。`}`;
   document.getElementById('wardJump').innerHTML=W.map((w,i)=>`<button data-i="${i}">${w.name}</button>`).join('');
   document.querySelectorAll('#wardJump button').forEach(b=>b.onclick=()=>{const el=document.getElementById('wc-'+b.dataset.i),sc=document.querySelector('#page-wards .scroll');sc.scrollTop=el.offsetTop-70});
-  document.getElementById('wardCards').innerHTML=W.map((w,i)=>{const t=wardType(w),[tn,tc]=TYPES[t];return `<div class="wcard" id="wc-${i}"><h3>${w.name}区 <span class="typ" style="background:${tc}">${tn}</span><span class="m">人口 ${man(popTot(w,'2025'))}人・出場 ${fmt(w.disp24)}件・${unitsOf(w)}隊</span></h3>${profHTML(wardMetrics(w))}<ul>${wardText(w).map(t=>`<li>${t}</li>`).join('')}</ul><p style="margin:10px 0 0"><a class="mapgo" href="#" data-state="m=disp&y=2035&w=${w.name}">2035年を地図で</a> <a class="mapgo" href="#" data-state="m=nontr&w=${w.name}">不搬送率を地図で</a> <a class="mapgo" href="#" data-state="m=arrive&w=${w.name}">到着時間を地図で</a></p></div>`}).join('');
-  bindMapLinks(document.getElementById('page-wards'));
+  document.getElementById('wardCards').innerHTML=W.map((w,i)=>{const t=wardType(w),[tn,tc]=TYPES[t];
+    return `<div class="wcard" id="wc-${i}"><h3>${w.name}区 <span class="typ" style="background:${tc}">${tn}</span><span class="m">人口 ${man(popTot(w,'2025'))}人・出場 ${fmt(w.disp24)}件（2024年）・${w.unitsPerWard}隊</span></h3>${profHTML(wardMetrics(w))}<div class="one">${wardText(w)}</div><p style="margin:10px 0 0"><a class="mapgo" href="#" data-state="m=disp&v=diff&y=2035&w=${w.name}">2035年の増減を地図で</a> <a class="mapgo" href="#" data-state="m=std&y=2035&w=${w.name}">基準隊数の充足を地図で</a></p><div class="src">出典：福岡市の将来人口推計（令和6年4月）・社人研 令和5年推計、福岡市消防年報 令和6年版、国勢調査2020、消防力の整備指針（横浜市 R5.9 の算定例）。棒の中心＝市平均（100）。数値は本サイトの推計。</div></div>`}).join('');
+  bindMapLinks(document.getElementById('tab-wards'));
 }
-safe('buildWards',buildWards);safe('buildSupp',buildSupp);
+buildWards();
+safe('buildSupp',buildSupp);
 
 /* ---------- pop tab ---------- */
 /* 折れ線の共通ヘルパ（人口タブ用）。o={series:[{name,v,c,w}],lo,hi,ticks,fy,h,peak:{i,label,c}} */

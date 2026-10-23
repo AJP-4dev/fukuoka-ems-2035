@@ -36,3 +36,12 @@ def test_stations_tab_and_layer():
     assert 'id="tab-st"' in t and 'DATA.stations' in t and '推定' in t
     assert '署所を表示' in t and '公式の統計ではありません' in t
     assert 'ST_RANGE=7000' in t and 'class="src"' in t
+
+
+def test_ward_cards_three_types():
+    t = _t()
+    assert 'function wardText' in t and 'TYPE_RULE' in t
+    body = t[t.index('function wardText'):t.index('function buildWards')]
+    for k in ('都心・来街型', '伸びる住宅地型', '成熟型'):
+        assert k in body, k
+        assert k in t
