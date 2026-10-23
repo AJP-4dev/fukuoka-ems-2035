@@ -11,7 +11,7 @@ WARDS = ['東', '博多', '中央', '南', '城南', '早良', '西']
 CITY_PAGES = [13, 14, 15, 16]
 WARD_PAGES = list(range(19, 26))
 SOURCE = ('福岡市の将来人口推計（令和6年4月）p10–22（全市は男女別・年齢階層別内訳、'
-          '区別は同内訳）。2051–2065年は全市の参考値。')
+          '区別は同内訳）。2051–2065年は全市の参考値。区別2035–2050年は社人研 令和5年推計の区シェアによる推計。')
 # 区別ページの2035–2050は年齢階層別内訳が無く、棒グラフ画像に総人口（千人、5年刻み）のみ載る。
 # PDFのp16–22（0始まり19–25）の画像を目視で書き起こした値。
 WARD_TOTALS_K = {
@@ -23,10 +23,9 @@ WARD_TOTALS_K = {
     '早良': {2035: 227, 2040: 228, 2045: 228, 2050: 226},
     '西': {2035: 219, 2040: 220, 2045: 219, 2050: 218},
 }
-NOTE = ('区別ページの年齢階層別内訳は2020–2034年のみ（PDF実測）。2035–2050年は内訳が無いため推計値：'
-        '区別総人口（棒グラフ画像から書き起こした5年刻みの千人値を年次線形補間し、全市総人口に合わせて按分）と'
-        '全市の年齢階層別人口（PDF実測）を周辺和とし、前年の区別構成を初期値にIPF（反復比例調整）で配分、100人単位に丸め。'
-        'estimated_years を参照。')
+NOTE = ('区別ページの年齢階層別内訳は2020–2034年のみ（PDF実測）。2035–2050年は社人研『日本の地域別将来推計人口'
+        '（令和5年推計）』の区別×5歳階級の区シェアを年次線形補間し、福岡市推計（PDF）の全市帯別人口に乗じた推計値で、'
+        '2034年実測との段差は2050年にかけて線形に解消。chartTotalsは区別ページ棒グラフ（画像）の書き起こしで検算用。')
 NUM = re.compile(r'^\d{1,3}(,\d{3})*(\.\d)?$')
 
 
@@ -82,35 +81,52 @@ def merge(pages):
     return res
 
 
-def estimate(wards, city, years):
-    """2035以降の区×帯を、前年構成を種にIPFで推計（全市帯別・区別総人口が周辺和）"""
-    ks = sorted(WARD_TOTALS_K['東'])
+def load_ipss(xlsx):
+    """社人研 令和5年推計: {ward: {year5: {band: 人}}}（男女計、90歳以上=90～94+95歳～）"""
+    import openpyxl
+    wb = openpyxl.load_workbook(str(xlsx), read_only=True)
+    out = {}
+    for r in wb.worksheets[0].iter_rows(values_only=True):
+        if r[1] == 0 and r[2] == '福岡県' and r[3] and r[3].startswith('福岡市'):
+            w = r[3][3:-1]
+            y = int(r[4][:4])
+            v = list(r[6:26])  # 0～4 ... 90～94, 95～
+            vals = v[:18] + [v[18] + v[19]]
+            out.setdefault(w, {})[y] = dict(zip(BANDS, vals))
+    return out
+
+
+def share(ipss, w, b, y):
+    """区シェア（IPSSの5年点を線形補間）"""
+    def s5(yy):
+        return ipss[w][yy][b] / sum(ipss[x][yy][b] for x in WARDS)
+    lo = y // 5 * 5
+    if y == lo:
+        return s5(lo)
+    return s5(lo) + (s5(lo + 5) - s5(lo)) * (y - lo) / 5
+
+
+def estimate(wards, city, years, ipss):
+    """2035–2050: 全市(PDF)×社人研の区シェア、2034実測との段差を2050にかけて線形に解消"""
+    r = {w: {b: wards[w][2034][b] / (city[2034][b] * share(ipss, w, b, 2034))
+             for b in BANDS} for w in WARDS}
     for y in years:
-        if y in wards['東']:
+        if y <= 2034:
             continue
-        ctot = sum(city[y].values())
-        raw = {}
         for w in WARDS:
-            lo = max(k for k in ks if k <= y) if y >= ks[0] else None
-            hi = min(k for k in ks if k >= y)
-            raw[w] = WARD_TOTALS_K[w][lo] if lo == hi else (
-                WARD_TOTALS_K[w][lo] + (WARD_TOTALS_K[w][hi] - WARD_TOTALS_K[w][lo]) * (y - lo) / (hi - lo))
-        k = ctot / (1000 * sum(raw.values()))
-        rt = {w: raw[w] * 1000 * k for w in WARDS}
-        m = {w: {b: wards[w][y - 1][b] * city[y][b] / city[y - 1][b] for b in BANDS} for w in WARDS}
-        for _ in range(200):
+            wards[w][y] = {}
+        for b in BANDS:
+            f = {w: share(ipss, w, b, y) * (1 + (r[w][b] - 1) * (2050 - y) / (2050 - 2034))
+                 for w in WARDS}
+            tot = sum(f.values())
+            vals = {w: int(round(city[y][b] * f[w] / tot)) for w in WARDS}
+            big = max(WARDS, key=lambda w: vals[w])
+            vals[big] += city[y][b] - sum(vals.values())
             for w in WARDS:
-                f = rt[w] / sum(m[w].values())
-                m[w] = {b: v * f for b, v in m[w].items()}
-            for b in BANDS:
-                f = city[y][b] / sum(m[w][b] for w in WARDS)
-                for w in WARDS:
-                    m[w][b] *= f
-        for w in WARDS:
-            wards[w][y] = {b: int(round(m[w][b] / 100.0)) * 100 for b in BANDS}
+                wards[w][y][b] = vals[w]
 
 
-def extract(pdf):
+def extract(pdf, ipss=None):
     doc = pymupdf.open(str(pdf))
     city = merge([doc[i] for i in CITY_PAGES])
     wards = {}
@@ -121,7 +137,8 @@ def extract(pdf):
     years = list(range(2020, 2051))
     for w in WARDS:
         wards[w] = {y: v for y, v in wards[w].items() if y <= 2034}
-    estimate(wards, city, years)
+    ipss = load_ipss(ipss or pathlib.Path(__file__).resolve().parent / 'raw' / 'ipss' / 'suikei_kekka.xlsx')
+    estimate(wards, city, years, ipss)
     return {
         'years': years,
         'bands': BANDS,
@@ -130,6 +147,7 @@ def extract(pdf):
         'source': SOURCE,
         'estimated_years': list(range(2035, 2051)),
         '_note': NOTE,
+        'chartTotals': {w: {str(y): v * 1000 for y, v in WARD_TOTALS_K[w].items()} for w in WARDS},
     }
 
 
