@@ -102,6 +102,11 @@ model = {'years': YEARS, 'groups': GROUPS, 'wards': wards, 'city': city, 'rates'
          'dispatchTotal': N24['dispatchTotal'], 'transportTotal': N24['transportTotal'], 'standard': standard}
 json.dump(model, open(HERE / 'model.json', 'w', encoding='utf-8'), ensure_ascii=False)
 
+# 署所別の推定負担（Task 9）。stations_load.json も同時に再生成する
+from build_stations import build_station_loads  # noqa: E402
+STATIONS = build_station_loads(wards, J('stations.json'), J('small_areas.json')['areas'])
+(HERE / 'stations_load.json').write_text(json.dumps(STATIONS, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+
 DATA = {'years': YEARS, 'groups': GROUPS,
         'scn': {'L': {'name': '人口変化のみ'}, 'M': {'name': 'コロナ前のトレンドが続く'}, 'H': {'name': 'コロナ後の伸びも続く'}},
         'trend': {k: TREND[k] for k in ('slopePre', 'slopeAll', 'capYear', 'adjRate', 'backtest', 'ageShare')},
@@ -109,7 +114,7 @@ DATA = {'years': YEARS, 'groups': GROUPS,
         'city': city, 'series': N['series'],
         'nenpo2024': {'typeDispatch': N24['typeDispatch'], 'transportAge': N24['transportAge'], 'timeSec': N24['timeSec'],
                       'nonTrRate': round(1 - N24['transportTotal'] / N24['dispatchTotal'], 4)},
-        'standard': standard, 'stations': [], 'rates': model['rates'], 'dispRatio': model['dispRatio'],
+        'standard': standard, 'stations': STATIONS, 'rates': model['rates'], 'dispRatio': model['dispRatio'],
         'dayf': DAYF, 'outside': N24['outside']}
 (HERE.parent / 'data.js').write_text('const DATA=' + json.dumps(DATA, ensure_ascii=False, separators=(',', ':')) + ';\n', encoding='utf-8')
 

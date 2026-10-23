@@ -30,6 +30,6 @@ def test_data_js_roundtrip():
     D = json.loads(txt[len('const DATA='):].rstrip(';\n'))
     assert D['groups'] == ['k', 'j', 'w', 'e1', 'e2', 'e3'] and len(D['wards']) == 7
     assert D['years'][0] == 2025 and D['years'][-1] == 2050
-    assert D['stations'] == [] and D['standard']['current'] == 34
+    assert len(D['stations']) == 31 and D['standard']['current'] == 34
     assert [w['name'] for w in D['wards']] == WARDS
     assert sum(w['unitsPerWard'] for w in D['wards']) == 34
