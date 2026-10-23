@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 一括ビルド: (--full: 生データ抽出) -> trend -> model -> html -> pytest
 # 既定は src/raw/ が無くても動く（抽出済み JSON はコミット済み）。
-# --full は src/raw/ の生データ（PDF・IPSS xlsx・Excel/CSV・e-Stat メッシュ）が必要。無ければ各スクリプトがエラーで止まる。
+# --full は src/raw/ の生データ（PDF・IPSS xlsx・Excel/CSV）が必要（e-Stat メッシュは build_small_areas.py が自動取得）。無ければ各スクリプトがエラーで止まる。
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PY=".venv/bin/python -I"

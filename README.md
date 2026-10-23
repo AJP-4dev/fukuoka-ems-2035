@@ -8,9 +8,9 @@
 
 | 項目 | 2025 | 2035 | 2050 |
 |---|---|---|---|
-| 年間出場件数 L（人口変化のみ） | 100,139 | 112,366（+12.2%） | 121,920 |
-| 年間出場件数 M（トレンド継続） | 100,139 | 125,435（+25.3%） | 143,080 |
-| 年間出場件数 H（上振れ） | 100,139 | 138,490（+38.3%） | 199,828 |
+| 年間出場件数 L（人口変化のみ） | 100,139 | 112,124（+12.0%） | 121,804 |
+| 年間出場件数 M（トレンド継続） | 100,139 | 125,165（+25.0%） | 142,944 |
+| 年間出場件数 H（上振れ） | 100,139 | 138,192（+38.0%） | 199,637 |
 | 基準救急隊数（整備指針の算式） | 35 | 39 | 42 |
 
 現行は 34 隊（令和7年3月31日時点）。出所は `src/model.json` / `data.js`。
@@ -24,7 +24,7 @@
 | `index.html` | 公開する単一 HTML（`template.html` + `data.js` から生成・コミット済み） |
 | `src/extract_projection.py` | 将来人口推計 PDF / 社人研 xlsx → `projection.json` |
 | `src/make_base_inputs.py` / `make_nenpo_inputs.py` | 登録人口等 → `base_inputs.json`、消防年報の転記 → `nenpo_inputs.json` |
-| `src/build_small_areas.py` | e-Stat 1km メッシュ → `small_areas.json`（昼夜間人口の按分用） |
+| `src/build_small_areas.py` | e-Stat 1km メッシュ → `small_areas.json`（署所按分用） |
 | `src/fetch_geo.py` / `geocode_stations.py` | 区界ポリゴン `wards_geo.json`、署所の緯度経度 `stations.json`（ネットワーク。出力はコミット済み） |
 | `src/rates.py` | 年齢6帯・搬送率の作り方 |
 | `src/build_trend.py` | 年齢調整利用率のトレンドとバックテスト → `trend.json` |
@@ -32,7 +32,7 @@
 | `src/build_model.py` | 6帯×7区×2025–2050 のモデル → `model.json`, `data.js` |
 | `src/build_html.py` | `index.html` を生成 |
 | `src/*.json` | 上記の中間・最終データ（コミット済み。`src/raw/` の生データだけ git 管理外） |
-| `tests/` | pytest（42件）。入力・モデル・署所・HTML を検査 |
+| `tests/` | pytest（46件）。入力・モデル・署所・HTML を検査 |
 | `docs/superpowers/` | 設計書（specs/）と実装計画（plans/） |
 | `scripts/build.sh` | 一括ビルド |
 
@@ -44,7 +44,7 @@ scripts/build.sh           # trend → model → html → pytest（src/raw/ 不�
 scripts/build.sh --full    # 先に生データから再抽出（src/raw/ が必要）
 ```
 
-`--full` は `src/raw/shouraijinkousuikei.pdf`、`src/raw/ipss/suikei_kekka.xlsx`、登録人口等の Excel/CSV、e-Stat メッシュを使います。無いファイルがあるとスクリプトがそのファイル名を示して止まります。`index.html` は生成物ですが、GitHub Pages 用にコミットします。
+`--full` は `src/raw/shouraijinkousuikei.pdf`、`src/raw/ipss/suikei_kekka.xlsx`、登録人口等の Excel/CSV を使います（無いファイルがあるとスクリプトがそのファイル名を示して止まります）。e-Stat の 1km メッシュは `build_small_areas.py` が自動でダウンロードします。`index.html` は生成物ですが、GitHub Pages 用にコミットします。
 
 ## 出典
 
@@ -64,7 +64,8 @@ scripts/build.sh --full    # 先に生データから再抽出（src/raw/ が必
 | 消防庁 令和7年版 救急・救助の現況 | https://www.fdma.go.jp/pressrelease/houdou/items/kyuuki_20260116.pdf | 全国の年齢区分別搬送人員（65–74/75–84/85+ の形状） |
 | 総務省 人口推計 2024 | https://www.stat.go.jp/data/jinsui/2024np/pdf/2024np.pdf | 上記の年齢区分別人口 |
 | 東京消防庁 令和5年 救急活動の現況 図表2-5 | https://www.tfd.metro.tokyo.lg.jp/content/000071238.xlsx | 18–64歳を分けない根拠 |
-| 横浜市 救急隊整備指針（R5.9改正）・横浜市消防年報 | 設計書 §4 参照 | 基準隊数の算式、到着時間回帰の目安 |
+| 横浜市消防局 令和6年 消防年報（災害統計 p.105） | https://www.city.yokohama.lg.jp/city-info/yokohamashi/org/shobo/sonota/nenpoh.html | 到着時間回帰（署所の到着目安の傾き） |
+| 横浜市 消防力の整備指針（R5.9改正、p.24 算定例） | 横浜市消防局サイトで公開（URL未確認） | 基準隊数の算式 |
 
 詳細は設計書 `docs/superpowers/specs/2026-10-23-fukuoka-ems-design.md` の §4・§13。
 
@@ -73,8 +74,8 @@ scripts/build.sh --full    # 先に生データから再抽出（src/raw/ が必
 - 年齢6帯（0–6／7–17／18–64／65–74／75–84／85+）のうち、65歳以上の内訳は**全国の形状**を借用（水準は福岡の実績に合わせて補正）。
 - 昼間補正は係数 0.35 の仮定値。
 - 署所別の負担は、1kmメッシュの最寄り署所への按分による推定（年報に署所別実績は無い）。
-- 署所の到着時間は、横浜市の年報から作った回帰による目安で、福岡の実測ではない。
-- 2035年以降の区別の年齢構成は、社人研推計の構成比で市推計を配分した推定（2034年とは線形に接続）。
+- 署所の到着時間は、横浜市の年報から作った回帰の傾きを借り、切片を福岡市の実測平均（通報→現着 8:12）に合わせた相対値で、署所別の実測ではない。
+- 区別の年齢構成：2020–2034年は市推計PDFの区別表を帯ごとに全市表へ比例配分して整合（区別表は全市表と帯別で最大約8,000人食い違うため）。2035年以降は社人研推計の構成比で市推計を配分した推定（整合後の2034年とは線形に接続）。
 - 基準人口は住民基本台帳ベースの登録人口。基準隊数の算式は横浜市の整備指針の係数を用いた試算で、福岡市独自の基準ではない。
 
 ## ライセンス・免責
