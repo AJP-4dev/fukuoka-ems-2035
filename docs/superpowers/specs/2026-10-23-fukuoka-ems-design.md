@@ -48,7 +48,7 @@
 
 | 必要なもの | 福岡での所在 | 状態 |
 |---|---|---|
-| 区別 × 5歳階級 × 各年の将来人口 | 「福岡市の将来人口推計」令和6年4月（PDF 35p）<br>https://www.city.fukuoka.lg.jp/soki/kikaku/shisei/fukuokashikihonkosokihonkeikaku/jinkousuikeiH23/documents/shouraijinkousuikei.pdf | **あり**。区別は p16–22、男女 × 19階級（90+が上限）× 2020〜2050 各年。全市は p10–13（2051〜2065 参考値）。PDF 表の転記が必要（テキスト層あり） |
+| 区別 × 5歳階級 × 各年の将来人口 | 「福岡市の将来人口推計」令和6年4月（PDF 35p）<br>https://www.city.fukuoka.lg.jp/soki/kikaku/shisei/fukuokashikihonkosokihonkeikaku/jinkousuikeiH23/documents/shouraijinkousuikei.pdf | **一部あり**。区別の年齢別表は p16–22 の 2020〜2034 のみ（実装時に判明）。2035/40/45/50 は区別総数のグラフだけ。全市は p10–13 で 2050 まで各年（2051〜2065 参考値）。→ 2035〜2050 の区別×年齢帯は社人研 令和5年推計（区別×5歳階級）の構成比で市推計の帯合計を配分し、2034 年との段差は比率補正を線形に減衰させてつなぐ（Ruling 6、方法ページに明記） |
 | 2025 年実績人口（区別・年齢別） | 福岡市 登録人口（区別・年齢別）https://www.city.fukuoka.lg.jp/soki/tokeichosa/shisei/toukei/jinkou/tourokujinkou/TourokuJinko_kubetsu.html ／ 推計人口 xlsx | あり |
 | 救急出場件数（区別・年次） | 消防年報 第2-2-3表 行政区別救急出動件数（各年版）| **あり**（R3〜R6 版が公開。R6: https://www.city.fukuoka.lg.jp/syobo/somu/about/documents/r6.kyuukyuutoukei.pdf） |
 | 出場件数の長期推移（市全体） | 年報 第2-2-2表（平成27〜令和6年の10年、隊数・搬送者数つき）＋ 統計書 第18章 第5表（事故種別、R1〜R5） | あり。2013年=68,299件 → 2024年=100,181件（約1.47倍）、隊数 27→34 |
