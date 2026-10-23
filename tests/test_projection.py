@@ -10,19 +10,12 @@ def test_projection_shape():
 
 
 def test_ward_sum_matches_city():
-    # 注: PDF自体の区別表は全市表と整合せず、20代コーホートで最大約8,100人ずれる
-    # （出典側の不整合。画像で突き合わせ確認済み）。
-    # 総数は千人丸め×7区＋全市丸めの範囲で一致。帯別はPDF自体が区別推計と全市推計で
-    # 最大約8,100人ずれる（20代の移動仮定）ため、帯別は 9,000 人以内で確認する。
+    # 区別表は帯ごとに全市表へ比例配分して整合させてある（丸め残差のみ：最大区へ寄せるので帯別 7 人以内）
     P = load('projection.json')
-    for y in (2020, 2025, 2035, 2050):
-        diffs = []
+    for y in P['years']:
         for b in P['bands']:
             ws = sum(P['wards'][w][str(y)][b] for w in WARDS)
-            d = ws - P['city'][str(y)][b]
-            assert abs(d) <= 9000, (y, b)
-            diffs.append(d)
-        assert abs(sum(diffs)) <= 7 * 100 + 100 + 100, y
+            assert abs(ws - P['city'][str(y)][b]) <= 7, (y, b)
 
 
 def test_city_total_2040_peak():

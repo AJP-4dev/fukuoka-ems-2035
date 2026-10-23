@@ -26,9 +26,10 @@ WARD_TOTALS_K = {
     '早良': {2035: 227, 2040: 228, 2045: 228, 2050: 226},
     '西': {2035: 219, 2040: 220, 2045: 219, 2050: 218},
 }
-NOTE = ('区別ページの年齢階層別内訳は2020–2034年のみ（PDF実測）。2035–2050年は社人研『日本の地域別将来推計人口'
+NOTE = ('市推計PDFの区別表は全市表と帯別で最大約8,000人食い違うため、帯ごとに全市表へ比例配分して整合させた（2020–2034年。Σ区＝全市）。'
+        '区別ページの年齢階層別内訳は2020–2034年のみ（PDF実測）。2035–2050年は社人研『日本の地域別将来推計人口'
         '（令和5年推計）』の区別×5歳階級の区シェアを年次線形補間し、福岡市推計（PDF）の全市帯別人口に乗じた推計値で、'
-        '2034年実測との段差は2050年にかけて線形に解消。chartTotalsは区別ページ棒グラフ（画像）の書き起こしで検算用。')
+        '整合後の2034年値との段差は2050年にかけて線形に解消。chartTotalsは区別ページ棒グラフ（画像）の書き起こしで検算用。')
 NUM = re.compile(r'^\d{1,3}(,\d{3})*(\.\d)?$')
 
 
@@ -119,6 +120,20 @@ def share(ipss, w, b, y):
     return s5(lo) + (s5(lo + 5) - s5(lo)) * (y - lo) / 5
 
 
+def reconcile(wards, city):
+    """2020–2034: 区別表の帯別人口を、帯ごとに全市表の帯合計へ比例配分して整合させる（Σ区＝市を厳密に。丸め残差は最大区へ）。
+    市推計PDFの区別表は全市表と帯別で最大約8,000人食い違う（20代の移動仮定）ため。"""
+    for y in range(2020, 2035):
+        for b in BANDS:
+            raw = {w: wards[w][y][b] for w in WARDS}
+            tot = sum(raw.values())
+            vals = {w: int(round(city[y][b] * raw[w] / tot)) for w in WARDS}
+            big = max(WARDS, key=lambda w: vals[w])
+            vals[big] += city[y][b] - sum(vals.values())
+            for w in WARDS:
+                wards[w][y][b] = vals[w]
+
+
 def estimate(wards, city, years, ipss):
     """2035–2050: 全市(PDF)×社人研の区シェア、2034実測との段差を2050にかけて線形に解消"""
     r = {w: {b: wards[w][2034][b] / (city[2034][b] * share(ipss, w, b, 2034))
@@ -152,6 +167,7 @@ def extract(pdf, ipss=None):
     years = list(range(2020, 2051))
     for w in WARDS:
         wards[w] = {y: v for y, v in wards[w].items() if y <= 2034}
+    reconcile(wards, city)
     ipss = load_ipss(ipss or IPSS_DEFAULT)
     estimate(wards, city, years, ipss)
     return {
