@@ -58,3 +58,11 @@ def test_method_page_and_sources():
         assert dead not in t, dead
     for k in ('式を文章で', '図解', '実例の手計算', '使ったデータ一覧', '留意点'):
         assert k in t, k
+
+
+def test_final_review_wording():
+    t = (ROOT / 'template.html').read_text(encoding='utf-8')
+    assert 'id="chTime"' in t                      # 市全体の所要時間図
+    assert 'TYPE_RULE にまとめ' not in t and 'small_areas.json の注記' not in t   # 開発者向け文言なし
+    assert '2025年（人口変化のみ）比' in t
+    assert '到着の目安（市平均 8:12 に合わせた相対値）' in t

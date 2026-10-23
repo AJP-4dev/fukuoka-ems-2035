@@ -303,7 +303,7 @@ tr.hotrow td{background:#fff4f5}
     <h2 id="shName">—</h2>
     <div class="kpis">
       <div class="kpi"><div class="l" id="k1l">出場件数</div><div class="v num" id="k1"></div></div>
-      <div class="kpi"><div class="l">2025年比</div><div class="v num" id="k2"></div></div>
+      <div class="kpi"><div class="l">2025年（人口変化のみ）比</div><div class="v num" id="k2"></div></div>
       <div class="kpi"><div class="l" id="k3l">1隊あたり</div><div class="v num" id="k3"></div><div class="s" id="k3s"></div></div>
     </div>
     <div class="stack"><div class="t"><span>年齢別の出場件数 2025（基準）</span><span id="st1v" class="num"></span></div><div class="b" id="st1"></div></div>
@@ -333,6 +333,7 @@ tr.hotrow td{background:#fff4f5}
   <div class="card"><h4><span class="yb mid">2013→2024</span>答え合わせ — コロナ前の傾きで2022〜24年を当てると</h4><svg class="chart" id="chBack" viewBox="0 0 600 320"></svg><div id="backLeg"></div><p class="m" id="backNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表 出場件数 平成25〜令和6年）、福岡市 登録人口（各年9月末・年齢別）。差(%)＝（予測−実績）÷実績。</div></div>
   <div class="card"><h4><span class="yb mid">2013→2024</span>救急隊数の推移と、整備指針の基準隊数</h4><svg class="chart" id="chUnits" viewBox="0 0 600 260"></svg><p class="m" id="unitsNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表 隊数、第1-4-2表 令和7年3月31日現在 34隊）。◆の基準隊数は消防力の整備指針の式（横浜市の算定例）と福岡の搬送率で本サイトが算出。</div></div>
   <div class="card"><h4><span class="yb">2025→2050</span>基準隊数と現行隊数（シナリオ別）</h4><div id="tblStd"></div><p class="m" id="stdNote"></p><div class="src">出典：本サイトの推計（整備指針の算式（横浜市の算定例）、福岡の搬送率、福岡市の将来人口推計）。（ ）内は現行34隊との差。中間・上限は使われ方の倍率を掛けた参考値。</div></div>
+  <div class="card"><h4><span class="yb mid">2024 実績</span>通報から病院到着まで — 所要時間（市全体）</h4><svg class="chart" id="chTime" viewBox="0 0 600 150"></svg><p class="m" id="timeNote"></p><div class="src">出典：福岡市消防年報 令和6年版 救急統計（救急活動の所要時間、市全体の平均）。区別・署所別の公表はありません。</div></div>
   <div class="card"><h4><span class="yb mid">2024 実績</span>何で出動しているか — 事故種別（市全体）</h4><svg class="chart" id="chType" viewBox="0 0 600 300"></svg><p class="m" id="evtNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第2-2-1表（事故種別出動件数）。市全体の数字で、区別の内訳はありません。</div></div>
   <div class="card"><h4><span class="yb mid">2024 実績</span>誰が搬送されているか — 年齢5区分（市全体）</h4><svg class="chart" id="chAgeDonut" viewBox="0 0 600 240"></svg><p class="m" id="ageNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第2-2-4表（年齢区分別搬送人員）、福岡市 登録人口（2025年の65歳以上の割合）。</div></div>
   <div class="card"><h4><span class="yb mid">2013→2024</span>不搬送率の推移（市全体）</h4><svg class="chart" id="chNonTr" viewBox="0 0 600 230"></svg><p class="m" id="nontrNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表の出場件数と搬送者数から算出）。区別・時間帯別の不搬送率は公表されていません。</div></div>
@@ -343,7 +344,7 @@ tr.hotrow td{background:#fff4f5}
 <section class="page" id="page-wards"><div class="scroll"><div class="wrap" id="tab-wards">
   <h2>区ごとの特徴 — 2035年の7区</h2>
   <p class="lead">7区を3つのタイプに分け、市平均との差で「何が多く、何が少ない区か」を見ます。棒は市平均＝100を中心に、右が市平均より大きい、左が小さい。文章は数字からルールで自動生成しています。</p>
-  <div class="card"><h4>3つのタイプ（分類ルール）</h4><div id="typeLegend"></div><p class="m" id="typeNote"></p><div class="src">出典：国勢調査2020（昼夜間人口）、福岡市の将来人口推計（令和6年4月）と社人研 令和5年推計（2035年の高齢化率）。分類ルールは本サイトの定義で、閾値は template.html 上部の TYPE_RULE にまとめています。</div></div>
+  <div class="card"><h4>3つのタイプ（分類ルール）</h4><div id="typeLegend"></div><p class="m" id="typeNote"></p><div class="src">出典：国勢調査2020（昼夜間人口）、福岡市の将来人口推計（令和6年4月）と社人研 令和5年推計（2035年の高齢化率）。分類ルール（昼夜間人口比1.30以上＝都心・来街型、2035年の高齢化率27%以上＝成熟型、それ以外＝伸びる住宅地型）は本サイトの定義です。</div></div>
   <div id="wardJump" class="jump"></div>
   <div id="wardCards"></div>
   <button class="next" data-go="insight">考察を読む<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
@@ -355,9 +356,9 @@ tr.hotrow td{background:#fff4f5}
   <p class="lead" id="stLead"></p>
   <div class="banner" id="stBanner">署所別の数字は推定値（町丁目ではなく1kmメッシュの人口を最寄り署所に按分）であり、公式の統計ではありません</div>
   <div class="segline"><span class="cap">シナリオ</span><div class="seg alt" id="stScSeg"><button aria-pressed="true" data-s="L">人口変化のみ</button><button aria-pressed="false" data-s="M">コロナ前のトレンドが続く</button><button aria-pressed="false" data-s="H">コロナ後の伸びも続く</button></div><span class="cap">地図のシナリオと連動します</span></div>
-  <div class="card"><h4><span class="yb">2035</span>署所一覧（推定値）</h4><div class="tbl"><table id="stTable"></table></div><p class="m" id="stTblNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第1-4-2表（救急自動車等の配置状況、令和7年3月31日現在）の隊数、国勢調査2020・経済センサス2021の1kmメッシュ、福岡市の将来人口推計（令和6年4月）から本サイトが推定。到着時間の目安は横浜市87隊の回帰からの外挿で、公式値ではありません。列の見出しをクリックすると並べ替えます。</div></div>
+  <div class="card"><h4><span class="yb">2035</span>署所一覧（推定値）</h4><div class="tbl"><table id="stTable"></table></div><p class="m" id="stTblNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第1-4-2表（救急自動車等の配置状況、令和7年3月31日現在）の隊数、国勢調査2020・経済センサス2021の1kmメッシュ、福岡市の将来人口推計（令和6年4月）から本サイトが推定。到着時間の目安は、横浜市87隊の回帰の傾きを借り市平均の実測（通報→現着8:12）に合わせた相対値で、公式値ではありません。列の見出しをクリックすると並べ替えます。</div></div>
   <div class="card"><h4><span class="yb">2035</span>署所ごとの隊あたり出場（推定・多い順）</h4><svg class="chart" id="chSt" viewBox="0 0 600 520"></svg><p class="m" id="stBarNote"></p><div class="src">出典：上表と同じ（推定）。縦線＝3,000件。福岡市消防年報 令和6年版の「一隊当たり平均出動件数」2,968件と、横浜版の考察で使った目安3,000件/隊に合わせた目安線で、法令上の基準ではありません。</div></div>
-  <div class="card"><h4>どこが先に逼迫するか</h4><div id="stRead"></div><div class="src">出典：上表（推定）。小地域按分の注意は src/small_areas.json の注記による。</div></div>
+  <div class="card"><h4>どこが先に逼迫するか</h4><div id="stRead"></div><div class="src">出典：上表（推定）。1kmメッシュの人口・従業者数を最寄りの署所に割り振った推定です（町丁目別の従業地人口は公表されていません）。</div></div>
   <button class="next" data-go="insight">考察を読む<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </div></div></section>
 
@@ -365,7 +366,7 @@ tr.hotrow td{background:#fff4f5}
 <section class="page" id="page-insight"><div class="scroll"><div class="wrap" id="tab-insight">
   <h2>考察 — 数字が語ること</h2>
   <p class="lead" id="insLead"></p>
-  <div class="yguide"><span class="k"><span class="yb">2035</span>このレポートの中心年。数字は断りがなければ2035年</span><span class="k"><span class="yb mid">2024 実績</span>基準年</span><span class="k"><span class="yb long">2040以降</span>長期・参考値</span></div>
+  <div class="yguide"><span class="k"><span class="yb">2035</span>このレポートの中心年。数字は断りがなければ2035年</span><span class="k"><span class="yb mid">2024 実績</span>基準年</span><span class="k"><span class="yb long">2036年以降</span>長期・参考値</span></div>
   <div id="insBody"></div>
   <button class="next" data-go="method">計算方法と出典を見る<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </div></div></section>
@@ -417,8 +418,6 @@ const TR=DATA.trend, CAPY=TR.capYear;/* コロナ前トレンドは capYear 以�
 const annualMult=(sc,y)=>{y=+y;if(sc==='M')return Math.pow(1+TR.slopePre,Math.min(y,CAPY)-2024);if(sc==='H')return Math.pow(1+TR.slopeAll,y-2024);return 1};
 const annualOf=(w,y,sc)=>w.disp[y]*annualMult(sc||state.sc,y);
 const dispOf=(w,y,sc)=>annualOf(w,y,sc);
-const unitsOf=w=>w.units;
-const overYear=(w,sc,th=3000)=>{for(let y=2025;y<=2050;y++){if(annualOf(w,String(y),sc)/unitsOf(w)>=th)return y}return null};
 const byAge=(w,y)=>{const m=annualMult(state.sc,y),o={};AGES.forEach(a=>{o[a]=w.byAge[y][a]*m});return o};
 const popTot=(w,y)=>AGES.reduce((s,a)=>s+w.pop[y][a],0);
 const elderOf=(w,y)=>w.pop[y].e1+w.pop[y].e2+w.pop[y].e3;
@@ -426,7 +425,6 @@ const agingRate=(w,y)=>elderOf(w,y)/popTot(w,y)*100;
 const AREA_CITY=W.reduce((s,w)=>s+w.area,0);
 const cityPop=(y,a)=>W.reduce((s,w)=>s+(a?w.pop[y][a]:popTot(w,y)),0);
 const cityOf=(y,sc)=>W.reduce((s,w)=>s+annualOf(w,String(y),sc),0);
-const cityTotal=y=>cityOf(y,state.sc);
 /* 基準隊数（整備指針の式）: 区の需要人口 = Σ 年齢帯の人口 × 係数。市の基準隊数を需要人口で按分 */
 const demandOf=(w,y)=>AGES.reduce((s,a)=>s+w.pop[y][a]*DATA.standard.coef[a],0);
 const _dtot={};const demandTot=y=>_dtot[y]||(_dtot[y]=W.reduce((s,w)=>s+demandOf(w,y),0));
@@ -445,7 +443,10 @@ function cityVal(ws,y,sc,m){const sum=f=>ws.reduce((s,w)=>s+f(w),0);
     case 'density':return sum(w=>annualOf(w,y,sc))/sum(w=>w.area);
     case 'std':return sum(w=>w.unitsPerWard)/sum(w=>stdWard(w,y))*100;}}
 const isDiff=()=>state.view==='diff'&&COUNT_MODES.includes(state.metric);
-const metric=w=>{const m=state.metric,v=cityVal([w],state.year,state.sc,m);return isDiff()?(v/cityVal([w],'2025',state.sc,m)-1)*100:v};
+/* 増減率・2025年比の基準は全画面で L の 2025 年（市外への出場を除く 7区計）。シナリオを変えても基準は動かない */
+const baseVal=(ws,m)=>cityVal(ws,'2025','L',m);
+const BASE_LBL='2025年（人口変化のみ）比';
+const metric=w=>{const m=state.metric,v=cityVal([w],state.year,state.sc,m);return isDiff()?(v/baseVal([w],m)-1)*100:v};
 
 /* ---------- navigation ---------- */
 const PAGES=[['map','地図','<path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/><path d="M9 7v13M15 4v13"/>'],['pop','人口','<circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 3-6 6-6s6 2 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14c3 0 5 2 5 5"/>'],['city','市全体','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],['wards','区別','<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>'],['st','署所','<path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.800-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>'],['insight','考察','<path d="M12 3a7 7 0 0 0-4 12.7V18h8v-2.3A7 7 0 0 0 12 3z"/><path d="M9 21h6"/>'],['method','方法','<path d="M4 6h16M4 12h10M4 18h16"/><circle cx="18" cy="12" r="2"/>']];
@@ -526,7 +527,7 @@ W.forEach((w,i)=>{
   const m=new THREE.Mesh(geo,mat); m.userData={i,h:1,target:1,split:0}; group.add(m); meshes.push(m);
   const top=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0xffffff,roughness:.8,metalness:0,transparent:true,opacity:.92})); top.visible=false; group.add(top); m.userData.top=top;
   const line=new THREE.LineSegments(new THREE.EdgesGeometry(geo,20),new THREE.LineBasicMaterial({color:0x14213d,transparent:true,opacity:.28})); m.add(line); m.userData.line=line;
-  const [cx,cz]=px(w.c[0],w.c[1]); const spr=makeLabel(); spr.position.set(cx,1.8,cz); group.add(spr); m.userData.label=spr; m.userData.cx=cx; m.userData.cz=cz;
+  const LOFF={'南':[-0.014,-0.010],'博多':[0.010,0.010]}[w.name]||[0,0];const [cx,cz]=px(w.c[0]+LOFF[0],w.c[1]+LOFF[1]); const spr=makeLabel(); spr.position.set(cx,1.8,cz); group.add(spr); m.userData.label=spr; m.userData.cx=cx; m.userData.cz=cz;
 });
 /* ---------- 署所レイヤー（地図）: 区の柱の上に浮かべるスプライト。大きさ=隊数、色=選択年の隊あたり出場（固定 0–7,000）、隊なし=中空、機動救急=ひし形 ---------- */
 const ST=DATA.stations, ST_RANGE=7000, ST_GUIDE=3000, ST_NENPO_AVG=2968;/* 2,968 = 福岡市消防年報 令和6年版「一隊当たり平均出動件数」 */
@@ -605,13 +606,13 @@ function setAuto(v){auto=v;spinBtn.setAttribute('aria-pressed',v)}
 /* ---------- apply ---------- */
 const yearLabel=()=>state.year==='2025'?'2025年（基準＝2024年実績）':state.year==='2035'?'2035年（このレポートの中心年）':state.year+'年';
 const scLabel=()=>SCN[state.sc];
-const modeTag=()=>`${MODE[state.mode].name}モード（${MODE[state.mode].lo}–${MODE[state.mode].hi}年${isLong()?'・参考値':''}）`;
+const modeTag=()=>`${MODE[state.mode].name}モード（${MODE[state.mode].lo}–${MODE[state.mode].hi}年${isLong()?'・2036年以降は参考値':''}）`;
 const SUBJ={disp:'年間救急出場件数',pop:'人口',elder:'65歳以上人口',percap:'出場件数/千人',density:'出場密度（件/km²）'};
 function statusText(){const y=yearLabel(),base=state.year==='2025',M=modeTag(),m=state.metric,sc=SCN_MODES.includes(m)?`（${scLabel()}）`:'';
   const zero='基準年なので全区0%。年を動かすと増減率が出ます。';
-  if(isDiff())return [`${M}　${SUBJ[m]}の 2025年比の増減率（${y}${sc}）`,base?zero:`高さと色＝増減率。色は±${PCT_RANGE}%で飽和（それ以上は同じ色）。${m==='pop'||m==='elder'?'市の将来人口推計（令和6年4月）にもとづく。':'人口変化とシナリオの倍率を掛けた値です。'}`];
+  if(isDiff())return [`${M}　${SUBJ[m]}の ${BASE_LBL}の増減（${y}${sc}）`,base?zero:`高さと色＝増減率（基準は人口変化のみのシナリオの2025年）。色は±${PCT_RANGE}%で飽和（それ以上は同じ色）。${m==='pop'||m==='elder'?'市の将来人口推計（令和6年4月）にもとづく。':'人口変化とシナリオの倍率を掛けた値です。'}`];
   switch(m){
-    case 'disp':return [`${M}　${y}の年間救急出場件数${sc}`,`高さと色＝この件数。区ごとの人口推計 × 年齢別搬送率 × 区の校正係数で計算${state.sc==='L'?'':'し、シナリオの倍率を掛けた値'}。`];
+    case 'disp':return [`${M}　${y}の年間救急出場件数${sc}`,`高さと色＝この件数。区ごとの人口推計 × 年齢別搬送率 × 区の校正係数で計算${state.sc==='L'?'':'し、シナリオの倍率を掛けた値'}。`+(base?`2025年の基準値${fmt(W.reduce((a,w)=>a+w.disp['2025'],0))}件は、2024年実績${fmt(DATA.series.dispatch[2024])}件から市外への出場${DATA.outside}件を除いた7区の合計です。`:'')];
     case 'pop':return [`${M}　${y}の人口（市の推計）`,'高さと色＝総人口。福岡市の将来人口推計（令和6年4月）の区別の値。'];
     case 'elder':return [`${M}　${y}の65歳以上人口（市の推計）`,'高さと色＝65歳以上の人数（65–74＋75–84＋85歳以上）。'];
     case 'aging':return [`${M}　${y}の高齢化率（65歳以上の割合）`,'高さと色＝65歳以上 ÷ 総人口。シナリオは人口に関係しないので効きません。'];
@@ -630,8 +631,8 @@ function applyMetric(){
     mm.userData.line.material.opacity=(state.sel===mm.userData.i)?.95:.28;
     setLabel(mm.userData.label,w.name,subOf(m,v),state.sel===mm.userData.i)});
   const d=document.getElementById('totD'),tv=document.getElementById('totV'),tu=document.getElementById('totU');
-  const cv=(yy,sc)=>cityVal(W,yy,sc||state.sc,m),c0=cv('2025'),cur=cv(y);
-  const rel=()=>y==='2025'?'2025年':`2025年比 ${pct((cur/c0-1)*100)}`;
+  const cv=(yy,sc)=>cityVal(W,yy,sc||state.sc,m),c0=baseVal(W,m),cur=cv(y);
+  const rel=()=>y==='2025'?'2025年':`${BASE_LBL} ${pct((cur/c0-1)*100)}`;
   const cls=()=>'d num '+(y==='2025'?'':(cur>=c0?'up':'dn'));
   if(m==='aging'){tv.textContent=cur.toFixed(1)+'%';tu.textContent='市全体の65歳以上の割合';d.textContent=y==='2025'?`65歳以上 ${man(cityPop(y,'e1')+cityPop(y,'e2')+cityPop(y,'e3'))}人`:`2025年 ${c0.toFixed(1)}% → ${pct(cur-c0,1).replace('%','pt')}`;d.className=cls()}
   else if(m==='pop'){tv.textContent=fmt(cur);tu.textContent='市全体の人口（人）';d.textContent=rel();d.className=cls()}
@@ -641,8 +642,8 @@ function applyMetric(){
   else if(m==='day'){tv.textContent=cur.toFixed(1);tu.textContent='市全体の昼夜間人口比率（2020年）';d.textContent='100を下回る＝市外へ通勤する人の方が多い';d.className='d num'}
   else if(m==='std'){const su=W.reduce((s,w)=>s+w.unitsPerWard,0);tv.textContent=DATA.standard.units[y]+'隊';tu.textContent='市全体の基準隊数（現有'+su+'隊）';d.textContent=`充足率 ${cur.toFixed(0)}%（現有÷基準）`;d.className='d num '+(cur<100?'up':'')}
   else{tv.textContent=fmt(cur);tu.textContent='市全体の救急出場件数（件/年）';
-    if(y==='2025'){d.textContent=`2024年実績に基づく ／ 1日 ${fmt(cur/365)}件`;d.className='d num'}else{const dd=(cur/c0-1)*100;d.textContent=`2025年比 ${pct(dd)} ／ 1日 ${fmt(cur/365)}件`;d.className='d num '+(dd>=0?'up':'dn')}}
-  let L;if(isDiff()){L=[(DIFFL[m]||'')+'の2025年比','','+'+PCT_RANGE+'%以上']}else{const [lo,hi]=rng();L=[LEG[m],LEGF(m,lo),LEGF(m,hi)]}
+    if(y==='2025'){d.textContent=`2024年実績に基づく ／ 1日 ${fmt(cur/365)}件`;d.className='d num'}else{const dd=(cur/c0-1)*100;d.textContent=`${BASE_LBL} ${pct(dd)} ／ 1日 ${fmt(cur/365)}件`;d.className='d num '+(dd>=0?'up':'dn')}}
+  let L;if(isDiff()){L=[(DIFFL[m]||'')+'の'+BASE_LBL,'','+'+PCT_RANGE+'%以上']}else{const [lo,hi]=rng();L=[LEG[m],LEGF(m,lo),LEGF(m,hi)]}
   if(isDiff())L[1]='−'+PCT_RANGE+'%以下';
   document.getElementById('legT').textContent=L[0]+(isLong()?'（長期尺度）':'');document.getElementById('legLo').textContent=L[1];document.getElementById('legHi').textContent=L[2];
   document.getElementById('legBar').style.background=`linear-gradient(90deg,${RAMPS[rampKey()].join(',')})`;
@@ -656,12 +657,9 @@ function applyMetric(){
 }
 /* ---------- mini trend chart ---------- */
 const YEARS=[];for(let y=2025;y<=2050;y++)YEARS.push(String(y));
-const PEAK_E3=(()=>{let b='2025';YEARS.forEach(y=>{if(cityPop(y,'e3')>cityPop(b,'e3'))b=y});return b})();
-const PEAK_D=(()=>{let b='2025';YEARS.forEach(y=>{if(cityOf(y,'L')>cityOf(b,'L'))b=y});return b})();
 /* 時間軸の共通マーク: 2035の縦点線＋2036年以降（長期）の薄い帯。X は西暦→x */
 const TF=(X,top,bot,o={})=>{let g=`<rect x="${X(2035.5)}" y="${top}" width="${X(2050)-X(2035.5)}" height="${bot-top}" fill="#8e3b8f" opacity=".05"/><line x1="${X(2035)}" x2="${X(2035)}" y1="${top}" y2="${bot}" stroke="#14213d" stroke-width="1.2" stroke-dasharray="4 3" opacity=".8"/>`;if(o.label!==false)g+=`<text x="${X(2035)+4}" y="${top+11}" font-size="10.5" font-weight="700" fill="#14213d">2035</text>`;if(o.long)g+=`<text x="${X(2050)-3}" y="${top+11}" font-size="9.5" fill="#8e3b8f" text-anchor="end">長期（参考）</text>`;return g};
-const PKM=(x,y,c,label,side='end',below=false)=>`<path d="M${x},${y-7} l7,7 l-7,7 l-7,-7z" fill="${c}" stroke="#fff" stroke-width="1.5"/><text x="${side==='end'?x-10:x+10}" y="${below?y+18:y-9}" font-size="10.5" font-weight="700" fill="${c}" text-anchor="${side}" stroke="#fff" stroke-width="3" paint-order="stroke">◆ ${label}</text>`;
-function valAt(ws,y,sc){const m=state.metric,v=cityVal(ws,y,sc,m);return isDiff()?(v/cityVal(ws,'2025',sc,m)-1)*100:v}
+function valAt(ws,y,sc){const m=state.metric,v=cityVal(ws,y,sc,m);return isDiff()?(v/baseVal(ws,m)-1)*100:v}
 const miniEl=document.getElementById('mini'),miniOpen=document.getElementById('miniOpen');
 function setMini(show){miniEl.hidden=!show;miniOpen.hidden=show;try{localStorage.setItem('fk2035-mini',show?'1':'0')}catch(e){}}
 document.getElementById('miniClose').onclick=()=>setMini(false);miniOpen.onclick=()=>{setMini(true);drawMini()};
@@ -727,12 +725,12 @@ function select(i){state.sel=i;if(i===null){sheet.classList.remove('open');apply
 sheet.querySelector('.close').onclick=()=>select(null);
 const stackHTML=o=>{const s=AGES.reduce((t,a)=>t+o[a],0);return AGES.map(a=>`<i style="width:${(o[a]/s*100).toFixed(1)}%;background:${ACOL[a]}"></i>`).join('')};
 function fillSheet(w){
-  const y=state.year,cur=dispOf(w,y),base=dispOf(w,'2025'),dd=(cur/base-1)*100;
+  const y=state.year,cur=dispOf(w,y),base=w.disp['2025'],dd=(cur/base-1)*100;
   document.getElementById('shName').innerHTML=`${w.name}区<span>${y==='2025'?'2025年（2024年実績が基準）':y+'年の推計'+(state.sc==='L'?'':'（'+SCN[state.sc]+'）')}</span>`;
   document.getElementById('k1l').textContent=`出場件数（${y}）`;
   document.getElementById('k1').textContent=fmt(cur);
   const k2=document.getElementById('k2');k2.textContent=y==='2025'?'基準':pct(dd);k2.className='v num '+(y==='2025'?'':(dd>=0?'up':'down'));
-  const u=unitsOf(w),pu=cur/u;document.getElementById('k3l').textContent=`1隊あたり（年・${u}隊）`;document.getElementById('k3').textContent=fmt(pu)+'件';document.getElementById('k3s').textContent=`1日 ${fmt(cur/365)}件`;
+  const u=w.units,pu=cur/u;document.getElementById('k3l').textContent=`1隊あたり（年・${u}隊）`;document.getElementById('k3').textContent=fmt(pu)+'件';document.getElementById('k3s').textContent=`1日 ${fmt(cur/365)}件`;
   const sw=stdWard(w,y);document.getElementById('shUnit').innerHTML=`<b>救急隊</b> 現有${u}隊（2025年）。整備指針の式で按分した基準隊数は ${y}年で ${sw.toFixed(1)}隊（充足率 ${(u/sw*100).toFixed(0)}%）。隊は区をまたいで出場するため目安です。`;
   const y2=y==='2025'?'2035':y;
   document.getElementById('st1').innerHTML=stackHTML(byAge(w,'2025'));document.getElementById('st1v').textContent=fmt(dispOf(w,'2025'));
@@ -846,7 +844,7 @@ buildPop();
 const mmss=sec=>sec==null?'—':Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
 const WARD_ORD=W.map(w=>w.name);
 let stSort={k:'ord',d:1};
-const STCOLS=[['ord','署所'],['ward','区'],['units','隊'],['l25','推定出場 2025'],['l35','推定出場 2035'],['p25','隊あたり 2025'],['p35','隊あたり 2035'],['arr','到着の目安 分:秒'],['note','備考']];
+const STCOLS=[['ord','署所'],['ward','区'],['units','隊'],['l25','推定出場 2025'],['l35','推定出場 2035'],['p25','隊あたり 2025'],['p35','隊あたり 2035'],['arr','到着の目安（市平均 8:12 に合わせた相対値）'],['note','備考']];
 function stKey(s,i,k){switch(k){case 'ord':return i;case 'ward':return WARD_ORD.indexOf(s.ward)*100+i;case 'units':return s.units;case 'l25':return s.units?stLoad(s,2025):null;case 'l35':return s.units?stLoad(s,2035):null;case 'p25':return stPU(s,2025);case 'p35':return stPU(s,2035);case 'arr':return s.arriveEst;case 'note':return s.note||'';}}
 const STACT=ST.filter(s=>s.perUnit['2035']!=null);
 function buildSt(){
@@ -857,14 +855,14 @@ function buildSt(){
   /* table */
   const rows=ST.map((s,i)=>({s,i,v:stKey(s,i,stSort.k)}));
   rows.sort((a,b)=>{const x=a.v,y=b.v;if(x==null&&y==null)return a.i-b.i;if(x==null)return 1;if(y==null)return -1;return (typeof x==='string'?x.localeCompare(y,'ja'):x-y)*stSort.d||a.i-b.i});
-  let h='<thead><tr>'+STCOLS.map(([k,l])=>`<th data-k="${k}" aria-sort="${stSort.k===k?(stSort.d>0?'ascending':'descending'):'none'}">${l}</th>`).join('')+'</tr></thead><tbody>';
+  let h='<thead><tr>'+STCOLS.map(([k,l])=>`<th data-k="${k}"${k==='arr'?' style="white-space:normal;min-width:11em"':''} aria-sort="${stSort.k===k?(stSort.d>0?'ascending':'descending'):'none'}">${l}</th>`).join('')+'</tr></thead><tbody>';
   rows.forEach(({s})=>{const none=s.units===0,kido=s.id==='kido',p25=stPU(s,2025),p35=stPU(s,2035);
     h+=`<tr class="${none?'st0':''}"><td class="nm">${s.name}${none?'<span class="tg no">救急隊なし</span>':kido?'<span class="tg kd">機動救急</span>':s.kind==='署'?'<span class="tg">署</span>':''}</td><td>${s.ward}</td><td class="num">${s.units}</td>`+
     (none||kido?`<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>`:`<td class="num">${fmt(stLoad(s,2025))}</td><td class="num">${fmt(stLoad(s,2035))}</td><td class="num">${fmt(p25)}</td><td class="num${p35>ST_GUIDE?' hot':''}">${fmt(p35)}</td><td class="num">${mmss(s.arriveEst)}</td>`)+
     `<td style="text-align:left;white-space:normal;font-size:11px;color:var(--ink2)">${s.note||''}</td></tr>`});
   const tb=document.getElementById('stTable');tb.innerHTML=h+'</tbody>';
   tb.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;stSort=stSort.k===k?{k,d:-stSort.d}:{k,d:(k==='ord'||k==='ward'||k==='note')?1:-1};buildSt()});
-  document.getElementById('stTblNote').textContent=`${act.length}署所に${act.reduce((a,s)=>a+s.units,0)}隊、機動救急${kd.units}隊（按分の対象外）、救急隊のない出張所${no.length}（${no.map(s=>s.name.replace('出張所','')).join('・')}）。隊なしの受け持ち分は最寄りの隊のある署所に含まれています。赤字＝隊あたり${fmt(ST_GUIDE)}件超（目安）。到着の目安は横浜市87隊の回帰（分＝1.753×走行距離km＋3.949）からの外挿で、公式値ではありません。`;
+  document.getElementById('stTblNote').textContent=`${act.length}署所に${act.reduce((a,s)=>a+s.units,0)}隊、機動救急${kd.units}隊（按分の対象外）、救急隊のない出張所${no.length}（${no.map(s=>s.name.replace('出張所','')).join('・')}）。隊なしの受け持ち分は最寄りの隊のある署所に含まれています。赤字＝隊あたり${fmt(ST_GUIDE)}件超（目安）。到着の目安は、横浜市87隊の回帰（分＝1.753×走行距離km＋切片）の傾きだけを借り、切片を平行移動して出場件数で加重した署所平均が福岡市の2024年実測（通報→現着 ${mmss(NEN.timeSec.arrive)}）に一致するようにした相対値で、署所間の差の目安です。公式値ではありません。`;
   /* bars */
   const bars=act.map(s=>({s,v:stPU(s,2035)})).sort((a,b)=>b.v-a.v),n=bars.length,rh=17,top=34,Wd=600,x0=118,x1=548,hh=top+n*rh+26,mx=Math.max(ST_RANGE,Math.max(...bars.map(b=>b.v))*1.04);
   const X=v=>x0+v/mx*(x1-x0);
@@ -882,7 +880,7 @@ function buildSt(){
    `<p><b>隊あたりの多い5署所（${scn}・2035年）</b>：${t5.map((b,i)=>`${i+1}. ${b.s.name}（${b.s.ward}区）${fmt(b.v)}件`).join('、')}。</p>`+
    `<p>2035年に隊あたり${fmt(ST_GUIDE)}件を超える署所は<b>${over}か所</b>（隊のある${n}か所のうち）。2025年の時点で超えているのは${o25}か所で、${ex.length?`2025〜2035年の間に新たに超えるのは${ex.map(s=>s.name.replace('出張所','')).join('・')}の${ex.length}か所です。`:'新たに超える署所はありません。'}</p>`+
    `<p>上位5か所のうち${t5.filter(b=>b.s.units===1).length}か所は1隊だけで受け持つ出張所です。2隊以上の署所の隊あたりは${fmt(Math.min(...bars.filter(b=>b.s.units>1).map(b=>b.v)))}〜${fmt(Math.max(...bars.filter(b=>b.s.units>1).map(b=>b.v)))}件、最も少ないのは${low.s.name}（${fmt(low.v)}件）です。</p>`+
-   `<p class="m"><b>読むときの注意</b>：町丁目別の従業地人口が公表されていないため、1kmメッシュの人口を最寄りの署所に割り振る方式です。${saito.name}（${fmt(stPU(saito,2025))}件/隊・2025年）のように小さな半島の受け持ちは低めに、${ST.find(s=>s.id==='katakasu').name}（${fmt(stPU(ST.find(s=>s.id==='katakasu'),2025))}件/隊・2025年）のように博多駅東側のオフィス街が1隊の署所に集中すると高めに出ます。実際の出場は署所をまたいで最寄りの空き隊が対応するため、<b>上限寄りの推定</b>です。到着時間の目安は横浜市87隊の回帰を福岡の距離に当てはめた値で、公式の署所別到着時間は公表されていません。</p>`;
+   `<p class="m"><b>読むときの注意</b>：町丁目別の従業地人口が公表されていないため、1kmメッシュの人口を最寄りの署所に割り振る方式です。${saito.name}（${fmt(stPU(saito,2025))}件/隊・2025年）のように小さな半島の受け持ちは低めに、${ST.find(s=>s.id==='katakasu').name}（${fmt(stPU(ST.find(s=>s.id==='katakasu'),2025))}件/隊・2025年）のように博多駅東側のオフィス街が1隊の署所に集中すると高めに出ます。実際の出場は署所をまたいで最寄りの空き隊が対応するため、<b>上限寄りの推定</b>です。到着時間の目安は横浜市87隊の回帰の傾きを福岡の距離に当てはめ、市平均の実測に合わせて平行移動した相対値で、公式の署所別到着時間は公表されていません。</p>`;
   bindMapLinks(document.getElementById('tab-st'));
 }
 
@@ -963,13 +961,19 @@ function buildCity(){
     series:[{pts:us,c:'#14213d',w:2.6,dots:true},{pts:[[2025,STD.units[2025]]],c:'#8e3b8f',dots:true}],hlines:[{v:STD.current,t:`現行 ${STD.current}隊（令和7年3月末）`,c:'#e63946'}],
     notes:[{x:2025,y:STD.units[2025],t:`◆基準 ${STD.units[2025]}隊（2025）`,c:'#8e3b8f',dy:-10,a:'end'},{x:2024,y:SER.units[2024],t:String(SER.units[2024]),dy:16,c:'#14213d'},{x:2013,y:SER.units[2013],t:String(SER.units[2013]),dy:16,c:'#14213d',a:'start',dx:-4}]});
   const upu13=SER.dispatch[2013]/SER.units[2013],upu24=SER.dispatch[2024]/SER.units[2024];
-  document.getElementById('unitsNote').textContent=`救急隊は2013年の${SER.units[2013]}隊から2024年の${SER.units[2024]}隊へ${SER.units[2024]-SER.units[2013]}隊増えましたが、出場は${f1(SER.dispatch[2024]/SER.dispatch[2013],2)}倍になったため、1隊あたりの出場は${fmt(upu13)}件から${fmt(upu24)}件に増えています（年報の「一隊当たり平均」は2,968件）。`;
+  document.getElementById('unitsNote').textContent=`救急隊は2013年の${SER.units[2013]}隊から2024年の${SER.units[2024]}隊へ${SER.units[2024]-SER.units[2013]}隊増えましたが、出場は${f1(SER.dispatch[2024]/SER.dispatch[2013],2)}倍になったため、1隊あたりの出場は${fmt(upu13)}件から${fmt(upu24)}件に増えています（年報の「一隊当たり平均」は${fmt(ST_NENPO_AVG)}件）。`;
   /* 基準隊数の表 */
   const yy=[2025,2030,2035,2040,2045,2050];
   const rows=yy.map(y=>{const c=SCK.map(k=>{const v=stdUnits(y,k);return `<b>${Math.round(v)}</b> <span class="m">（${sgn(Math.round(v)-STD.current)}）</span>`});return [y,STD.current].concat(c)});
   document.getElementById('tblStd').innerHTML=tblHTML(['年','現行隊数','下限（人口のみ）','中間','上限'],rows);
   const cx=STD.crossYear;
   document.getElementById('stdNote').innerHTML=`<b>基準隊数は2025年の時点ですでに${STD.units[2025]}隊で、現行の${STD.current}隊を${STD.units[2025]-STD.current}隊上回っています。</b>基準を初めて上回る年は3シナリオとも${cx.L===cx.M&&cx.M===cx.H?cx.L+'年':`下限${cx.L}年・中間${cx.M}年・上限${cx.H}年`}（つまり「今から足りない」）。2035年には下限で${STD.units[2035]}隊（現行との差${sgn(STD.units[2035]-STD.current)}）、2050年には${STD.units[2050]}隊です。中間・上限は、利用の伸びに比例して需要が増えるとみなして基準隊数に倍率を掛けた参考値です。`;
+  /* (3b) 所要時間（R6・市全体平均） */
+  const T=NEN.timeSec,segs=[['通報→現着',T.arrive,'#3a7bd5'],['現場処置',T.scene,'#f4a259'],['現着→病院',T.toHospital,'#8e3b8f']];
+  {let x=20,g='';const wI=560;segs.forEach(([n,v,c])=>{const w=v/T.total*wI;g+=`<rect x="${x}" y="40" width="${w}" height="44" fill="${c}" stroke="#fff"/><text x="${x+w/2}" y="59" font-size="11.5" font-weight="700" fill="#fff" text-anchor="middle">${mmss(v)}</text><text x="${x+w/2}" y="75" font-size="10" fill="#fff" text-anchor="middle">${f1(v/T.total*100,0)}%</text><text x="${x+w/2}" y="106" font-size="11" fill="#14213d" text-anchor="middle">${n}</text>`;x+=w});
+    g+=`<text x="20" y="26" font-size="12" font-weight="700" fill="#14213d">合計 ${mmss(T.total)}</text><text x="580" y="26" font-size="10.5" fill="#5b6b82" text-anchor="end">令和6年（2024年）の市全体平均</text><path d="M20,122 H580" stroke="#8e9bae" stroke-width="1.2"/>`;
+    document.getElementById('chTime').innerHTML=g}
+  document.getElementById('timeNote').textContent=`通報から現着まで${mmss(T.arrive)}、現場処置${mmss(T.scene)}、現着から病院まで${mmss(T.toHospital)}で、合計${mmss(T.total)}（分:秒）。現場処置が全体の${f1(T.scene/T.total*100,0)}%を占めます。`;
   /* (4) 事故種別・年齢・不搬送 */
   const ty=Object.entries(NEN.typeDispatch).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]),tt=ty.reduce((s,e)=>s+e[1],0);
   hBars('chType',ty.map(([n,v],i)=>({n,v,c:i===0?'#14213d':'#7fa6d6',t:`${fmt(v)}件（${(v/tt*100).toFixed(1)}%）`})),{lw:70,x1:420});
@@ -987,7 +991,7 @@ function buildCity(){
 /* ---------- 考察タブ（数字はすべて DATA から描画時に計算） ---------- */
 const cityBy=y=>AGES.reduce((o,a)=>{o[a]=W.reduce((s,w)=>s+w.byAge[y][a],0);return o},{});
 function corr(xs,ys){const n=xs.length,mx=xs.reduce((a,b)=>a+b)/n,my=ys.reduce((a,b)=>a+b)/n;let sxy=0,sx=0,sy=0;for(let i=0;i<n;i++){sxy+=(xs[i]-mx)*(ys[i]-my);sx+=(xs[i]-mx)**2;sy+=(ys[i]-my)**2}return sxy/Math.sqrt(sx*sy)}
-function stackSvg(id,rows,labels){const x0=70,x1=500,mx=Math.max(...rows.map(r=>AGES.reduce((s,a)=>s+r.o[a],0))),rh=44;let g='';
+function stackSvg(id,rows,labels){const x0=70,x1=455,mx=Math.max(...rows.map(r=>AGES.reduce((s,a)=>s+r.o[a],0))),rh=44;let g='';
   rows.forEach((r,i)=>{const y=14+i*(rh+16),tot=AGES.reduce((s,a)=>s+r.o[a],0);let x=x0;g+=`<text x="${x0-8}" y="${y+rh/2+4}" font-size="12" font-weight="700" text-anchor="end" fill="#14213d">${r.n}</text>`;
     AGES.forEach(a=>{const w=r.o[a]/mx*(x1-x0);g+=`<rect x="${x}" y="${y}" width="${w}" height="${rh}" fill="${ACOL[a]}" stroke="#fff"/>`;if(w>34)g+=`<text x="${x+w/2}" y="${y+rh/2+4}" font-size="10.5" font-weight="700" text-anchor="middle" fill="${['k','j'].includes(a)?'#14213d':'#fff'}">${(r.o[a]/tot*100).toFixed(0)}%</text>`;x+=w});
     g+=`<text x="${x+5}" y="${y+rh/2+4}" font-size="11" font-weight="700" fill="#14213d" font-family="Manrope">${fmt(tot)}</text>`});
@@ -995,11 +999,11 @@ function stackSvg(id,rows,labels){const x0=70,x1=500,mx=Math.max(...rows.map(r=>
 const stPUL=(s,y)=>s.perUnit[y];
 function buildInsight(){
   const y25=cityL(2025),L35=cityL(2035),M35=cityS(2035,'M'),H35=cityS(2035,'H'),p25=cityPop('2025'),p35=cityPop('2035');
-  const S=[];let id=0;const sec=(badge,title,fig,text,src)=>{id++;S.push(`<h3><span class="yb${badge==='2024 実績'?' mid':badge==='2040以降'?' long':''}">${badge}</span>${id}. ${title}</h3><div class="card">${fig}${text}${srcLine(src)}</div>`)};
+  const S=[];let id=0;const sec=(badge,title,fig,text,src)=>{id++;S.push(`<h3><span class="yb${badge==='2024 実績'?' mid':badge==='2036年以降'?' long':''}">${badge}</span>${id}. ${title}</h3><div class="card">${fig}${text}${srcLine(src)}</div>`)};
   const post=[];
   /* 1 */
   sec('2035','10年で+12%（人口だけで）、+25〜38%（使われ方が変われば）',`<svg class="chart" id="ins1" viewBox="0 0 600 150"></svg>`,
-   `<p>2025年の${fmt(y25)}件に対し、2035年は人口の変化だけで${fmt(L35)}件（${pct((L35/y25-1)*100)}）。コロナ前の使われ方の伸びが続けば${fmt(M35)}件（${pct((M35/y25-1)*100)}）、コロナ後の水準上昇も続けば${fmt(H35)}件（${pct((H35/y25-1)*100)}）です。</p><p>この間、人口は${fmt(p25)}人から${fmt(p35)}人へ${pct((p35/p25-1)*100)}しか増えません。下限の+12%は年齢構成の変化（高齢者の増加）だけで生まれ、中間・上限との差は「救急の使われ方」の想定の差です。</p>`,
+   `<p>2025年の${fmt(y25)}件に対し、2035年は人口の変化だけで${fmt(L35)}件（${pct((L35/y25-1)*100)}）。コロナ前の使われ方の伸びが続けば${fmt(M35)}件（${pct((M35/y25-1)*100)}）、コロナ後の水準上昇も続けば${fmt(H35)}件（${pct((H35/y25-1)*100)}）です。</p><p class="m">2025年の基準値${fmt(y25)}件は、2024年実績${fmt(SER.dispatch[2024])}件から市外への出場${DATA.outside}件を除いた7区の合計です。</p><p>この間、人口は${fmt(p25)}人から${fmt(p35)}人へ${pct((p35/p25-1)*100)}しか増えません。下限の+12%は年齢構成の変化（高齢者の増加）だけで生まれ、中間・上限との差は「救急の使われ方」の想定の差です。</p>`,
    `${S_MODEL}（${S_POP}、${S_NENPO}）`);
   post.push(()=>hBars('ins1',[{n:'2024年実績',v:SER.dispatch[2024],c:'#8e9bae',t:fmt(SER.dispatch[2024])+'件'}].concat(SCK.map(k=>({n:'2035 '+SHORT[k],v:cityS(2035,k),c:LCOL[k],t:`${fmt(cityS(2035,k))}件（2025年比${pct((cityS(2035,k)/y25-1)*100)}）`}))),{lw:80,x1:380,max:cityS(2035,'H')*1.02}));
   /* 2 */
@@ -1024,8 +1028,8 @@ function buildInsight(){
   /* 5 */
   const pu=W.map(w=>({w,a:w.loadPerUnit24,b:w.disp['2035']/w.unitsPerWard})),n24=pu.filter(x=>x.a>ST_GUIDE),n35=pu.filter(x=>x.b>ST_GUIDE);
   sec('2035','区別の1隊あたり負担（2024年実績と2035年）',`<svg class="chart" id="ins5" viewBox="0 0 600 200"></svg>${legendHTML([['2024年実績','#8e9bae'],['2035年（人口変化のみ・現行隊数のまま）','#e63946']])}`,
-   `<p>2024年の1隊あたり出場は${W.length}区で${fmt(Math.min(...pu.map(x=>x.a)))}〜${fmt(Math.max(...pu.map(x=>x.a)))}件。目安の${fmt(ST_GUIDE)}件を超えていたのは${n24.length?n24.map(x=>x.w.name).join('・'):'なし'}です。隊数を現行のままにすると、2035年は${n35.length}区（${n35.map(x=>x.w.name).join('・')}）が目安を超え、最大は${pu.slice().sort((a,b)=>b.b-a.b)[0].w.name}区の${fmt(Math.max(...pu.map(x=>x.b)))}件です。</p><p>隊は区をまたいで出場するため、区別の値は目安です。年報の市全体の平均は2,968件（令和6年）。</p>`,
-   `${S_NENPO}（区別出動件数、救急自動車等の配置状況 令和7年3月31日現在）、${S_MODEL}。目安の線は年報の一隊当たり平均2,968件と横浜版の考察の目安3,000件に合わせたもの。`);
+   `<p>2024年の1隊あたり出場は${W.length}区で${fmt(Math.min(...pu.map(x=>x.a)))}〜${fmt(Math.max(...pu.map(x=>x.a)))}件。目安の${fmt(ST_GUIDE)}件を超えていたのは${n24.length?n24.map(x=>x.w.name).join('・'):'なし'}です。隊数を現行のままにすると、2035年は${n35.length}区（${n35.map(x=>x.w.name).join('・')}）が目安を超え、最大は${pu.slice().sort((a,b)=>b.b-a.b)[0].w.name}区の${fmt(Math.max(...pu.map(x=>x.b)))}件です。</p><p>隊は区をまたいで出場するため、区別の値は目安です。年報の市全体の平均は${fmt(ST_NENPO_AVG)}件（令和6年）。</p>`,
+   `${S_NENPO}（区別出動件数、救急自動車等の配置状況 令和7年3月31日現在）、${S_MODEL}。目安の線は年報の一隊当たり平均${fmt(ST_NENPO_AVG)}件と横浜版の考察の目安3,000件に合わせたもの。`);
   post.push(()=>hBars('ins5',pu.map(x=>({n:x.w.name+'区',v:x.a,c:'#8e9bae',t:fmt(x.a),v2:x.b,c2:'#e63946',t2:fmt(x.b)})),{lw:56,x1:440,ref:{v:ST_GUIDE,t:'目安 '+fmt(ST_GUIDE)+'件/隊'},max:Math.max(...pu.map(x=>Math.max(x.a,x.b)))*1.08}));
   /* 6 */
   sec('2035','整備指針の基準隊数は今すでに'+STD.units[2025]+'（現行'+STD.current+'）、2035年'+STD.units[2035],`<svg class="chart" id="ins6" viewBox="0 0 600 300"></svg>${legendHTML(SCK.map(k=>[`${SHORT[k]}＝${SCN[k]}`,LCOL[k]]))}`,
@@ -1041,7 +1045,7 @@ function buildInsight(){
   /* 8 */
   const idx=f=>YEARS.map(y=>f(y)/f('2025')*100),tp=idx(y=>cityPop(y)),e3p=idx(y=>cityPop(y,'e3')),dp=idx(y=>cityL(+y)),pkI=tp.indexOf(Math.max(...tp));
   const pk0=YEARS[pkI],c0=cityBy(pk0),c1=cityBy('2050'),dB=AGES.map(a=>({a,d:c1[a]-c0[a]})),posB=dB.filter(x=>x.d>0),negB=dB.filter(x=>x.d<0),eldPos=posB.filter(x=>['e1','e2','e3'].includes(x.a)).map(x=>LAB[x.a]);
-  sec('2040以降','2040年以降は人口が減っても出場は減らない（増加は'+(posB.length?LAB[posB.slice().sort((x,y)=>y.d-x.d)[0].a]:'年齢構成の変化')+'が主）',`<svg class="chart" id="ins8" viewBox="0 0 600 300"></svg>${legendHTML([['総人口','#14213d'],['85歳以上人口','#8e3b8f'],['出場件数（下限）','#e63946']])}`,
+  sec('2036年以降','2040年以降は人口が減っても出場は減らない（増加は'+(posB.length?LAB[posB.slice().sort((x,y)=>y.d-x.d)[0].a]:'年齢構成の変化')+'が主）',`<svg class="chart" id="ins8" viewBox="0 0 600 300"></svg>${legendHTML([['総人口','#14213d'],['85歳以上人口','#8e3b8f'],['出場件数（下限）','#e63946']])}`,
    `<p>総人口は${pk0}年の${fmt(cityPop(pk0))}人をピークに減り、2050年は${fmt(cityPop('2050'))}人（ピーク比${pct((cityPop('2050')/cityPop(pk0)-1)*100)}）。一方、出場（下限）は2025年の${f1(dp[25]/100,2)}倍で、${pk0}年から2050年までも${pct((cityL(2050)/cityL(+pk0)-1)*100)}増えます。</p><p>${pk0}→2050年の出場への寄与は、増えるのが${posB.map(x=>LAB[x.a]+sgn(x.d)+'件').join('・')}、減るのが${negB.map(x=>LAB[x.a]+sgn(x.d)+'件').join('・')}。搬送率は75〜84歳が${f1(DATA.rates.e2*100,1)}%、85歳以上が${f1(DATA.rates.e3*100,1)}%と、18〜64歳の${f1(DATA.rates.w*100,1)}%の${f1(DATA.rates.e2/DATA.rates.w,1)}〜${f1(DATA.rates.e3/DATA.rates.w,1)}倍なので、働く世代が減っても、搬送率の高い層が増える分が上回ります。</p><p class="m">注：2034→2035年に区別の年齢構成の算出方法が切り替わり、2036年以降は社人研の推計に基づく参考値です。85歳以上人口そのものは${pk0}年の${fmt(cityPop(pk0,'e3'))}人から2050年の${fmt(cityPop('2050','e3'))}人へ${pct((cityPop('2050','e3')/cityPop(pk0,'e3')-1)*100)}と、この期間はほぼ横ばいです。</p>`,
    `${S_POP}、${S_MODEL}。指数は2025年＝100。`);
   post.push(()=>lineChart('ins8',{series:[{name:'総人口',v:tp,c:'#14213d',w:2.4},{name:'85歳以上',v:e3p,c:'#8e3b8f',w:2.4},{name:'出場',v:dp,c:'#e63946',w:2.4}],lo:80,hi:Math.ceil(Math.max(...e3p)/20)*20,ticks:[80,100,120,140,160,180,200,220,240].filter(v=>v<=Math.ceil(Math.max(...e3p)/20)*20),fy:v=>Math.round(v),h:300}));
@@ -1060,7 +1064,7 @@ function buildInsight(){
     ['年齢の粒度','福岡の年報は年齢5区分のため6帯。65歳以上の内訳（65〜74／75〜84／85歳以上）の形は全国の実測から借用（方法タブ）。'],
     ['校正係数','2024年1年分の実績から決めて将来も固定。病院の立地や来街者の変化は反映されない。'],
     ['上限シナリオ',`伸びが複利で続く前提が強い。2050年に下限の${f1(hMult,2)}倍（2025年比${f1(cityS(2050,'H')/y25,1)}倍）になる。`],
-    ['署所の数字','1kmメッシュの最寄り按分による推定で、上限寄り。到着時間の目安は横浜市87隊の回帰の外挿。'],
+    ['署所の数字','1kmメッシュの最寄り按分による推定で、上限寄り。到着時間の目安は横浜市87隊の回帰の傾きを借りた相対値（水準は市平均の実測に合わせた）。'],
     ['公表の無いもの','不搬送率・時間帯別の出場・事故種別は市全体のみで区別に無い。'],
     ['基準隊数','算式は横浜市の整備指針の算定例を借用。福岡市独自の整備計画は公開資料で見つかっていない。現行隊数はR7.3.31時点。']],{left:[0,1]}),
    `<p>数字は公表資料からの再計算であり、福岡市の公式見解や整備計画ではありません。方法タブに、使った式・借りた値・答え合わせを載せています。</p>`,
@@ -1120,7 +1124,7 @@ function buildMethod(){
   /* (d) */
   const rowsD=W.map(w=>({w,e:calc(w,'2025').exp,f:facOf(w)})),mxD=Math.max(...rowsD.map(r=>Math.max(r.e,r.w.disp24)));
   const figD=`<svg class="chart" viewBox="0 0 600 ${24+rowsD.length*26}" role="img" aria-label="期待出場と実績の比">`+rowsD.map((r,i)=>{const y=14+i*26,X=v=>80+v/mxD*390;return `<text x="72" y="${y+12}" font-size="11.5" text-anchor="end" fill="#14213d">${r.w.name}区</text><rect x="80" y="${y+3}" width="${X(r.w.disp24)-80}" height="14" rx="3" fill="#3a7bd5"/><line x1="${X(r.e)}" x2="${X(r.e)}" y1="${y}" y2="${y+20}" stroke="#e63946" stroke-width="2.5"/><text x="${Math.max(X(r.w.disp24),X(r.e))+8}" y="${y+14}" font-size="11" font-weight="700" fill="#14213d" font-family="Manrope">×${r3(r.f)}</text>`}).join('')+`<text x="80" y="${22+rowsD.length*26-4}" font-size="10.5" fill="#5b6b82">青＝2024年の実績／赤の縦線＝人口と昼間人口から計算した期待出場（2025年人口）</text></svg>`;
-  const exD=tblHTML(['東区','値'],[['2025年人口から計算した期待出場（(a)の④）',fmt(ex25.exp)+' 件'],['2024年の実績出場（年報）',fmt(EX.disp24)+' 件'],{cls:'sumrow',c:['校正係数 ＝ 実績 ÷ 期待','<b>'+r4(fac)+'</b>']},['全7区の校正係数（小さい順）',rowsD.slice().sort((a,b)=>a.f-b.f).map(r=>r.w.name+' '+r3(r.f)).join('、')]],{left:[0,1]})+`<p class="m">校正係数が1より小さい区は「人口から期待されるより実績が少ない」、大きい区は「多い」。2035年も同じ値を掛けます。7区の期待出場の合計は実績の合計の ${f1(rowsD.reduce((s,r)=>s+r.e,0)/rowsD.reduce((s,r)=>s+r.w.disp24,0),3)} 倍（搬送率を市全体で決めているため1にはなりません）。</p>`;
+  const exD=tblHTML(['東区','値'],[['2025年人口から計算した期待出場（(a)の④）',fmt(ex25.exp)+' 件'],['2024年の実績出場（年報）',fmt(EX.disp24)+' 件'],{cls:'sumrow',c:['校正係数 ＝ 実績 ÷ 期待','<b>'+r4(fac)+'</b>']},['全7区の校正係数（小さい順）',rowsD.slice().sort((a,b)=>a.f-b.f).map(r=>r.w.name+' '+r3(r.f)).join('、')]],{left:[0,1]})+`<p class="m">校正係数が1より小さい区は「人口から期待されるより実績が少ない」、大きい区は「多い」。2035年も同じ値を掛けます。7区の期待出場の合計は実績の合計の ${f1(rowsD.reduce((s,r)=>s+r.e,0)/rowsD.reduce((s,r)=>s+r.w.disp24,0),3)} 倍です（校正前の乖離）。年齢帯の搬送率は市全体の実績に合うよう作っているため、年齢項の合計は構造上2024年総数（${fmt(SER.dispatch[2024])}件）に一致します。1倍にならないのは、昼間補正の純流入分（${sgn(W.reduce((a,w)=>a+DAYF*(w.in-w.out)*RT.w*DR,0))}件）を足していることと、区計が市外への出場分（${DATA.outside}件）を除いているためです。したがってこの検査は実質的に昼間補正の大きさを見ています。</p>`;
   mth('d','校正係数','<b>校正係数 ＝ 2024年の実績出場 ÷ 2025年の人口と昼間人口から計算した期待出場</b>。年齢構成でも昼間人口でも説明できない残り（来街者・病院の立地など）を区ごとに吸収し、将来も同じ値を掛け続けます。',figD,exD,`${S_NENPO}（区別救急出動件数 令和6年）、${S_MODEL}。`);
   /* (e) */
   const exE=tblHTML(['東区','2030','2035','2040','2050'],[
@@ -1162,12 +1166,13 @@ function buildMethod(){
     ['経済センサス-活動調査 2021','総務省・経済産業省','2021','1kmメッシュの従業者数（署所按分の昼間側のキー）',A('https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001149&code=40&downloadType=2','e-Stat メッシュ従業者数')],
     ['全国都道府県市区町村別面積調','国土交通省 国土地理院','令和6年1月1日','区の面積（件/km²）',A('https://www.gsi.go.jp/KOKUJYOHO/MENCHO-title.htm','MENCHO-title.htm')],
     ['行政区域データ（国土数値情報）／JapanCityGeoJson','国土交通省／niiyz（加工・簡略化）','2020ころ','区界ポリゴン（地図）',A('https://nlftp.mlit.go.jp/ksj/','国土数値情報')+'<br>'+A('https://github.com/niiyz/JapanCityGeoJson','JapanCityGeoJson')],
-    ['消防力の整備指針 第13条（算定例：横浜市 整備指針 令和5年9月改正）','総務省 消防庁／横浜市','2023','基準隊数の算式（需要人口−10万）÷5万＋5。係数は福岡の搬送率から作成','消防庁ホーム '+A('https://www.fdma.go.jp/')+' で「消防力の整備指針」を参照。算定例は横浜市消防力の整備指針（令和5年9月改正）p.24（URLなし）'],
+    ['横浜市消防局 令和6年 消防年報（災害統計 p.105 救急隊別活動状況）','横浜市消防局','2025','到着時間回帰（平均距離→現場到着時間）の出典。署所の到着の目安の傾きを借用',A('https://www.city.yokohama.lg.jp/city-info/yokohamashi/org/shobo/sonota/nenpoh.html','消防年報（横浜市消防局）')+'<br>災害統計：nenpoh.files/0218_20251007.pdf'],
+    ['消防力の整備指針 第13条（算定例：横浜市 整備指針 令和5年9月改正）','総務省 消防庁／横浜市','2023','基準隊数の算式（需要人口−10万）÷5万＋5。係数は福岡の搬送率から作成','消防庁ホーム '+A('https://www.fdma.go.jp/')+' で「消防力の整備指針」を参照。算定例は横浜市消防力の整備指針（令和5年9月改正）p.24（URLなし）。横浜市『横浜市消防力の整備指針』（令和5年9月改正）は横浜市消防局の「消防力の整備指針」ページで公開'],
     ['福岡市 消防署・出張所の所在地','福岡市 消防局','2025','署所の位置（座標は国土地理院ジオコーダ等で付与）',A('https://www.city.fukuoka.lg.jp/syobo/somu/about/syozaiti.html','syozaiti.html')]];
   const borrowed=[
     ['全国の高齢者内比率（65–74／75–84／85歳以上の搬送率の形）','福岡の年報は65歳以上を一括でしか公表していないため。水準は福岡の実測に合わせ、形だけを全国の実測（消防庁 令和7年版）から借りています。'],
     ['昼間補正の係数 0.35','通勤・通学者が区内にいる時間（約8.5時間÷24時間）で、横浜版と同じ値にそろえたため。福岡独自に検証した値ではありません。'],
-    ['横浜市87隊の到着時間回帰（分＝1.753×走行距離km＋3.949）','福岡市は署所別の到着時間を公表していないため、横浜の実測の傾向を福岡の受け持ち面積に当てはめて「目安」を出しています（署所タブ）。'],
+    ['横浜市87隊の到着時間回帰（分＝1.753×走行距離km＋切片）の傾き','福岡市は署所別の到着時間を公表していないため、横浜の実測の傾向（距離が1km延びると約1.75分）だけを借り、福岡の受け持ち面積に当てはめて署所間の差の「目安」を出しています（署所タブ）。距離は「受け持ち面積の等価半径の0.6倍」と仮定しました。横浜の回帰のままだと署所平均が約6:10と福岡の実測（8:12）より短くなるため、切片を平行移動して、出場件数で加重した署所平均が福岡市の2024年実測（通報→現着 8:12）に一致するようにしています。よって署所の値は絶対値でなく「市平均に合わせた相対値」です。'],
     ['社人研の区別構成比','福岡市の将来人口推計の区別×年齢の表は2034年までで、2035年以降は区別の総数しか無いため、社人研の区×5歳階級の構成比で全市の帯別人口を配分しています。'],
     ['整備指針の算式（横浜市の算定例）','福岡市独自の整備計画は公開資料で見つからなかったため、算式は横浜市の整備指針の算定例を借り、係数は福岡の搬送率から作っています。']];
   const bt=BT,[e1,e2]=errR();
