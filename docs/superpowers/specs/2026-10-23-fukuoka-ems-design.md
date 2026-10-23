@@ -202,4 +202,3 @@
 - 年報一覧：https://www.city.fukuoka.lg.jp/syobo/somu/about/syoubounenpou-kakobun.html（R6: r6.kyuukyuutoukei.pdf / r6.4_kyuukyuu.pdf、R5: 2-2kyuukyuutoukei.pdf、R4: r04syoubounenpou.pdf、R3: R03shoubounenpou.pdf）
 - 統計書 第18章 第5表 救急出動状況（R1〜R5 事故種別・月別）：https://www.city.fukuoka.lg.jp/soki/tokeichosa/shisei/toukei/toukeisyo/2024/documents/1805.xls
 - 社人研 令和5年推計（区別 2050 まで、クロスチェック用）：https://www.ipss.go.jp/pp-shicyoson/j/shicyoson23/t-page.asp
-- 調査時に取得した PDF の一時置き場：/private/tmp/claude-501/-Users-ajp-Dev/6098758a-94e1-42e2-a5ea-4ba1dcfdd354/scratchpad/dl/
