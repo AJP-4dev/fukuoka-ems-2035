@@ -52,6 +52,15 @@ def rnd(x):  # 四捨五入（half away from zero）
     return int(x + 0.5) if x >= 0 else -int(-x + 0.5)
 
 
+def lrm(vals, total):
+    """最大剰余法: 各値を整数化し、合計を total に一致させる"""
+    fl = {k: int(v) for k, v in vals.items()}
+    rest = total - sum(fl.values())
+    for k in sorted(vals, key=lambda k: vals[k] - fl[k], reverse=True)[:rest]:
+        fl[k] += 1
+    return fl
+
+
 wards, sum_exp25 = [], 0.0
 for w in WARDS:
     bi = B['wards'][w]
@@ -71,8 +80,8 @@ for w in WARDS:
     for y in YEARS:
         e = expected(y)
         pop[str(y)] = {k: rnd(v) for k, v in to_groups(pop19(w, y)).items()}
-        by_age[str(y)] = {k: rnd(v * fac) for k, v in e.items()}
         disp[str(y)] = rnd(sum(e.values()) * fac)
+        by_age[str(y)] = lrm({k: v * fac for k, v in e.items()}, disp[str(y)])
     assert disp['2025'] == d24, (w, disp['2025'], d24)
     wards.append({'name': w, 'code': bi['code'], 'area': bi['area'], 'day20': bi['day20'], 'night20': bi['night20'],
                   'in': bi['in'], 'out': bi['out'], 'dn': bi['dn'],

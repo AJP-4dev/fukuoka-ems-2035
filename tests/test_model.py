@@ -23,6 +23,7 @@ def test_standard_units():
     S = load('model.json')['standard']
     assert 30 <= S['units']['2025'] <= 45 and S['units']['2035'] > S['units']['2025']
     assert S['crossYear']['L'] is None or 2025 <= S['crossYear']['L'] <= 2050
+    assert S['current'] == 34 and S['units']['2025'] == 35   # 実値のピン留め（2025 年の基準隊数）
 
 
 def test_data_js_roundtrip():
@@ -33,3 +34,20 @@ def test_data_js_roundtrip():
     assert len(D['stations']) == 31 and D['standard']['current'] == 34
     assert [w['name'] for w in D['wards']] == WARDS
     assert sum(w['unitsPerWard'] for w in D['wards']) == 34
+
+
+def test_by_age_sums_to_disp_all_years():
+    # 最大剰余法で丸めるので Σ byAge == disp が全区・全年で厳密に成り立つ
+    for w in load('model.json')['wards']:
+        for y, d in w['disp'].items():
+            assert sum(w['byAge'][y].values()) == d, (w['name'], y)
+
+
+def test_city_L_growth_smooth_around_2035():
+    # 区別推計を全市表に整合させたので 2034→2035 の継ぎ目で伸び率が跳ねない（隣接年との差 0.8 ポイント以内）
+    M = load('model.json')
+    tot = {int(y): sum(w['disp'][y] for w in M['wards']) for y in M['wards'][0]['disp']}
+    g = {y: (tot[y] / tot[y - 1] - 1) * 100 for y in range(2026, 2051)}
+    for y in (2034, 2035, 2036):
+        for n in (y - 1, y + 1):
+            assert abs(g[y] - g[n]) <= 0.8, (y, g[y], n, g[n])

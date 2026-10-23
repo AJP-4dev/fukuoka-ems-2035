@@ -77,3 +77,11 @@ def test_main_pipeline_embeds_stations():
     txt = (ROOT / 'data.js').read_text(encoding='utf-8')
     D = json.loads(re.match(r'const DATA=(.*);\s*$', txt, re.S).group(1))
     assert D['stations'] == load('stations_load.json')
+
+
+def test_arrive_est_weighted_mean_matches_city():
+    # 出場件数で加重した署所平均 = 福岡 2024 年 通報→現着の実測（492 秒）
+    S, N = load('stations_load.json'), load('nenpo_inputs.json')
+    act = [s for s in S if s['units'] > 0 and s['id'] != 'kido']
+    wm = sum(s['load']['2025'] * s['arriveEst'] for s in act) / sum(s['load']['2025'] for s in act)
+    assert abs(wm - N['years']['2024']['timeSec']['arrive']) <= 1, wm
