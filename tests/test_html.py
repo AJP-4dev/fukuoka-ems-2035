@@ -20,3 +20,12 @@ def test_scenario_and_groups_in_template():
     t = _t()
     for k in ("'L'", "'M'", "'H'", 'capYear', 'colorPct', 'PCT_RANGE=30'):
         assert k in t, k
+
+
+def test_pop_tab_present():
+    t = _t()
+    assert 'id="tab-pop"' in t
+    assert 'id="tab-st"' in t
+    assert t.count('class="src"') >= 3
+    order = [t.index("['%s'," % k) for k in ('map', 'pop', 'city', 'wards', 'st', 'insight', 'method')]
+    assert order == sorted(order)

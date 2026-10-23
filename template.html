@@ -341,6 +341,16 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
   </div>
 </section>
 
+<!-- ================= POP ================= -->
+<section class="page" id="page-pop"><div class="scroll"><div class="wrap" id="tab-pop">
+  <h2>人口 — 救急需要の土台</h2>
+  <p class="lead" id="popLead"></p>
+  <div class="card"><h4><span class="yb">2025→2050</span>市全体の総人口・65歳以上・85歳以上の推移</h4><svg class="chart" id="chPopCity" viewBox="0 0 600 300"></svg><p class="m" id="popCityNote"></p><div class="src">出典：福岡市の将来人口推計（令和6年4月）、7区の年齢帯別人口を合計。縦の点線＝総人口のピーク年、薄い紫の帯＝2036年以降（長期・参考）。</div></div>
+  <div class="card"><h4><span class="yb">2025→2050</span>区別の総人口の推移</h4><svg class="chart" id="chPopWard" viewBox="0 0 600 340"></svg><p class="m">線の右端の数字＝2050年の人口。</p><div class="src">出典：福岡市の将来人口推計（令和6年4月）、区別。</div></div>
+  <div class="card"><h4><span class="yb">2025→2050</span>区別の85歳以上人口の推移</h4><svg class="chart" id="chPopE3" viewBox="0 0 600 340"></svg><p class="m">85歳以上は年齢別の搬送率が最も高い層（1年に搬送される割合が最大）。ここの増え方が出場件数の増え方を左右します。</p><div class="src">出典：福岡市の将来人口推計（令和6年4月）、区別・年齢別。搬送率は福岡市消防の救急搬送実績にもとづく。</div></div>
+  <button class="next" data-go="city">市全体の見通しへ<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+</div></div></section>
+
 <!-- ================= CITY ================= -->
 <section class="page" id="page-city"><div class="scroll"><div class="wrap">
   <h2>市全体の見通し</h2>
@@ -368,6 +378,12 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
   <div id="wardJump" class="jump"></div>
   <div id="wardCards"></div>
   <button class="next" data-go="insight">考察を読む<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+</div></div></section>
+
+<!-- ================= STATIONS ================= -->
+<section class="page" id="page-st"><div class="scroll"><div class="wrap" id="tab-st">
+  <h2>署所 — 救急隊の配置</h2>
+  <p class="lead">署所ごとの推定出場件数と隊あたりの負担を、ここに載せます（準備中）。</p>
 </div></div></section>
 
 <!-- ================= INSIGHT ================= -->
@@ -551,7 +567,7 @@ summary{font-size:13px;color:var(--sky);cursor:pointer;list-style:none;font-weig
     <p class="m">福岡市7区の救急出場件数が2035年まで（長期は2050年まで）にどう変わるかを、市の人口推計から推計したレポートです。</p>
     <div class="steps">
       <div><b>1</b><span><strong>地図</strong>で全体像をつかむ。まず「指標」で何を見るかを選び、次に年やシナリオを変えます。薄くなった条件はいまの表示に影響しません。各行の ? で用語の説明が開きます。地図は1本指で回転、2本指で移動と拡大（PCは右ドラッグで移動）。</span></div>
-      <div><b>2</b><span><strong>市全体</strong>と<strong>区別</strong>、<strong>考察</strong>で、なぜ増えるのか・どこで増えるのか・各区の特徴を読む。</span></div>
+      <div><b>2</b><span><strong>人口</strong>・<strong>市全体</strong>・<strong>区別</strong>・<strong>署所</strong>・<strong>考察</strong>で、なぜ増えるのか・どこで増えるのか・各区の特徴を読む。</span></div>
       <div><b>3</b><span><strong>方法</strong>で計算の手順と出典を確認。</span></div>
     </div>
     <button class="next" id="introGo" style="margin-top:10px">地図を見る<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
@@ -613,7 +629,7 @@ const isDiff=()=>state.view==='diff'&&COUNT_MODES.includes(state.metric);
 const metric=w=>{const m=state.metric,v=cityVal([w],state.year,state.sc,m);return isDiff()?(v/cityVal([w],'2025',state.sc,m)-1)*100:v};
 
 /* ---------- navigation ---------- */
-const PAGES=[['map','地図','<path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/><path d="M9 7v13M15 4v13"/>'],['city','市全体','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],['wards','区別','<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>'],['insight','考察','<path d="M12 3a7 7 0 0 0-4 12.7V18h8v-2.3A7 7 0 0 0 12 3z"/><path d="M9 21h6"/>'],['method','方法','<path d="M4 6h16M4 12h10M4 18h16"/><circle cx="18" cy="12" r="2"/>']];
+const PAGES=[['map','地図','<path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/><path d="M9 7v13M15 4v13"/>'],['pop','人口','<circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 3-6 6-6s6 2 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14c3 0 5 2 5 5"/>'],['city','市全体','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],['wards','区別','<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>'],['st','署所','<path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.800-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>'],['insight','考察','<path d="M12 3a7 7 0 0 0-4 12.7V18h8v-2.3A7 7 0 0 0 12 3z"/><path d="M9 21h6"/>'],['method','方法','<path d="M4 6h16M4 12h10M4 18h16"/><circle cx="18" cy="12" r="2"/>']];
 const nav=document.getElementById('nav'), hdt=document.querySelector('.hdtabs');
 PAGES.forEach(([id,lab,ico],i)=>{
   nav.insertAdjacentHTML('beforeend',`<button role="tab" data-page="${id}" aria-selected="${i===0}"><svg viewBox="0 0 24 24">${ico}</svg>${lab}</button>`);
@@ -1149,6 +1165,38 @@ function buildWards(){
 }
 safe('buildWards',buildWards);safe('buildSupp',buildSupp);
 
+/* ---------- pop tab ---------- */
+/* 折れ線の共通ヘルパ（人口タブ用）。o={series:[{name,v,c,w}],lo,hi,ticks,fy,h,peak:{i,label,c}} */
+function lineChart(id,o){
+  const h=o.h||340,N=YEARS.length,x0=50,x1=520,yt=30,yb=h-50;
+  const X=i=>x0+i/(N-1)*(x1-x0),Y=v=>yb-(v-o.lo)/(o.hi-o.lo)*(yb-yt);
+  let g=`<g stroke="#e3e8ef">${o.ticks.map(v=>`<line x1="${x0}" x2="${x1}" y1="${Y(v)}" y2="${Y(v)}"/>`).join('')}</g>`+o.ticks.map(v=>`<text x="${x0-4}" y="${Y(v)+4}" font-size="10.5" fill="#8e9bae" text-anchor="end">${o.fy(v)}</text>`).join('');
+  g+=[2025,2030,2035,2040,2045,2050].map(y=>`<text x="${X(y-2025)}" y="${yb+16}" font-size="10.5" fill="#8e9bae" text-anchor="middle">${y}</text>`).join('');
+  g+=TF(y=>X(y-2025),yt,yb,{long:true});
+  if(o.peak){const px=X(o.peak.i),right=px>x0+(x1-x0)*0.6;g+=`<line x1="${px}" x2="${px}" y1="${yt}" y2="${yb}" stroke="${o.peak.c}" stroke-dasharray="3 3" opacity=".8"/><text x="${right?px-4:px+4}" y="${yt+24}" font-size="10.5" font-weight="700" fill="${o.peak.c}" text-anchor="${right?'end':'start'}">${o.peak.label}</text>`}
+  o.series.forEach(s=>{g+=`<polyline fill="none" stroke="${s.c}" stroke-width="${s.w||1.8}" opacity=".9" points="${s.v.map((v,i)=>X(i)+','+Y(v)).join(' ')}"/>`});
+  const rows=o.series.map((s,k)=>({s,k,y:Y(s.v[N-1])})).sort((a,b)=>a.y-b.y);
+  let prev=-99;rows.forEach(r=>{r.ly=Math.max(yt-8,Math.min(yb,r.y));if(r.ly<prev+11)r.ly=prev+11;prev=r.ly});
+  let mx=yb+4;for(let k=rows.length-1;k>=0;k--){if(rows[k].ly>mx)rows[k].ly=mx;mx=rows[k].ly-11}
+  rows.forEach(r=>{g+=`<line x1="${x1}" x2="${x1+4}" y1="${r.y}" y2="${r.ly}" stroke="${r.s.c}" stroke-width=".8"/><text x="${x1+6}" y="${r.ly+4}" font-size="9.5" fill="${r.s.c}" font-weight="700">${r.s.name} ${o.fy(r.s.v[N-1])}</text>`});
+  document.getElementById(id).innerHTML=g}
+const manT=v=>{const q=v/10000;return (Number.isInteger(q)?q:q.toFixed(1))+'万'};
+const WCOL=['#14213d','#e63946','#2a9d8f','#f4a259','#3a7bd5','#8e3b8f','#6b7a90'];
+function buildPop(){
+  const C=DATA.city,cp=y=>C[y],tot=YEARS.map(y=>cp(y).t),old=YEARS.map(y=>cp(y).e1+cp(y).e2+cp(y).e3),e3=YEARS.map(y=>cp(y).e3);
+  let pi=0;tot.forEach((v,i)=>{if(v>tot[pi])pi=i});const pk=YEARS[pi],last=YEARS.length-1;
+  lineChart('chPopCity',{series:[{name:'総人口',v:tot,c:'#14213d',w:2.6},{name:'65歳以上',v:old,c:'#f4a259',w:2.2},{name:'85歳以上',v:e3,c:'#8e3b8f',w:2.2}],lo:0,hi:2000000,ticks:[0,500000,1000000,1500000,2000000],fy:manT,h:300,peak:{i:pi,label:pk===YEARS[last]?'2050年まで増加':'総人口ピーク '+pk+'年',c:'#14213d'}});
+  document.getElementById('popLead').textContent=`福岡市の人口は${pk===YEARS[last]?'2050年まで増え続けます':pk+'年にピーク（'+man(tot[pi])+'）を迎えます'}。一方で85歳以上は${man(e3[0])}から${man(e3[last])}へ${(e3[last]/e3[0]).toFixed(1)}倍になります。救急需要の土台は「総人口」より「高齢者の数」です。`;
+  document.getElementById('popCityNote').textContent=`総人口は2025年の${man(tot[0])}から${pk}年に${man(tot[pi])}（${pct((tot[pi]/tot[0]-1)*100)}）、2050年は${man(tot[last])}。65歳以上は${man(old[0])}→${man(old[last])}（${pct((old[last]/old[0]-1)*100,0)}）、85歳以上は${man(e3[0])}→${man(e3[last])}（${pct((e3[last]/e3[0]-1)*100,0)}）。`;
+  const ser=f=>W.map((w,i)=>({name:w.name,v:YEARS.map(y=>f(w,y)),c:WCOL[i%WCOL.length]}));
+  const nice=(mx,n)=>{const st=Math.pow(10,Math.floor(Math.log10(mx/n)));const s=[1,2,2.5,5,10].map(k=>k*st).find(k=>mx/k<=n)||st*10;const t=[];for(let v=0;v<=mx+s*0.999;v+=s)t.push(v);return t};
+  const sp=ser((w,y)=>popTot(w,y)),tp=nice(Math.max(...sp.map(s=>Math.max(...s.v))),5);
+  lineChart('chPopWard',{series:sp,lo:0,hi:tp[tp.length-1],ticks:tp,fy:manT});
+  const se=ser((w,y)=>w.pop[y].e3),te=nice(Math.max(...se.map(s=>Math.max(...s.v))),5);
+  lineChart('chPopE3',{series:se,lo:0,hi:te[te.length-1],ticks:te,fy:manT});
+}
+buildPop();
+/* ---------- /pop tab ---------- */
 
 /* ---------- loop ---------- */
 let t0=performance.now();const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
