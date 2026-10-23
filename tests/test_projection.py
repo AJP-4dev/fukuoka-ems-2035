@@ -44,10 +44,9 @@ def test_chart_totals_close():
     P = load('projection.json')
     for w in WARDS:
         for y, v in P['chartTotals'][w].items():
-            if (w, y) in known:
-                continue
             mine = sum(P['wards'][w][y].values())
-            assert abs(mine - v) / v <= 0.02, (w, y, mine, v)
+            lim = 0.06 if (w, y) in known else 0.02  # 既知の乖離は観測最大5.5%
+            assert abs(mine - v) / v <= lim, (w, y, mine, v)
 
 
 def test_no_step_2034_2035():

@@ -6,12 +6,15 @@ import sys
 
 import pymupdf
 
+IPSS_PAGE = 'https://www.ipss.go.jp/pp-shicyoson/j/shicyoson23/t-page.asp'
+IPSS_URL = 'https://www.ipss.go.jp/pp-shicyoson/j/shicyoson23/3kekka/suikei_kekka.xlsx'
 BANDS = [f'{a}～{a + 4}歳' for a in range(0, 90, 5)] + ['90歳以上']
 WARDS = ['東', '博多', '中央', '南', '城南', '早良', '西']
 CITY_PAGES = [13, 14, 15, 16]
 WARD_PAGES = list(range(19, 26))
 SOURCE = ('福岡市の将来人口推計（令和6年4月）p10–22（全市は男女別・年齢階層別内訳、'
-          '区別は同内訳）。2051–2065年は全市の参考値。区別2035–2050年は社人研 令和5年推計の区シェアによる推計。')
+          '区別は同内訳）。2051–2065年は全市の参考値。区別2035–2050年は社人研 令和5年推計の区シェアによる推計'
+          f'（{IPSS_PAGE} の表「都道府県・市区町村別の男女･年齢（5歳）階級別将来推計人口」Sheet1、{IPSS_URL}）。')
 # 区別ページの2035–2050は年齢階層別内訳が無く、棒グラフ画像に総人口（千人、5年刻み）のみ載る。
 # PDFのp16–22（0始まり19–25）の画像を目視で書き起こした値。
 WARD_TOTALS_K = {
@@ -61,7 +64,7 @@ def parse_page(page):
                 vals.append(toks[j])
                 j += 1
             if len(vals) != len(years):
-                raise ValueError(f'{t}: {len(vals)} values, expected {len(years)}')
+                raise ValueError(f'p{page.number}: {t}: {len(vals)} values, expected {len(years)}')
             for y, v in zip(years, vals):
                 out.setdefault((sex, y), {})[b] = round(float(v.replace(',', '')) * 1000)
             i = j
@@ -81,7 +84,17 @@ def merge(pages):
     return res
 
 
+IPSS_DEFAULT = pathlib.Path(__file__).resolve().parent / 'raw' / 'ipss' / 'suikei_kekka.xlsx'
+
+
 def load_ipss(xlsx):
+    # 出典: 社人研『日本の地域別将来推計人口（令和5年推計）』
+    #   ページ IPSS_PAGE ／ 3.都道府県・市区町村別の男女･年齢（5歳）階級別将来推計人口（Sheet1）
+    #   ファイル IPSS_URL（コード40131-40137=福岡市各区、市などの別=0）
+    if not pathlib.Path(xlsx).exists():
+        raise FileNotFoundError(
+            f'社人研 令和5年推計のExcelが見つかりません: {xlsx}\n'
+            f'ダウンロード元: {IPSS_URL}\n（ページ: {IPSS_PAGE}）')
     """社人研 令和5年推計: {ward: {year5: {band: 人}}}（男女計、90歳以上=90～94+95歳～）"""
     import openpyxl
     wb = openpyxl.load_workbook(str(xlsx), read_only=True)
@@ -132,12 +145,14 @@ def extract(pdf, ipss=None):
     wards = {}
     for i in WARD_PAGES:
         txt = doc[i].get_text()
-        name = next(w for w in WARDS if re.search(rf'(?m)^\s*{w}区\s*$', txt))
+        name = next((w for w in WARDS if re.search(rf'(?m)^\s*{w}区\s*$', txt)), None)
+        if name is None:
+            raise ValueError(f'p{i}: 区名（東区〜西区）が見つかりません')
         wards[name] = merge([doc[i]])
     years = list(range(2020, 2051))
     for w in WARDS:
         wards[w] = {y: v for y, v in wards[w].items() if y <= 2034}
-    ipss = load_ipss(ipss or pathlib.Path(__file__).resolve().parent / 'raw' / 'ipss' / 'suikei_kekka.xlsx')
+    ipss = load_ipss(ipss or IPSS_DEFAULT)
     estimate(wards, city, years, ipss)
     return {
         'years': years,
@@ -153,5 +168,6 @@ def extract(pdf, ipss=None):
 
 if __name__ == '__main__':
     pdf = pathlib.Path(sys.argv[1])
+    ipss_path = pathlib.Path(sys.argv[2]) if len(sys.argv) > 2 else IPSS_DEFAULT
     out = pathlib.Path(__file__).resolve().parent / 'projection.json'
-    out.write_text(json.dumps(extract(pdf), ensure_ascii=False, indent=1), encoding='utf-8')
+    out.write_text(json.dumps(extract(pdf, ipss_path), ensure_ascii=False, indent=1), encoding='utf-8')
