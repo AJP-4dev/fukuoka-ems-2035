@@ -49,7 +49,7 @@ def test_ward_cards_three_types():
 
 def test_method_page_and_sources():
     t = _t()
-    for k in ('救急・救助の現況', '横浜', '0.35', '答え合わせ', '推定', '借りた値', '実例'):
+    for k in ('救急・救助の現況', '0.35', '答え合わせ', '推定', '借りた値', '実例'):
         assert k in t, k
     # 出典行は静的HTML(class="src")と srcLine() の呼び出しで描画される。実DOM側の数は目視監査で確認
     assert t.count('class="src"') + t.count('srcLine(') >= 20
@@ -65,7 +65,9 @@ def test_final_review_wording():
     assert 'id="chTime"' in t                      # 市全体の所要時間図
     assert 'TYPE_RULE にまとめ' not in t and 'small_areas.json の注記' not in t   # 開発者向け文言なし
     assert '2025年（人口変化のみ）比' in t
-    assert '到着の目安（市平均 8:12 に合わせた相対値）' in t
+    assert '到着の目安' not in t and 'arriveEst' not in t
+    for f in ('template.html', 'slides_template.html', 'README.md'):
+        assert '\u6a2a\u6d5c' not in (ROOT / f).read_text(encoding='utf-8'), f
 
 
 def test_slides_page():

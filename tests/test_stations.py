@@ -25,7 +25,7 @@ def test_zero_unit_stations():
     assert {s['id'] for s in zero} == {'reisen', 'sasaoka', 'hanahata', 'muromi'}
     for s in zero:
         assert s['load']['2025'] == 0 and s['perUnit']['2025'] is None and s['note'] == '救急隊なし'
-        assert s['popKey'] == 0 and s['arriveEst'] is None
+        assert s['popKey'] == 0
 
 
 def test_per_unit_plausible_range():
@@ -40,13 +40,7 @@ def test_per_unit_plausible_range():
 def test_kido_is_roaming():
     k = next(s for s in load('stations_load.json') if s['id'] == 'kido')
     assert k['popKey'] == 0 and k['load']['2025'] == 0 and k['perUnit']['2025'] is None
-    assert k['arriveEst'] is None and k['note'] == '機動救急（移動待機）'
-
-
-def test_arrive_est_reasonable():
-    for s in load('stations_load.json'):
-        if s['units'] > 0 and s['id'] != 'kido':
-            assert isinstance(s['arriveEst'], int) and 240 <= s['arriveEst'] <= 720, (s['name'], s['arriveEst'])
+    assert k['note'] == '機動救急（移動待機）'
 
 
 def test_downtown_not_undercounted():
@@ -77,11 +71,3 @@ def test_main_pipeline_embeds_stations():
     txt = (ROOT / 'data.js').read_text(encoding='utf-8')
     D = json.loads(re.match(r'const DATA=(.*);\s*$', txt, re.S).group(1))
     assert D['stations'] == load('stations_load.json')
-
-
-def test_arrive_est_weighted_mean_matches_city():
-    # 出場件数で加重した署所平均 = 福岡 2024 年 通報→現着の実測（492 秒）
-    S, N = load('stations_load.json'), load('nenpo_inputs.json')
-    act = [s for s in S if s['units'] > 0 and s['id'] != 'kido']
-    wm = sum(s['load']['2025'] * s['arriveEst'] for s in act) / sum(s['load']['2025'] for s in act)
-    assert abs(wm - N['years']['2024']['timeSec']['arrive']) <= 1, wm

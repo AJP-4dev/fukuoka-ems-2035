@@ -296,7 +296,7 @@ function drawMap(s, box, fills, lineColor, lw, transparency = 0) {
   const ratio = `1:${(R.e2 / R.e1).toFixed(1)}:${(R.e3 / R.e1).toFixed(1)}`;
   const items = [
     ["① 高齢者の中の比率", ratio, "65–74／75–84／85歳以上は全国値", "福岡の年報は65歳以上が一括だから"],
-    ["② 昼間補正の係数", String(MODEL.dayf), "通勤・通学者が区内にいる時間（8.5時間/24時間）。横浜版と同じ", "昼に来る人のぶんを足すため"],
+    ["② 昼間補正の係数", String(MODEL.dayf), "通勤・通学者が区内にいる時間（約8.5時間÷24時間）から置いた係数", "昼に来る人のぶんを足すため"],
     ["③ 2035年以降の区別の年齢内訳", "社人研", "社人研の構成比を使う", "市の推計の区別表が2034年までだから"]];
   const cw = (CW - 2 * GAP) / 3, h = 4.1;
   items.forEach((it, i) => {
@@ -337,16 +337,15 @@ function drawMap(s, box, fills, lineColor, lw, transparency = 0) {
 // =============== 12 他都市比較 ===============
 {
   const nat = ["e1", "e2", "e3"].map(g => NEN.national2024.transport[g] / NEN.national2024.pop[g] * 100);
-  const yok = [6.3, 12.3, 24.8]; // 横浜市消防年報 R6（アウトライン記載値）
   const fk65 = (G.slice(3).reduce((a, g) => a + c25[g] * R[g], 0)) / e65(c25);
   const natAll = ["e1", "e2", "e3"].reduce((a, g) => a + NEN.national2024.transport[g], 0) / ["e1", "e2", "e3"].reduce((a, g) => a + NEN.national2024.pop[g], 0);
   warn.push(`[info] 全国 ${nat.map(v => v.toFixed(1))} /100人 (outline 5.9/12.0/24.9 は“1,000人あたり”表記だが実際は100人あたり)、福岡65+ ${(fk65 * 1000).toFixed(1)}/千 全国 ${(natAll * 1000).toFixed(1)}/千`);
-  const s = base("妥当性② 他の都市と比べても同じ形", "消防庁 令和7年版、横浜市消防年報 R6",
-    "全国と横浜市でも、年齢が上がるほど運ばれる割合が高くなる形は同じです。ただし水準そのものは地域で違い、福岡の65歳以上は全国より約15%高く出ています。そこで、形は他の都市の知見を借り、水準は福岡の実測値に合わせました。");
+  const s = base("妥当性② 全国と比べても同じ形", "消防庁 令和7年版、福岡市消防年報 R6",
+    "全国と福岡のどちらでも、年齢が上がるほど運ばれる割合が高くなる形は同じです。ただし水準そのものは地域で違い、福岡の65歳以上は全国より約15%高く出ています。そこで、形は全国の知見を借り、水準は福岡の実測値に合わせました。");
   s.addChart(pres.charts.BAR, [
-    { name: "全国", labels: ["65–74歳", "75–84歳", "85歳以上"], values: nat.map(v => +v.toFixed(1)) },
-    { name: "横浜", labels: ["65–74歳", "75–84歳", "85歳以上"], values: yok }],
-    chartBase({ x: MX, y: TOP, w: 7.8, h: 4.9, barDir: "col", chartColors: [BLUE, ORANGE], barGapWidthPct: 50, showLegend: true, legendPos: "b", showValue: true, dataLabelFormatCode: "0.0", dataLabelFontSize: 14, dataLabelPosition: "outEnd", valAxisMinVal: 0, valAxisMaxVal: 30, showValAxisTitle: true, valAxisTitle: "人口100人あたり/年（搬送人員）", valAxisTitleFontSize: 12, valAxisTitleFontFace: JP, valAxisTitleColor: MUTED, catAxisLabelFontSize: 14 }));
+    { name: "全国", labels: ["65–74歳", "75–84歳", "85歳以上"], values: nat.map(v => +(v * 10).toFixed(1)) },
+    { name: "福岡", labels: ["65–74歳", "75–84歳", "85歳以上"], values: ["e1", "e2", "e3"].map(g => +(R[g] * 1000).toFixed(1)) }],
+    chartBase({ x: MX, y: TOP, w: 7.8, h: 4.9, barDir: "col", chartColors: [BLUE, ORANGE], barGapWidthPct: 50, showLegend: true, legendPos: "b", showValue: true, dataLabelFormatCode: "0.0", dataLabelFontSize: 14, dataLabelPosition: "outEnd", valAxisMinVal: 0, valAxisMaxVal: 320, showValAxisTitle: true, valAxisTitle: "人口1,000人あたり/年（搬送人員）", valAxisTitleFontSize: 12, valAxisTitleFontFace: JP, valAxisTitleColor: MUTED, catAxisLabelFontSize: 14 }));
   const rx = 8.6, rw = W - MX - rx;
   txt(s, "福岡の65歳以上全体", { x: rx, y: TOP + 0.2, w: rw, h: 0.4, fontSize: 18, bold: true });
   big(s, f1(fk65 * 100), { x: rx, y: TOP + 0.6, w: rw, h: 1.1, fontSize: 60 });
@@ -434,7 +433,7 @@ const LBL_NUDGE = { 博多: [0.4, -0.25], 中央: [-0.4, 0.15], 南: [0.3, 0.12]
   const avg = 2968; // アウトライン記載の市平均（JSONからの単純計算 d24/隊数 とは異なる。READMEに注記）
   warn.push(`[info] 市平均 = ${d24}/${sumU} = ${avg} (outline 2,968)`);
   const st = MODEL.standard.units, cur = MODEL.standard.current;
-  const s = base("結果④ 1隊あたりの負担と、基準の隊数", "福岡市消防年報 R6、消防力の整備指針 第13条（横浜市の算定例）",
+  const s = base("結果④ 1隊あたりの負担と、基準の隊数", "福岡市消防年報 R6、消防力の整備指針 第13条",
     "左は区ごとの救急隊1隊あたりの出場件数で、南区が3,812件と最も多く、東区が2,590件と最も少なくなっています。右は国の整備指針に当てはめた基準の隊数で、今の34隊に対し、2025年で35隊、2035年で39隊になります。基準で見ると、すでに1隊足りず、2035年には5隊足りない計算です。");
   const lwid = 6.6;
   txt(s, `区別 1隊あたり出場（2024年実績、市平均 ${fmt(avg)}件）`, { x: MX, y: TOP, w: lwid, h: 0.4, fontSize: 16, bold: true });

@@ -334,8 +334,8 @@ tr.hotrow td{background:#fff4f5}
   <div class="big" id="cityBig"></div>
   <div class="card"><h4><span class="yb">2025→2050</span>救急出場件数の見通し（3つのシナリオ）</h4><svg class="chart" id="chScn" viewBox="0 0 600 320"></svg><div id="scnLeg"></div><p class="m" id="scnNote"></p><div class="src">出典：本サイトの推計モデル（福岡市の将来人口推計 令和6年4月・社人研 令和5年推計、福岡市消防年報 令和3〜6年版）。縦線＝2035年と、コロナ前トレンドの頭打ち年。</div></div>
   <div class="card"><h4><span class="yb mid">2013→2024</span>答え合わせ — コロナ前の傾きで2022〜24年を当てると</h4><svg class="chart" id="chBack" viewBox="0 0 600 320"></svg><div id="backLeg"></div><p class="m" id="backNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表 出場件数 平成25〜令和6年）、福岡市 登録人口（各年9月末・年齢別）。差(%)＝（予測−実績）÷実績。</div></div>
-  <div class="card"><h4><span class="yb mid">2013→2024</span>救急隊数の推移と、整備指針の基準隊数</h4><svg class="chart" id="chUnits" viewBox="0 0 600 260"></svg><p class="m" id="unitsNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表 隊数、第1-4-2表 令和7年3月31日現在 34隊）。◆の基準隊数は消防力の整備指針の式（横浜市の算定例）と福岡の搬送率で本サイトが算出。</div></div>
-  <div class="card"><h4><span class="yb">2025→2050</span>基準隊数と現行隊数（シナリオ別）</h4><div id="tblStd"></div><p class="m" id="stdNote"></p><div class="src">出典：本サイトの推計（整備指針の算式（横浜市の算定例）、福岡の搬送率、福岡市の将来人口推計）。（ ）内は現行34隊との差。中間・上限は使われ方の倍率を掛けた参考値。</div></div>
+  <div class="card"><h4><span class="yb mid">2013→2024</span>救急隊数の推移と、整備指針の基準隊数</h4><svg class="chart" id="chUnits" viewBox="0 0 600 260"></svg><p class="m" id="unitsNote"></p><div class="src">出典：福岡市消防年報（第2-2-2表 隊数、第1-4-2表 令和7年3月31日現在 34隊）。◆の基準隊数は消防力の整備指針 第13条の式と福岡の搬送率で本サイトが算出。</div></div>
+  <div class="card"><h4><span class="yb">2025→2050</span>基準隊数と現行隊数（シナリオ別）</h4><div id="tblStd"></div><p class="m" id="stdNote"></p><div class="src">出典：本サイトの推計（整備指針の算式（第13条）、福岡の搬送率、福岡市の将来人口推計）。（ ）内は現行34隊との差。中間・上限は使われ方の倍率を掛けた参考値。</div></div>
   <div class="card"><h4><span class="yb mid">2024 実績</span>通報から病院到着まで — 所要時間（市全体）</h4><svg class="chart" id="chTime" viewBox="0 0 600 150"></svg><p class="m" id="timeNote"></p><div class="src">出典：福岡市消防年報 令和6年版 救急統計（救急活動の所要時間、市全体の平均）。区別・署所別の公表はありません。</div></div>
   <div class="card"><h4><span class="yb mid">2024 実績</span>何で出動しているか — 事故種別（市全体）</h4><svg class="chart" id="chType" viewBox="0 0 600 300"></svg><p class="m" id="evtNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第2-2-1表（事故種別出動件数）。市全体の数字で、区別の内訳はありません。</div></div>
   <div class="card"><h4><span class="yb mid">2024 実績</span>誰が搬送されているか — 年齢5区分（市全体）</h4><svg class="chart" id="chAgeDonut" viewBox="0 0 600 240"></svg><p class="m" id="ageNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第2-2-4表（年齢区分別搬送人員）、福岡市 登録人口（2025年の65歳以上の割合）。</div></div>
@@ -359,8 +359,8 @@ tr.hotrow td{background:#fff4f5}
   <p class="lead" id="stLead"></p>
   <div class="banner" id="stBanner">署所別の数字は推定値（町丁目ではなく1kmメッシュの人口を最寄り署所に按分）であり、公式の統計ではありません</div>
   <div class="segline"><span class="cap">シナリオ</span><div class="seg alt" id="stScSeg"><button aria-pressed="true" data-s="L">人口変化のみ</button><button aria-pressed="false" data-s="M">コロナ前のトレンドが続く</button><button aria-pressed="false" data-s="H">コロナ後の伸びも続く</button></div><span class="cap">地図のシナリオと連動します</span></div>
-  <div class="card"><h4><span class="yb">2035</span>署所一覧（推定値）</h4><div class="tbl"><table id="stTable"></table></div><p class="m" id="stTblNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第1-4-2表（救急自動車等の配置状況、令和7年3月31日現在）の隊数、国勢調査2020・経済センサス2021の1kmメッシュ、福岡市の将来人口推計（令和6年4月）から本サイトが推定。到着時間の目安は、横浜市87隊の回帰の傾きを借り市平均の実測（通報→現着8:12）に合わせた相対値で、公式値ではありません。列の見出しをクリックすると並べ替えます。</div></div>
-  <div class="card"><h4><span class="yb">2035</span>署所ごとの隊あたり出場（推定・多い順）</h4><svg class="chart" id="chSt" viewBox="0 0 600 520"></svg><p class="m" id="stBarNote"></p><div class="src">出典：上表と同じ（推定）。縦線＝3,000件。福岡市消防年報 令和6年版の「一隊当たり平均出動件数」2,968件と、横浜版の考察で使った目安3,000件/隊に合わせた目安線で、法令上の基準ではありません。</div></div>
+  <div class="card"><h4><span class="yb">2035</span>署所一覧（推定値）</h4><div class="tbl"><table id="stTable"></table></div><p class="m" id="stTblNote"></p><div class="src">出典：福岡市消防年報 令和6年版 第1-4-2表（救急自動車等の配置状況、令和7年3月31日現在）の隊数、国勢調査2020・経済センサス2021の1kmメッシュ、福岡市の将来人口推計（令和6年4月）から本サイトが推定。公式値ではありません。列の見出しをクリックすると並べ替えます。</div></div>
+  <div class="card"><h4><span class="yb">2035</span>署所ごとの隊あたり出場（推定・多い順）</h4><svg class="chart" id="chSt" viewBox="0 0 600 520"></svg><p class="m" id="stBarNote"></p><div class="src">出典：上表と同じ（推定）。縦線＝3,000件。福岡市消防年報 令和6年版の「一隊当たり平均出動件数」2,968件を約1割上回る水準（3,000件/隊）を目安に置いた線で、法令上の基準ではありません。</div></div>
   <div class="card"><h4>どこが先に逼迫するか</h4><div id="stRead"></div><div class="src">出典：上表（推定）。1kmメッシュの人口・従業者数を最寄りの署所に割り振った推定です（町丁目別の従業地人口は公表されていません）。</div></div>
   <button class="next" data-go="insight">考察を読む<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 </div></div></section>
@@ -709,7 +709,7 @@ const ctl=document.getElementById('ctl'),ctlT=document.getElementById('ctlToggle
 function setCollapsed(v){ctl.classList.toggle('collapsed',v);ctlT.textContent=v?'条件を変える':'条件を閉じる';ctlT.setAttribute('aria-expanded',!v);requestAnimationFrame(updCam)}
 ctlT.onclick=()=>setCollapsed(!ctl.classList.contains('collapsed'));
 const QTEXT={
- mode:'<b>各指標の式と出典</b><br><b>人口</b>＝区の年齢6帯の合計。2025年は福岡市 登録人口（2024年12月末）、以降は福岡市の将来人口推計（令和6年4月）、2035年以降の区別の年齢帯は社人研 令和5年推計の区シェア。<br><b>高齢者人口</b>＝65–74＋75–84＋85歳以上（同じ出典）。<b>高齢化率</b>＝高齢者人口÷人口。<br><b>昼夜間比</b>＝昼間人口÷夜間人口×100（国勢調査2020、全年共通。将来推計はありません）。<br><b>出場件数</b>＝［Σ（年齢帯の人口×搬送率）＋昼間補正］×出場/搬送比×区の校正係数（×シナリオの倍率）。搬送率と2024年実績は福岡市消防年報 令和6年版、2025年は2024年実績に一致。<br><b>出場件数/千人</b>＝出場件数÷人口×1,000。<b>出場件数/km²</b>＝出場件数÷区の面積（国土地理院 面積調 令和6年）。<br><b>基準隊数充足</b>＝区の現有隊数÷区の基準隊数。基準隊数＝（需要人口−10万人）÷5万人＋5（消防力の整備指針、横浜市の算定例）を市全体で出し、区の需要人口（年齢帯の人口×係数）の比で按分。現有隊数は福岡市消防年報 令和6年版（令和7年3月31日現在）。100%未満は基準に足りない区です。式の詳細は「方法」タブ。',
+ mode:'<b>各指標の式と出典</b><br><b>人口</b>＝区の年齢6帯の合計。2025年は福岡市 登録人口（2024年12月末）、以降は福岡市の将来人口推計（令和6年4月）、2035年以降の区別の年齢帯は社人研 令和5年推計の区シェア。<br><b>高齢者人口</b>＝65–74＋75–84＋85歳以上（同じ出典）。<b>高齢化率</b>＝高齢者人口÷人口。<br><b>昼夜間比</b>＝昼間人口÷夜間人口×100（国勢調査2020、全年共通。将来推計はありません）。<br><b>出場件数</b>＝［Σ（年齢帯の人口×搬送率）＋昼間補正］×出場/搬送比×区の校正係数（×シナリオの倍率）。搬送率と2024年実績は福岡市消防年報 令和6年版、2025年は2024年実績に一致。<br><b>出場件数/千人</b>＝出場件数÷人口×1,000。<b>出場件数/km²</b>＝出場件数÷区の面積（国土地理院 面積調 令和6年）。<br><b>基準隊数充足</b>＝区の現有隊数÷区の基準隊数。基準隊数＝（需要人口−10万人）÷5万人＋5（消防力の整備指針 第13条）を市全体で出し、区の需要人口（年齢帯の人口×係数）の比で按分。現有隊数は福岡市消防年報 令和6年版（令和7年3月31日現在）。100%未満は基準に足りない区です。式の詳細は「方法」タブ。',
  view:'<b>実数</b>はその年の値そのもの。<b>2025年比の増減率</b>は2025年からの変化率で、色は±'+PCT_RANGE+'%で飽和します（それを超えても端の色）。負は寒色、正は暖色。出場件数・人口・高齢者人口などで使えます。',
  year:'<b>10年モード</b>（2025〜2035）が既定です。2035年がこのレポートの中心年。<b>「長期を見る」</b>で2035〜2050年に切り替わり、色の尺度も長期用に固定されます（モードを切り替えない限り、年やシナリオを動かしても尺度は変わりません）。2036年以降は参考値です。',
  st:'<b>署所の点（推定）。</b>点の大きさ＝救急隊数（2025年）、色＝選択年の<b>隊あたり出場</b>（0〜7,000件に固定した同じ青の尺度）、中空の○＝救急隊のない出張所、◆＝機動救急（移動待機、按分に入れない）。値は区の出場件数を、国勢調査2020の1kmメッシュ人口（夜間×0.65＋従業者×0.35）で最寄りの署所に按分した<b>推定</b>で、公式の統計ではありません。点をクリックすると名称と数値が出ます。出典：福岡市消防年報 令和6年版 第1-4-2表（隊数）、国勢調査2020、経済センサス2021。',
@@ -815,11 +815,11 @@ function buildWards(){
   const rule={core:`昼夜間人口比が${TYPE_RULE.dnMin.toFixed(2)}以上`,mature:`2035年の高齢化率が${TYPE_RULE.agingMin}%以上`,grow:'上の2つに当てはまらない区'};
   const maxAg=W.slice().sort((a,b)=>agingRate(b,'2035')-agingRate(a,'2035'))[0];
   document.getElementById('typeLegend').innerHTML=`<div class="tl" style="flex-direction:column">${Object.entries(TYPES).map(([k,[n,c]])=>`<span><b style="background:${c}"></b><b style="width:auto;height:auto;border-radius:0;background:none;font-weight:700">${n}</b>：${rule[k]} → ${by[k].length?by[k].map(w=>w.name).join('・'):'該当なし'}</span>`).join('')}</div>`;
-  document.getElementById('typeNote').textContent=`順に判定します（昼夜間人口比 → 2035年の高齢化率 → それ以外）。福岡市は若い都市なので、成熟型の閾値は横浜版（34%）より低い ${TYPE_RULE.agingMin}% に置いた（福岡市全体の2035年は${CB.ag35.toFixed(1)}%）。`;
+  document.getElementById('typeNote').textContent=`順に判定します（昼夜間人口比 → 2035年の高齢化率 → それ以外）。福岡市は若い都市なので、成熟型の閾値は2035年の高齢化率 ${TYPE_RULE.agingMin}% に置いた（福岡市全体の2035年は${CB.ag35.toFixed(1)}%）。`;
   document.getElementById('wardJump').innerHTML=W.map((w,i)=>`<button data-i="${i}">${w.name}</button>`).join('');
   document.querySelectorAll('#wardJump button').forEach(b=>b.onclick=()=>{const el=document.getElementById('wc-'+b.dataset.i),sc=document.querySelector('#page-wards .scroll');sc.scrollTop=el.offsetTop-70});
   document.getElementById('wardCards').innerHTML=W.map((w,i)=>{const t=wardType(w),[tn,tc]=TYPES[t];
-    return `<div class="wcard" id="wc-${i}"><h3>${w.name}区 <span class="typ" style="background:${tc}">${tn}</span><span class="m">人口 ${man(popTot(w,'2025'))}人・出場 ${fmt(w.disp24)}件（2024年）・${w.unitsPerWard}隊</span></h3>${profHTML(wardMetrics(w))}<div class="one">${wardText(w)}</div><p style="margin:10px 0 0"><a class="mapgo" href="#" data-state="m=disp&v=diff&y=2035&w=${w.name}">2035年の増減を地図で</a> <a class="mapgo" href="#" data-state="m=std&y=2035&w=${w.name}">基準隊数の充足を地図で</a></p><div class="src">出典：福岡市の将来人口推計（令和6年4月）・社人研 令和5年推計、福岡市消防年報 令和6年版、国勢調査2020、消防力の整備指針（横浜市 R5.9 の算定例）。棒の中心＝市平均（100）。数値は本サイトの推計。</div></div>`}).join('');
+    return `<div class="wcard" id="wc-${i}"><h3>${w.name}区 <span class="typ" style="background:${tc}">${tn}</span><span class="m">人口 ${man(popTot(w,'2025'))}人・出場 ${fmt(w.disp24)}件（2024年）・${w.unitsPerWard}隊</span></h3>${profHTML(wardMetrics(w))}<div class="one">${wardText(w)}</div><p style="margin:10px 0 0"><a class="mapgo" href="#" data-state="m=disp&v=diff&y=2035&w=${w.name}">2035年の増減を地図で</a> <a class="mapgo" href="#" data-state="m=std&y=2035&w=${w.name}">基準隊数の充足を地図で</a></p><div class="src">出典：福岡市の将来人口推計（令和6年4月）・社人研 令和5年推計、福岡市消防年報 令和6年版、国勢調査2020、消防力の整備指針 第13条。棒の中心＝市平均（100）。数値は本サイトの推計。</div></div>`}).join('');
   bindMapLinks(document.getElementById('tab-wards'));
 }
 buildWards();
@@ -862,8 +862,8 @@ buildPop();
 const mmss=sec=>sec==null?'—':Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
 const WARD_ORD=W.map(w=>w.name);
 let stSort={k:'ord',d:1};
-const STCOLS=[['ord','署所'],['ward','区'],['units','隊'],['l25','推定出場 2025'],['l35','推定出場 2035'],['p25','隊あたり 2025'],['p35','隊あたり 2035'],['arr','到着の目安（市平均 8:12 に合わせた相対値）'],['note','備考']];
-function stKey(s,i,k){switch(k){case 'ord':return i;case 'ward':return WARD_ORD.indexOf(s.ward)*100+i;case 'units':return s.units;case 'l25':return s.units?stLoad(s,2025):null;case 'l35':return s.units?stLoad(s,2035):null;case 'p25':return stPU(s,2025);case 'p35':return stPU(s,2035);case 'arr':return s.arriveEst;case 'note':return s.note||'';}}
+const STCOLS=[['ord','署所'],['ward','区'],['units','隊'],['l25','推定出場 2025'],['l35','推定出場 2035'],['p25','隊あたり 2025'],['p35','隊あたり 2035'],['note','備考']];
+function stKey(s,i,k){switch(k){case 'ord':return i;case 'ward':return WARD_ORD.indexOf(s.ward)*100+i;case 'units':return s.units;case 'l25':return s.units?stLoad(s,2025):null;case 'l35':return s.units?stLoad(s,2035):null;case 'p25':return stPU(s,2025);case 'p35':return stPU(s,2035);case 'note':return s.note||'';}}
 const STACT=ST.filter(s=>s.perUnit['2035']!=null);
 function buildSt(){
   const sc=state.sc,scn=SCN[sc];
@@ -873,14 +873,14 @@ function buildSt(){
   /* table */
   const rows=ST.map((s,i)=>({s,i,v:stKey(s,i,stSort.k)}));
   rows.sort((a,b)=>{const x=a.v,y=b.v;if(x==null&&y==null)return a.i-b.i;if(x==null)return 1;if(y==null)return -1;return (typeof x==='string'?x.localeCompare(y,'ja'):x-y)*stSort.d||a.i-b.i});
-  let h='<thead><tr>'+STCOLS.map(([k,l])=>`<th data-k="${k}"${k==='arr'?' style="white-space:normal;min-width:11em"':''} aria-sort="${stSort.k===k?(stSort.d>0?'ascending':'descending'):'none'}">${l}</th>`).join('')+'</tr></thead><tbody>';
+  let h='<thead><tr>'+STCOLS.map(([k,l])=>`<th data-k="${k}" aria-sort="${stSort.k===k?(stSort.d>0?'ascending':'descending'):'none'}">${l}</th>`).join('')+'</tr></thead><tbody>';
   rows.forEach(({s})=>{const none=s.units===0,kido=s.id==='kido',p25=stPU(s,2025),p35=stPU(s,2035);
     h+=`<tr class="${none?'st0':''}"><td class="nm">${s.name}${none?'<span class="tg no">救急隊なし</span>':kido?'<span class="tg kd">機動救急</span>':s.kind==='署'?'<span class="tg">署</span>':''}</td><td>${s.ward}</td><td class="num">${s.units}</td>`+
-    (none||kido?`<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>`:`<td class="num">${fmt(stLoad(s,2025))}</td><td class="num">${fmt(stLoad(s,2035))}</td><td class="num">${fmt(p25)}</td><td class="num${p35>ST_GUIDE?' hot':''}">${fmt(p35)}</td><td class="num">${mmss(s.arriveEst)}</td>`)+
+    (none||kido?`<td>—</td><td>—</td><td>—</td><td>—</td>`:`<td class="num">${fmt(stLoad(s,2025))}</td><td class="num">${fmt(stLoad(s,2035))}</td><td class="num">${fmt(p25)}</td><td class="num${p35>ST_GUIDE?' hot':''}">${fmt(p35)}</td>`)+
     `<td style="text-align:left;white-space:normal;font-size:11px;color:var(--ink2)">${s.note||''}</td></tr>`});
   const tb=document.getElementById('stTable');tb.innerHTML=h+'</tbody>';
   tb.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;stSort=stSort.k===k?{k,d:-stSort.d}:{k,d:(k==='ord'||k==='ward'||k==='note')?1:-1};buildSt()});
-  document.getElementById('stTblNote').textContent=`${act.length}署所に${act.reduce((a,s)=>a+s.units,0)}隊、機動救急${kd.units}隊（按分の対象外）、救急隊のない出張所${no.length}（${no.map(s=>s.name.replace('出張所','')).join('・')}）。隊なしの受け持ち分は最寄りの隊のある署所に含まれています。赤字＝隊あたり${fmt(ST_GUIDE)}件超（目安）。到着の目安は、横浜市87隊の回帰（分＝1.753×走行距離km＋切片）の傾きだけを借り、切片を平行移動して出場件数で加重した署所平均が福岡市の2024年実測（通報→現着 ${mmss(NEN.timeSec.arrive)}）に一致するようにした相対値で、署所間の差の目安です。公式値ではありません。`;
+  document.getElementById('stTblNote').textContent=`${act.length}署所に${act.reduce((a,s)=>a+s.units,0)}隊、機動救急${kd.units}隊（按分の対象外）、救急隊のない出張所${no.length}（${no.map(s=>s.name.replace('出張所','')).join('・')}）。隊なしの受け持ち分は最寄りの隊のある署所に含まれています。赤字＝隊あたり${fmt(ST_GUIDE)}件超（目安）。公式値ではありません。`;
   /* bars */
   const bars=act.map(s=>({s,v:stPU(s,2035)})).sort((a,b)=>b.v-a.v),n=bars.length,rh=17,top=34,Wd=600,x0=118,x1=548,hh=top+n*rh+26,mx=Math.max(ST_RANGE,Math.max(...bars.map(b=>b.v))*1.04);
   const X=v=>x0+v/mx*(x1-x0);
@@ -898,7 +898,7 @@ function buildSt(){
    `<p><b>隊あたりの多い5署所（${scn}・2035年）</b>：${t5.map((b,i)=>`${i+1}. ${b.s.name}（${b.s.ward}区）${fmt(b.v)}件`).join('、')}。</p>`+
    `<p>2035年に隊あたり${fmt(ST_GUIDE)}件を超える署所は<b>${over}か所</b>（隊のある${n}か所のうち）。2025年の時点で超えているのは${o25}か所で、${ex.length?`2025〜2035年の間に新たに超えるのは${ex.map(s=>s.name.replace('出張所','')).join('・')}の${ex.length}か所です。`:'新たに超える署所はありません。'}</p>`+
    `<p>上位5か所のうち${t5.filter(b=>b.s.units===1).length}か所は1隊だけで受け持つ出張所です。2隊以上の署所の隊あたりは${fmt(Math.min(...bars.filter(b=>b.s.units>1).map(b=>b.v)))}〜${fmt(Math.max(...bars.filter(b=>b.s.units>1).map(b=>b.v)))}件、最も少ないのは${low.s.name}（${fmt(low.v)}件）です。</p>`+
-   `<p class="m"><b>読むときの注意</b>：町丁目別の従業地人口が公表されていないため、1kmメッシュの人口を最寄りの署所に割り振る方式です。${saito.name}（${fmt(stPU(saito,2025))}件/隊・2025年）のように小さな半島の受け持ちは低めに、${ST.find(s=>s.id==='katakasu').name}（${fmt(stPU(ST.find(s=>s.id==='katakasu'),2025))}件/隊・2025年）のように博多駅東側のオフィス街が1隊の署所に集中すると高めに出ます。実際の出場は署所をまたいで最寄りの空き隊が対応するため、<b>上限寄りの推定</b>です。到着時間の目安は横浜市87隊の回帰の傾きを福岡の距離に当てはめ、市平均の実測に合わせて平行移動した相対値で、公式の署所別到着時間は公表されていません。</p>`;
+   `<p class="m"><b>読むときの注意</b>：町丁目別の従業地人口が公表されていないため、1kmメッシュの人口を最寄りの署所に割り振る方式です。${saito.name}（${fmt(stPU(saito,2025))}件/隊・2025年）のように小さな半島の受け持ちは低めに、${ST.find(s=>s.id==='katakasu').name}（${fmt(stPU(ST.find(s=>s.id==='katakasu'),2025))}件/隊・2025年）のように博多駅東側のオフィス街が1隊の署所に集中すると高めに出ます。実際の出場は署所をまたいで最寄りの空き隊が対応するため、<b>上限寄りの推定</b>です。署所別の到着時間は公表されていません。</p>`;
   bindMapLinks(document.getElementById('tab-st'));
 }
 
@@ -1047,12 +1047,12 @@ function buildInsight(){
   const pu=W.map(w=>({w,a:w.loadPerUnit24,b:w.disp['2035']/w.unitsPerWard})),n24=pu.filter(x=>x.a>ST_GUIDE),n35=pu.filter(x=>x.b>ST_GUIDE);
   sec('2035','区別の1隊あたり負担（2024年実績と2035年）',`<svg class="chart" id="ins5" viewBox="0 0 600 200"></svg>${legendHTML([['2024年実績','#8e9bae'],['2035年（人口変化のみ・現行隊数のまま）','#e63946']])}`,
    `<p>2024年の1隊あたり出場は${W.length}区で${fmt(Math.min(...pu.map(x=>x.a)))}〜${fmt(Math.max(...pu.map(x=>x.a)))}件。目安の${fmt(ST_GUIDE)}件を超えていたのは${n24.length?n24.map(x=>x.w.name).join('・'):'なし'}です。隊数を現行のままにすると、2035年は${n35.length}区（${n35.map(x=>x.w.name).join('・')}）が目安を超え、最大は${pu.slice().sort((a,b)=>b.b-a.b)[0].w.name}区の${fmt(Math.max(...pu.map(x=>x.b)))}件です。</p><p>隊は区をまたいで出場するため、区別の値は目安です。年報の市全体の平均は${fmt(ST_NENPO_AVG)}件（令和6年）。</p>`,
-   `${S_NENPO}（区別出動件数、救急自動車等の配置状況 令和7年3月31日現在）、${S_MODEL}。目安の線は年報の一隊当たり平均${fmt(ST_NENPO_AVG)}件と横浜版の考察の目安3,000件に合わせたもの。`);
+   `${S_NENPO}（区別出動件数、救急自動車等の配置状況 令和7年3月31日現在）、${S_MODEL}。目安の線は年報の一隊当たり平均${fmt(ST_NENPO_AVG)}件を約1割上回る水準（3,000件）を目安に置いたもの。`);
   post.push(()=>hBars('ins5',pu.map(x=>({n:x.w.name+'区',v:x.a,c:'#8e9bae',t:fmt(x.a),v2:x.b,c2:'#e63946',t2:fmt(x.b)})),{lw:56,x1:440,ref:{v:ST_GUIDE,t:'目安 '+fmt(ST_GUIDE)+'件/隊'},max:Math.max(...pu.map(x=>Math.max(x.a,x.b)))*1.08}));
   /* 6 */
   sec('2035','整備指針の基準隊数は今すでに'+STD.units[2025]+'（現行'+STD.current+'）、2035年'+STD.units[2035],`<svg class="chart" id="ins6" viewBox="0 0 600 300"></svg>${legendHTML(SCK.map(k=>[`${SHORT[k]}＝${SCN[k]}`,LCOL[k]]))}`,
    `<p>消防力の整備指針の式で人口から出した基準隊数は、2025年に${STD.units[2025]}隊。現行の${STD.current}隊（機動救急を含む）を${STD.units[2025]-STD.current}隊上回っており、人口変化だけでも2035年に${STD.units[2035]}隊（現行との差${sgn(STD.units[2035]-STD.current)}）、2050年に${STD.units[2050]}隊になります。</p><p>中間・上限は使われ方の伸びに比例して需要が増えるとみなした参考値で、2035年に${Math.round(stdUnits(2035,'M'))}隊・${Math.round(stdUnits(2035,'H'))}隊です。基準は人口（夜間）をもとにした市単位の式で、都心の昼間人口や地理的条件は含みません。</p>`,
-   `消防力の整備指針 第13条（横浜市の整備指針 令和5年9月改正の算定例）の式、${S_NENPO}（現行隊数）、${S_MODEL}。`);
+   `消防力の整備指針 第13条の式、${S_NENPO}（現行隊数）、${S_MODEL}。`);
   post.push(()=>lineChart('ins6',{series:SCK.map(k=>({name:SHORT[k],v:YEARS.map(y=>stdUnits(y,k)),c:LCOL[k]})),lo:30,hi:90,ticks:[30,40,50,60,70,80,90],fy:v=>Math.round(v)+'隊',h:300,hlines:[{v:STD.current,t:'現行'+STD.current+'隊',c:'#e63946'}]}));
   /* 7 */
   const ps=STACT.map(s=>({s,v:stPUL(s,2035),v25:stPUL(s,2025)})).sort((a,b)=>b.v-a.v),over=ps.filter(x=>x.v>ST_GUIDE).length;
@@ -1073,7 +1073,7 @@ function buildInsight(){
    `<ul><li><b>増隊の目安</b>：整備指針の式では、現行${STD.current}隊に対して2025年に${sgn(gp(2025))}隊、2035年に${sgn(gp(2035))}隊（下限）〜${sgn(Math.round(stdUnits(2035,'H'))-STD.current)}隊（上限）が基準です。区別の按分では${W.slice().sort((a,b)=>stdWard(b,'2035')/b.unitsPerWard-stdWard(a,'2035')/a.unitsPerWard).slice(0,2).map(w=>`${w.name}区（現行${w.unitsPerWard}隊・基準${f1(stdWard(w,'2035'))}隊）`).join('、')}で現行との開きが大きくなります。</li>
     <li><b>昼間人口を考慮した配置</b>：基準隊数は夜間人口が基礎で、昼間人口を含みません。${core.map(w=>`${w.name}区は昼間補正が年${sgn(w.dayExtra)}件・昼夜間人口比${f1(w.dn,2)}`).join('、')}で、2035年の1隊あたりは現行隊数のままで${core.map(w=>fmt(w.disp['2035']/w.unitsPerWard)+'件').join('・')}です。</li>
     <li><b>適正利用の啓発</b>：出場の${f1(NEN.typeDispatch.急病/Object.values(NEN.typeDispatch).reduce((a,b)=>a+b)*100,0)}%は急病、搬送の${share65.toFixed(0)}%は65歳以上、不搬送は出場の${f1(NEN.nonTrRate*100,1)}%です。利用の中身（軽症の割合など）は年報から区別に取れないため、啓発による減少幅は見積もれません。</li></ul><p class="m">どの施策も、増える需要に対する「数字の上での目安」であり、整備計画や予算の提案ではありません。</p>`,
-   `消防力の整備指針（横浜市の算定例）、${S_NENPO}、国勢調査2020、${S_MODEL}。`);
+   `消防力の整備指針 第13条、${S_NENPO}、国勢調査2020、${S_MODEL}。`);
   /* 10 */
   const hMult=cityS(2050,'H')/cityL(2050);
   sec('2035','限界（推定の注意）',tblHTML(['項目','内容'],[
@@ -1082,9 +1082,9 @@ function buildInsight(){
     ['年齢の粒度','福岡の年報は年齢5区分のため6帯。65歳以上の内訳（65〜74／75〜84／85歳以上）の形は全国の実測から借用（方法タブ）。'],
     ['校正係数','2024年1年分の実績から決めて将来も固定。病院の立地や来街者の変化は反映されない。'],
     ['上限シナリオ',`伸びが複利で続く前提が強い。2050年に下限の${f1(hMult,2)}倍（2025年比${f1(cityS(2050,'H')/y25,1)}倍）になる。`],
-    ['署所の数字','1kmメッシュの最寄り按分による推定で、上限寄り。到着時間の目安は横浜市87隊の回帰の傾きを借りた相対値（水準は市平均の実測に合わせた）。'],
+    ['署所の数字','1kmメッシュの最寄り按分による推定で、上限寄り。'],
     ['公表の無いもの','不搬送率・時間帯別の出場・事故種別は市全体のみで区別に無い。'],
-    ['基準隊数','算式は横浜市の整備指針の算定例を借用。福岡市独自の整備計画は公開資料で見つかっていない。現行隊数はR7.3.31時点。']],{left:[0,1]}),
+    ['基準隊数','算式は消防力の整備指針 第13条による。福岡市独自の整備計画は公開資料で見つかっていない。現行隊数はR7.3.31時点。']],{left:[0,1]}),
    `<p>数字は公表資料からの再計算であり、福岡市の公式見解や整備計画ではありません。方法タブに、使った式・借りた値・答え合わせを載せています。</p>`,
    `${S_MODEL}、${S_POP}、${S_NENPO}。`);
   document.getElementById('insBody').innerHTML=S.join('');
@@ -1128,7 +1128,7 @@ function buildMethod(){
       {cls:'sumrow',c:['65歳以上（3帯まとめて）',fmt(ta.高齢者),fmt(cp.e1+cp.e2+cp.e3),r4(ta.高齢者/(cp.e1+cp.e2+cp.e3))]}],{left:[0]})+
     `<p class="m" style="margin-top:12px"><b>65歳以上の3帯の分け方</b>：全国の搬送率の「形」に、福岡の65歳以上全体に合う共通の倍率 <b>×${f1(m,3)}</b> を掛けます（倍率 ＝ 福岡の65歳以上の搬送人員 ÷ Σ（全国の搬送率 × 福岡の人口）。3帯とも同じ倍率）。</p>`+
     tblHTML(['帯','全国の搬送人員（令和6年）','全国の人口（2024）','全国の搬送率','福岡の人口（2025）','× 倍率 → 福岡の搬送率'],eN.map(e=>[LAB[e],fmt(NAT.transport[e]),fmt(NAT.pop[e]),f1(nat(e)*1000,1)+'／千人',fmt(cp[e]),`${f1(nat(e)*1000,1)} × ${f1(m,3)} ＝ <b>${r4(RT[e])}</b>`]),{left:[0]})+
-    `<p class="m">検算：福岡の65歳以上の搬送 ${fmt(ta.高齢者)}人 ＝ 倍率 ${f1(m,3)} × Σ（全国率×福岡人口）＝ ${fmt(m*cp65)}人。東区の85歳以上（${fmt(EX.pop['2025'].e3)}人）× ${r4(RT.e3)} ＝ ${fmt(EX.pop['2025'].e3*RT.e3)}人が1年に搬送される計算です。全国の形は横浜市の令和6年実測（63／123／248人/千人）ともほぼ一致します（全国 ${eN.map(e=>f1(nat(e)*1000,0)).join('／')}）。18〜64歳を分けないのは、東京消防庁 令和5年の10歳刻みで20代〜50代の搬送率がほぼ平坦なためです。</p>`;
+    `<p class="m">検算：福岡の65歳以上の搬送 ${fmt(ta.高齢者)}人 ＝ 倍率 ${f1(m,3)} × Σ（全国率×福岡人口）＝ ${fmt(m*cp65)}人。東区の85歳以上（${fmt(EX.pop['2025'].e3)}人）× ${r4(RT.e3)} ＝ ${fmt(EX.pop['2025'].e3*RT.e3)}人が1年に搬送される計算です。65–74／75–84／85歳以上の搬送率は、全国 ${eN.map(e=>f1(nat(e)*1000,1)).join('／')} に対し福岡 ${eN.map(e=>f1(RT[e]*1000,1)).join('／')}（人/千人）で、水準は福岡が高い一方、年齢が上がるほど高くなる形は同じです。65歳以上全体は福岡 135.8、全国 118.2（人/千人）です。18〜64歳を分けないのは、東京消防庁 令和5年の10歳刻みで20代〜50代の搬送率がほぼ平坦なためです。</p>`;
   mth('b','年齢6帯の搬送率','<b>搬送率 ＝ 0〜6歳・7〜17歳・18〜64歳は「年報の年齢区分別搬送人員 ÷ 福岡市の登録人口」。65歳以上は福岡の65歳以上全体の水準に合わせ、3帯（65〜74／75〜84／85歳以上）の比だけを全国の実測から借りる。</b>福岡の年報は年齢が5区分しかないためです。',figB,exB,
     `${S_NENPO} 第2-2-4表（年齢区分別搬送人員）、消防庁「令和7年版 救急・救助の現況」表7、総務省「人口推計 2024」、東京消防庁「令和5年 救急活動の現況」図表2-5、福岡市 登録人口（2024年12月末）。`);
   /* (c) */
@@ -1137,8 +1137,8 @@ function buildMethod(){
     `<text x="300" y="130" text-anchor="middle" font-size="11" fill="#5b6b82">（流入−流出）× ${DAYF}（区内にいる時間 8.5/24）× 18〜64歳の搬送率 ＝ 昼間補正の搬送人員</text></svg>`;
   const exC=tblHTML(['区','流入','流出','差','× '+DAYF,'× 搬送率 '+r4(RT.w),'× 出場/搬送比 '+r3(DR)+' ＝ 期待出場 差','× 校正係数 ＝ 件/年'],
     [EX,EX2].map(w=>{const net=w.in-w.out,a=DAYF*net,b=a*RT.w,c=b*DR,d=c*facOf(w);return [w.name+'区',fmt(w.in),fmt(w.out),sgn(net),f1(a,0),f1(b,1),f1(c,1),`<b>${sgn(d,0)}</b>（モデル値 ${sgn(w.dayExtra)}）`]}),{left:[0]})+`<p class="m">東区は流出超過で小さなマイナス、博多区は流入超過で大きなプラスです。</p>`;
-  mth('c','昼間補正','<b>昼間補正 ＝（通勤・通学の流入 − 流出）× 0.35 × 18〜64歳の搬送率</b>。0.35は、通勤・通学者が区内にいる時間（約8.5時間÷24時間）で、横浜版と同じ値を借りています。流入超過の区はプラス、流出超過の区はマイナスです。',figC,exC,
-    `国勢調査2020 従業地・通学地集計（福岡市統計書 第19表）、係数0.35は横浜版と同じ値（借りた値）、${S_MODEL}。`);
+  mth('c','昼間補正','<b>昼間補正 ＝（通勤・通学の流入 − 流出）× 0.35 × 18〜64歳の搬送率</b>。0.35は、通勤・通学者が区内にいる時間（約8.5時間÷24時間）から置いた係数です。流入超過の区はプラス、流出超過の区はマイナスです。',figC,exC,
+    `国勢調査2020 従業地・通学地集計（福岡市統計書 第19表）、係数0.35は通勤・通学者が区内にいる時間（約8.5時間÷24時間）から置いた値、${S_MODEL}。`);
   /* (d) */
   const rowsD=W.map(w=>({w,e:calc(w,'2025').exp,f:facOf(w)})),mxD=Math.max(...rowsD.map(r=>Math.max(r.e,r.w.disp24)));
   const figD=`<svg class="chart" viewBox="0 0 600 ${24+rowsD.length*26}" role="img" aria-label="期待出場と実績の比">`+rowsD.map((r,i)=>{const y=14+i*26,X=v=>80+v/mxD*390;return `<text x="72" y="${y+12}" font-size="11.5" text-anchor="end" fill="#14213d">${r.w.name}区</text><rect x="80" y="${y+3}" width="${X(r.w.disp24)-80}" height="14" rx="3" fill="#3a7bd5"/><line x1="${X(r.e)}" x2="${X(r.e)}" y1="${y}" y2="${y+20}" stroke="#e63946" stroke-width="2.5"/><text x="${Math.max(X(r.w.disp24),X(r.e))+8}" y="${y+14}" font-size="11" font-weight="700" fill="#14213d" font-family="Manrope">×${r3(r.f)}</text>`}).join('')+`<text x="80" y="${22+rowsD.length*26-4}" font-size="10.5" fill="#5b6b82">青＝2024年の実績／赤の縦線＝人口と昼間人口から計算した期待出場（2025年人口）</text></svg>`;
@@ -1154,11 +1154,11 @@ function buildMethod(){
     `${S_NENPO}（出場件数 2013〜2024年）、福岡市 登録人口（各年9月末・年齢別）、${S_MODEL}（年齢調整利用率の対数線形の傾き）。`);
   /* (f) */
   const c35=DATA.city['2035'],dem=y=>STD.demandPop[y];
-  const figF=`<svg class="chart" viewBox="0 0 600 130" role="img" aria-label="基準隊数の計算">`+bx(4,30,110,60,'人口（6帯）','2035年')+op(126,64,'×')+bx(138,30,110,60,'係数','搬送率÷全年齢の搬送率')+op(260,64,'＝')+bx(272,30,120,60,'需要人口',fmt(dem(2035))+'人')+arR(396,420,60)+bx(424,30,174,60,'基準隊数','（需要人口−10万）÷5万＋5','#14213d','#14213d','#fff')+`<text x="300" y="116" font-size="11" fill="#5b6b82" text-anchor="middle">係数は福岡の搬送率から作成、算式は整備指針（横浜市の算定例）から借用</text></svg>`;
+  const figF=`<svg class="chart" viewBox="0 0 600 130" role="img" aria-label="基準隊数の計算">`+bx(4,30,110,60,'人口（6帯）','2035年')+op(126,64,'×')+bx(138,30,110,60,'係数','搬送率÷全年齢の搬送率')+op(260,64,'＝')+bx(272,30,120,60,'需要人口',fmt(dem(2035))+'人')+arR(396,420,60)+bx(424,30,174,60,'基準隊数','（需要人口−10万）÷5万＋5','#14213d','#14213d','#fff')+`<text x="300" y="116" font-size="11" fill="#5b6b82" text-anchor="middle">係数は福岡の搬送率から作成、算式は消防力の整備指針 第13条</text></svg>`;
   const exF=tblHTML(['福岡市全体','係数','2025年 人口','× 係数','2035年 人口','× 係数'],AGES.map(a=>[LAB[a],f1(STD.coef[a],3),fmt(cityPop('2025',a)),fmt(cityPop('2025',a)*STD.coef[a]),fmt(cityPop('2035',a)),fmt(cityPop('2035',a)*STD.coef[a])]).concat([{cls:'sumrow',c:['需要人口（Σ）','',fmt(dem(2025)),'',fmt(dem(2035)),'']},
     ['基準隊数 ＝（需要人口−100,000）÷50,000＋5','',f1((dem(2025)-100000)/50000+5,2)+' → <b>'+STD.units[2025]+'隊</b>','',f1((dem(2035)-100000)/50000+5,2)+' → <b>'+STD.units[2035]+'隊</b>',''],['現行隊数（令和7年3月31日）','',STD.current+'隊','',STD.current+'隊','']]),{left:[0]})+`<p class="m">区への按分は「区の需要人口 ÷ 市の需要人口 × 市の基準隊数」。中間・上限は、基準隊数に使われ方の倍率（(e)）を掛けた参考値です。</p>`;
-  mth('f','整備指針の基準隊数','<b>基準隊数 ＝（年齢帯ごとの人口 × 係数を足した「救急需要人口」− 10万人）÷ 5万人 ＋ 5</b>。係数は各帯の搬送率を全年齢の搬送率で割った値で、算式は消防力の整備指針（横浜市の算定例）から借りています。',figF,exF,
-    `消防力の整備指針 第13条、横浜市の整備指針（令和5年9月改正）の算定例、${S_NENPO}（現行隊数）、${S_MODEL}。`);
+  mth('f','整備指針の基準隊数','<b>基準隊数 ＝（年齢帯ごとの人口 × 係数を足した「救急需要人口」− 10万人）÷ 5万人 ＋ 5</b>。係数は各帯の搬送率を全年齢の搬送率で割った値で、算式は消防力の整備指針 第13条によります。',figF,exF,
+    `消防力の整備指針 第13条、${S_NENPO}（現行隊数）、${S_MODEL}。`);
   /* (g) */
   const sts=ST.filter(s=>s.ward===EX.name&&s.units>0&&s.id!=='kido'),tk=sts.reduce((a,s)=>a+s.popKey,0),cols=['#14213d','#3a5f99','#7fa6d6','#bfe3f7','#f4a259','#e63946','#2a9d8f'];
   let xx=20;const figG=`<svg class="chart" viewBox="0 0 600 160" role="img" aria-label="署所按分">`+bx(20,10,560,34,`${EX.name}区の2035年の出場 ${fmt(EX.disp['2035'])}件`,'','#eaeef4')+sts.map((s,i)=>{const w=s.popKey/tk*560,x=xx;xx+=w;return `<rect x="${x}" y="80" width="${w}" height="34" fill="${cols[i%7]}" stroke="#fff"/>${w>46?`<text x="${x+w/2}" y="101" text-anchor="middle" font-size="10.5" font-weight="700" fill="${['#bfe3f7','#7fa6d6','#f4a259'].includes(cols[i%7])?'#14213d':'#fff'}">${(s.popKey/tk*100).toFixed(0)}%</text>`:''}<text x="${x+w/2}" y="${i%2?146:132}" text-anchor="middle" font-size="10" fill="#14213d">${s.name.replace('出張所','').replace('消防署','署')}</text>`}).join('')+arD(300,46,78)+`<text x="308" y="66" font-size="10.5" fill="#5b6b82">按分キーの比で割る</text></svg>`;
@@ -1184,23 +1184,21 @@ function buildMethod(){
     ['経済センサス-活動調査 2021','総務省・経済産業省','2021','1kmメッシュの従業者数（署所按分の昼間側のキー）',A('https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001149&code=40&downloadType=2','e-Stat メッシュ従業者数')],
     ['全国都道府県市区町村別面積調','国土交通省 国土地理院','令和6年1月1日','区の面積（件/km²）',A('https://www.gsi.go.jp/KOKUJYOHO/MENCHO-title.htm','MENCHO-title.htm')],
     ['行政区域データ（国土数値情報）／JapanCityGeoJson','国土交通省／niiyz（加工・簡略化）','2020ころ','区界ポリゴン（地図）',A('https://nlftp.mlit.go.jp/ksj/','国土数値情報')+'<br>'+A('https://github.com/niiyz/JapanCityGeoJson','JapanCityGeoJson')],
-    ['横浜市消防局 令和6年 消防年報（災害統計 p.105 救急隊別活動状況）','横浜市消防局','2025','到着時間回帰（平均距離→現場到着時間）の出典。署所の到着の目安の傾きを借用',A('https://www.city.yokohama.lg.jp/city-info/yokohamashi/org/shobo/sonota/nenpoh.html','消防年報（横浜市消防局）')+'<br>災害統計：nenpoh.files/0218_20251007.pdf'],
-    ['消防力の整備指針 第13条（算定例：横浜市 整備指針 令和5年9月改正）','総務省 消防庁／横浜市','2023','基準隊数の算式（需要人口−10万）÷5万＋5。係数は福岡の搬送率から作成','消防庁ホーム '+A('https://www.fdma.go.jp/')+' で「消防力の整備指針」を参照。算定例は横浜市消防力の整備指針（令和5年9月改正）p.24（URLなし）。横浜市『横浜市消防力の整備指針』（令和5年9月改正）は横浜市消防局の「消防力の整備指針」ページで公開'],
+    ['消防力の整備指針（消防庁告示）第13条','総務省 消防庁','2023','基準隊数の算式（需要人口−10万）÷5万＋5。係数は福岡の搬送率から作成','消防庁ホーム '+A('https://www.fdma.go.jp/')+' で「消防力の整備指針」を参照'],
     ['福岡市 消防署・出張所の所在地','福岡市 消防局','2025','署所の位置（座標は国土地理院ジオコーダ等で付与）',A('https://www.city.fukuoka.lg.jp/syobo/somu/about/syozaiti.html','syozaiti.html')]];
   const borrowed=[
     ['全国の高齢者内比率（65–74／75–84／85歳以上の搬送率の形）','福岡の年報は65歳以上を一括でしか公表していないため。水準は福岡の実測に合わせ、形だけを全国の実測（消防庁 令和7年版）から借りています。'],
-    ['昼間補正の係数 0.35','通勤・通学者が区内にいる時間（約8.5時間÷24時間）で、横浜版と同じ値にそろえたため。福岡独自に検証した値ではありません。'],
-    ['横浜市87隊の到着時間回帰（分＝1.753×走行距離km＋切片）の傾き','福岡市は署所別の到着時間を公表していないため、横浜の実測の傾向（距離が1km延びると約1.75分）だけを借り、福岡の受け持ち面積に当てはめて署所間の差の「目安」を出しています（署所タブ）。距離は「受け持ち面積の等価半径の0.6倍」と仮定しました。横浜の回帰のままだと署所平均が約6:10と福岡の実測（8:12）より短くなるため、切片を平行移動して、出場件数で加重した署所平均が福岡市の2024年実測（通報→現着 8:12）に一致するようにしています。よって署所の値は絶対値でなく「市平均に合わせた相対値」です。'],
+    ['昼間補正の係数 0.35','通勤・通学者が区内にいる時間（約8.5時間÷24時間）から置いた係数。福岡独自に検証した値ではありません。'],
     ['社人研の区別構成比','福岡市の将来人口推計の区別×年齢の表は2034年までで、2035年以降は区別の総数しか無いため、社人研の区×5歳階級の構成比で全市の帯別人口を配分しています。'],
-    ['整備指針の算式（横浜市の算定例）','福岡市独自の整備計画は公開資料で見つからなかったため、算式は横浜市の整備指針の算定例を借り、係数は福岡の搬送率から作っています。']];
+    ['整備指針の算式（第13条）','福岡市独自の整備計画は公開資料で見つからなかったため、算式は消防力の整備指針 第13条の式（救急需要人口＝年齢帯別人口×係数、係数は各帯の搬送率÷全年齢の搬送率）を用い、係数は福岡の搬送率から作っています。']];
   const bt=BT,[e1,e2]=errR();
   const tail=`<div class="card"><h3>使ったデータ一覧</h3><div class="tbl">${tblHTML(['資料名','発行元','年','何に使ったか','URL'],SRCS,{left:[0,1,2,3,4]})}</div>${srcLine('各資料の公表ページ。取得・加工は本サイトの src/ のスクリプトで再現できます。')}</div>
-  <div class="card"><h3>借りた値（なぜ借りたか）</h3><ul>${borrowed.map(([a,b])=>`<li><b>${a}</b>：${b}</li>`).join('')}</ul>${srcLine('上記の各資料。借りた値は推計の誤差の源になりうるため、署所の到着時間は「目安」と明記しています。')}</div>
+  <div class="card"><h3>借りた値（なぜ借りたか）</h3><ul>${borrowed.map(([a,b])=>`<li><b>${a}</b>：${b}</li>`).join('')}</ul>${srcLine('上記の各資料。借りた値は推計の誤差の源になりうるため、署所の数字は「推定」と明記しています。')}</div>
   <div class="card"><h3>答え合わせ（バックテスト）</h3><p>2013〜2019年のデータだけで「使われ方の伸び」（年+${(TR.slopePre*100).toFixed(2)}%）を求め、2022〜2024年の実績を当ててみました。</p>${tblHTML(['年','予測（件）','実績（件）','差'],[2022,2023,2024].map(y=>[y,fmt(bt.pred[y]),fmt(bt.actual[y]),`<b>${pct(bt.errPct[y])}</b>`]))}<p>コロナ前の傾きは、コロナ後の実績を${e1}〜${e2}%低く見積もりました。だから上限シナリオ（2013〜2024年の傾き）を置き、人口だけの下限〜上限の幅で見ています。差は3年とも同じ向き（予測が低い）なので、コロナ後に水準が一段上がったと読むのが素直です。</p>${srcLine(S_NENPO+'、福岡市 登録人口、'+S_MODEL+'（src/build_trend.py のバックテスト）。')}</div>
   <div class="card"><h3>留意点</h3><ul>
    <li><b>人口の基準</b>：登録人口（住民基本台帳）は国勢調査ベースの推計人口より約5万人少ない住基ベースです。</li>
    <li><b>2034→2035年の切替</b>：区別の年齢帯別人口は、2034年まで福岡市推計の表、2035年以降は社人研の区シェアで配分した推計です。段差は2050年にかけて解消する設計で、2035年の区別の数字は社人研の構成に寄ります。</li>
-   <li><b>区のタイプの閾値</b>：福岡市は若い都市なので、成熟型の閾値は横浜版（34%）より低い27%（2035年の高齢化率）に置いています。</li>
+   <li><b>区のタイプの閾値</b>：福岡市は若い都市なので、成熟型の閾値は2035年の高齢化率27%に置いています。</li>
    <li><b>署所は推定</b>：最寄り按分の推定で上限寄り。公式の署所別統計ではありません。</li>
    <li><b>上限シナリオの強さ</b>：伸びが複利で続く前提で、2050年には2025年の約${f1(cityS(2050,'H')/cityL(2025),1)}倍になります。2036年以降は参考値です。</li>
    <li><b>公表の無いもの</b>：不搬送率・時間帯別の出場・事故種別は、区別の数字が年報に無く市全体のみです。</li>

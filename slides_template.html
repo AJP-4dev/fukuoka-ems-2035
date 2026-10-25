@@ -216,12 +216,12 @@ CH.s11=(el,w)=>{
   let b=c.b;if(!MOBILE())[2022,2023,2024].forEach(y=>{b+=tx(c.sx(y),c.sy((bt.actual[y]+bt.pred[y])/2000)+4,pc(bt.errPct[y]),{fs:FS-(MOBILE()?2:0),w:700,c:NAVY,a:y===2022?'end':'middle',f:NUMF});});
   return svg(w,h,b,'過去で当ててみた');};
 CH.s12=(el,w)=>{
-  const h=MOBILE()?280:Math.min(320,innerHeight*.4),G=[['65–74歳',5.9,6.3],['75–84歳',12.0,12.3],['85歳以上',24.9,24.8]];
-  const gw=w/3,bw=Math.min(54,gw*.32),top=24,bot=28,ph=h-top-bot,max=28;let b=`<line x1="0" x2="${w}" y1="${h-bot}" y2="${h-bot}" stroke="${LN}"/>`;
+  const h=MOBILE()?280:Math.min(320,innerHeight*.4),G=[['65–74歳',59.5,70.7],['75–84歳',120.1,142.8],['85歳以上',248.9,295.8]];
+  const gw=w/3,bw=Math.min(54,gw*.32),top=24,bot=28,ph=h-top-bot,max=320;let b=`<line x1="0" x2="${w}" y1="${h-bot}" y2="${h-bot}" stroke="${LN}"/>`;
   G.forEach((g,i)=>{const cx=gw*(i+.5);[[g[1],INK3,-1],[g[2],BLU,1]].forEach(([v,c,s])=>{const bh=v/max*ph,x=cx+(s<0?-bw-2:2);
     b+=`<rect x="${x}" y="${h-bot-bh}" width="${bw}" height="${bh}" rx="3" fill="${c}"/>`+tx(x+bw/2,h-bot-bh-6,v.toFixed(1),{w:700,f:NUMF,fs:FS+1});});
     b+=tx(cx,h-8,g[0],{fs:FS,c:INK2});});
-  return svg(w,h,b,'全国と横浜の年齢別利用率');};
+  return svg(w,h,b,'全国と福岡の年齢別利用率');};
 CH.s13=(el,w)=>{
   const h=MOBILE()?290:Math.min(330,innerHeight*.4),top=24,bot=40,ph=h-top-bot,gw=w/7,bw=Math.min(30,gw*.34),max=Math.max(...W.map(x=>x.disp24/x.fac))*1.04;let b=`<line x1="0" x2="${w}" y1="${h-bot}" y2="${h-bot}" stroke="${LN}"/>`;
   W.forEach((x,i)=>{const cx=gw*(i+.5),e=x.disp24/x.fac;
@@ -318,15 +318,15 @@ ${AG.slice().reverse().map(a=>{const r1=EX.pop['2025'][a],r2=EX.pop['2035'][a];r
 /* 10 */
 SL.push({t:'借りた値と、その理由',h:`<div class="vis"><div class="grid g3">
  <div class="card"><h3><span class="no">1</span>高齢者の中の比率</h3><p>65–74／75–84／85歳以上 ＝ <b>1：2.0：4.2</b>。全国値を借りました。</p><p class="lab" style="margin-top:6px">← 福岡の年報は65歳以上が一括で載っているから</p></div>
- <div class="card"><h3><span class="no">2</span>昼間補正の係数 ${DAYF}</h3><p>通勤・通学者が区内にいる時間（8.5時間／24時間）。横浜版と同じ考え方です。</p><p class="lab" style="margin-top:6px">← 昼に来る人のぶんを足すため</p></div>
+ <div class="card"><h3><span class="no">2</span>昼間補正の係数 ${DAYF}</h3><p>通勤・通学者が区内にいる時間（約8.5時間÷24時間）から置いた係数です。</p><p class="lab" style="margin-top:6px">← 昼に来る人のぶんを足すため</p></div>
  <div class="card"><h3><span class="no">3</span>2035年以降の区別の年齢</h3><p>社人研の年齢構成比を借りました。</p><p class="lab" style="margin-top:6px">← 市の推計の区別表が2034年までだから</p></div></div></div>
  <p class="t m">借りた値は、方法タブで全部公開しています。</p>`,s:'消防庁、総務省 人口推計、国立社会保障・人口問題研究所'});
 /* 11 */
 SL.push({t:'妥当性① 答え合わせ：過去で当ててみた',h:`<div class="vis"><div class="legend"><span><i class="ln" style="background:${RED}"></i>実績</span><span><i class="ln" style="background:${NAVY}"></i>2013〜2019年の傾きで引いた予測線</span></div>${V('s11')}<div class="lab">2022〜24年の差（予測−実績）：${[2022,2023,2024].map(y=>pc(TR.backtest.errPct[y])).join('／')}</div></div>
  <p class="t">コロナ前の傾きだと、いまを<b>7〜9%低く</b>見積もります。だから「上限」シナリオを置きました。</p>`,s:SRC.nenpo+'、'+SRC.model});
 /* 12 */
-SL.push({t:'妥当性② 他の都市と比べても同じ形',h:`<div class="vis"><div class="legend"><span><i style="background:${INK3}"></i>全国</span><span><i style="background:${BLU}"></i>横浜市</span><span>（人口1,000人あたり）</span></div>${V('s12')}<div class="lab">福岡の65歳以上全体は <b>135.8</b>（全国 118.2 より約15%高い）</div></div>
- <p class="t">年を取るほど運ばれる<b>“形”は地域によらず同じ</b>。水準は福岡の実測に合わせました。</p>`,s:'消防庁 救急・救助の現況（令和7年版）、横浜市消防年報 R6'});
+SL.push({t:'妥当性② 全国と比べても同じ形',h:`<div class="vis"><div class="legend"><span><i style="background:${INK3}"></i>全国</span><span><i style="background:${BLU}"></i>福岡</span><span>（人口1,000人あたり）</span></div>${V('s12')}<div class="lab">福岡の65歳以上全体は <b>135.8</b>（全国 118.2 より約15%高い）</div></div>
+ <p class="t">年を取るほど運ばれる<b>“形”は全国も福岡も同じ</b>。水準は福岡の実測に合わせました。</p>`,s:'消防庁 救急・救助の現況（令和7年版）'});
 /* 13 */
 const ratio=W.reduce((s,w)=>s+w.disp24/w.fac,0)/W.reduce((s,w)=>s+w.disp24,0);
 SL.push({t:'妥当性③ 計算値と実績のずれは '+((ratio-1)*100).toFixed(1)+'%',h:`<div class="vis"><div class="legend"><span><i style="background:${INK3}"></i>校正前の計算値</span><span><i style="background:${RED}"></i>実績（2024年）</span><span>文字＝校正係数</span></div>${V('s13')}<div class="lab">市全体では計算値が実績の ${ratio.toFixed(3)}倍。校正係数は博多 ${W.find(w=>w.name==='博多').fac.toFixed(2)}、中央 ${W.find(w=>w.name==='中央').fac.toFixed(2)}、他は 0.88〜0.91。</div></div>
@@ -346,7 +346,7 @@ SL.push({t:'結果③ 都心は“住んでいない人”が運ばれる',h:`<d
 /* 17 */
 const U=DATA.standard.units;
 SL.push({t:'結果④ 1隊あたりの負担と、基準の隊数',h:`<div class="vis">${V('s17')}</div>
- <p class="t">基準では今すでに<b>${U['2025']-DATA.standard.current}隊足りない</b>計算（現行 ${DATA.standard.current}隊 → 基準 ${U['2025']}隊）。2035年には基準 ${U['2035']}隊で、<b>${U['2035']-DATA.standard.current}隊</b>の差になります。</p>`,s:'福岡市消防年報 R6、消防力の整備指針 第13条（横浜市の算定例）'});
+ <p class="t">基準では今すでに<b>${U['2025']-DATA.standard.current}隊足りない</b>計算（現行 ${DATA.standard.current}隊 → 基準 ${U['2025']}隊）。2035年には基準 ${U['2035']}隊で、<b>${U['2035']-DATA.standard.current}隊</b>の差になります。</p>`,s:'福岡市消防年報 R6、消防力の整備指針 第13条'});
 /* 18 */
 SL.push({t:'結果⑤ 署所：先に詰まるのはここ<span class="tag">推定</span>',h:`<div class="vis"><div class="lab"><b>1隊あたり出場</b>（2035年・上位6署所・件/隊）　3,000件/隊を超える署所：<b>${N.over25}→${N.over35}</b>（${N.sts.length}署所中）</div>${V('s18')}</div>
  <p class="t"><span class="tag big" style="margin:0 8px 0 0">推定</span>1kmメッシュの人口を最寄りの署所に按分した目安で、<b>公式の統計ではありません</b>。出張所1隊の署所に負担が集中しやすい傾向があります。</p>`,s:'令和2年国勢調査・経済センサス（メッシュ）、本資料の推定'});
