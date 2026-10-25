@@ -4,3 +4,5 @@ out/
 .pytest_cache/
 __pycache__/
 slides/node_modules/
+.shots-slides/
+.superpowers-*.md
