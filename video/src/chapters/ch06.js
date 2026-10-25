@@ -25,6 +25,14 @@
   const MHI = 16;
   const MOFF = { 中央: [-14, -8], 博多: [16, 0], 城南: [-30, 2], 南: [22, 8] };   // 小地図の数字の位置ずらし（重なり回避）
   const mcol = (v) => ramp(['#eef1f5', '#f4a259', '#e63946'], v / MHI);
+  // 増減率の高さ（9.4〜: 色と一緒に高さも増減率へ。+6%→低い、+16%→最大。凡例 +6%〜+16% と同じ幅）
+  const hRate = (d) => 0.4 + clamp((d - DLO) / (DHI - DLO)) * 7;
+  const colUAt = (lt) => E.inOut(P(lt, 9.4, 0.8));
+  // 右（2035）の柱の高さ: 2025→2035 の件数で伸び、9.4〜 増減率の高さへ（以降 3D が消えるまで保持）
+  const hR = (w, i, lt) => {
+    const u = E.outCubic(P(lt, 6.0 + rankX[i] * 0.06, 1.4));
+    return lerp(hOf(lerp(w.disp['2025'], w.disp['2035'], u)), hRate(wDiff35(w)), colUAt(lt));
+  };
 
   /* ── カメラ（すべて t の関数） ── */
   const CF = shiftCam(CAM0, 4.5);                                      // 全画面（左に文字）
@@ -50,8 +58,8 @@
       if (side === 'L') { setPillar(i, hOf(w.disp['2025']), rampDisp(w.disp['2025'])); return; }
       const u = E.outCubic(P(lt, 6.0 + rankX[i] * 0.06, 1.4));
       const v = lerp(w.disp['2025'], w.disp['2035'], u);
-      setPillar(i, hOf(v), rampDisp(v));
-      const colU = E.inOut(P(lt, 9.4, 0.8));
+      setPillar(i, hR(w, i, lt), rampDisp(v));
+      const colU = colUAt(lt);
       if (colU > 0) meshes[i].material.color.lerp(tmpC2.set(dcol(wDiff35(w))), colU);   // RGB で補間（HSL だと青→橙の途中が黄緑になる）
       const focus = CORE.includes(w.name) ? emC : 0;
       const dim = 0.75 * emC * (1 - focus);
@@ -85,7 +93,7 @@
     }, v);
   }
   // ラベルの置き方（全景）
-  const LPOS = { 東: {}, 博多: { left: false }, 中央: { left: true }, 南: {}, 城南: { dx: -250, dy: -6 }, 早良: { left: true }, 西: { left: true } };
+  const LPOS = { 東: {}, 博多: { left: false }, 中央: { left: true }, 南: {}, 城南: { dx: -250, dy: 40 }, 早良: { left: true }, 西: { left: true } };
 
   function draw3D(lt) {
     reset3D(); beginGL();
@@ -102,12 +110,12 @@
       renderView(vx, vw, vx, sw);
       // 全区のラベル（分割が閉じた後）
       const ua = P(lt, 15.0, 0.8), va = E.inOut(P(lt, 21.0, 0.35));
-      if (ua > 0 && va < 1) WD.forEach((w, i) => lab3(i, hOf(w.disp['2035']), `${sgn(wDiff35(w))}%`, COL.red, ua, va, LPOS[w.name]));
+      if (ua > 0 && va < 1) WD.forEach((w, i) => lab3(i, hR(w, i, lt), `${sgn(wDiff35(w))}%`, COL.red, ua, va, LPOS[w.name]));
       // 都心のラベル
       const uc = P(lt, 22.8, 0.8), vc = E.inOut(P(lt, 33.4, 0.35));
       if (uc > 0 && vc < 1) {
-        lab3(WI['博多'], hOf(HK.disp['2035']), `${sgn(wDiff35(HK))}%`, COL.red, uc, vc, {});
-        lab3(WI['中央'], hOf(CH.disp['2035']), `${sgn(wDiff35(CH))}%`, COL.red, uc, vc, { left: true });
+        lab3(WI['博多'], hR(HK, WI['博多'], lt), `${sgn(wDiff35(HK))}%`, COL.red, uc, vc, {});
+        lab3(WI['中央'], hR(CH, WI['中央'], lt), `${sgn(wDiff35(CH))}%`, COL.red, uc, vc, { left: true });
       }
     }
     // 左（2025）は右の後に描く。分割中は右で作った影をそのまま使い、影の計算を1回に減らす（描画時間の節約）
@@ -146,7 +154,7 @@
     if (lt >= 9.4 && lt < 36.6) {
       const lu = E.outCubic(P(lt, 9.4, 0.6)), x0 = W - M - 300, y0 = 846;
       wipe(lu, x0 - 6, y0 - 34, 312, 84, () => {
-        text('2025年比の増減率', x0, y0 - 12, { size: 20, c: COL.sub, halo: 5 });
+        text('色と高さ＝2025年比の増減率', x0, y0 - 12, { size: 20, c: COL.sub, halo: 5 });
         for (let k = 0; k < 30; k++) { g.fillStyle = dcol(DLO + ((DHI - DLO) * k) / 29); g.fillRect(x0 + k * 10, y0, 10, 12); }
         text(`+${DLO}%`, x0, y0 + 36, { size: 20, num: true, c: COL.sub, halo: 5 });
         text(`+${DHI}%`, x0 + 300, y0 + 36, { size: 20, num: true, c: COL.sub, align: 'right', halo: 5 });
@@ -217,17 +225,17 @@
     subs: [
       [1.6, 4.8, '柱の高さ＝区ごとの出場件数'],
       [5.4, 9.0, '2035年、どの区も柱が伸びる'],
-      [9.4, 14.4, '色＝2025年からの増減率'],
+      [9.4, 14.4, '色と高さ＝2025年からの増減率'],
       [15.0, 21.0, 'どの区も +10〜15%'],
       [22.0, 33.4, '都心は“住んでいない人”が運ばれる'],
       [34.0, 37.8, '引いて見ると、どの区も増える'],
       [38.4, 45.4, '左＝人口、右＝出場。同じ物差し'],
       [45.8, 54.6, '人口が少し増えるだけでも、救急は1割増える'],
     ],
-    uses3D: (lt) => lt < 37.6,
+    uses3D: (lt) => lt >= 0.9 && lt < 37.6,   // 問いカードが覆っている間は 2D のみ（0.9〜1.2 でカードが抜けるのに合わせて 3D が見える）
     setup(ctx) {},
     draw(ctx, lt, t) {
-      if (lt < 37.6) draw3D(lt);
+      if (lt >= 0.9 && lt < 37.6) draw3D(lt);
       if (lt >= 36.6) draw2D(lt);
     },
   };

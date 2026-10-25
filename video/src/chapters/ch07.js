@@ -1,7 +1,7 @@
 /* 第7章 妥当性（40秒）— 契約は ../../CONTRACT.md。IIFE で包み、トップレベルに名前を出さない。
  * (a) 1.4–20.6  答え合わせ: 2013–2024 の実績（赤）が走る → 2013–2019 の傾き（紺の点線）が 2024 まで伸びる
  *               → 実績が上に抜けた差が薄赤で開く → 2022／2023／2024 の差をチップで（1秒以内に3つ）→「上限」の説明
- * (b) 21.0–39.6 全国／横浜／福岡の高齢者内の比率（人口1,000人あたり）の棒 3×3 が伸びる → チップ → 年齢帯ごとに淡い帯が順に走る */
+ * (b) 21.0–39.6 全国／福岡の高齢者内の比率（人口1,000人あたり）の棒 3×2 が伸びる → チップ → 年齢帯ごとに淡い帯が順に走る */
 (() => {
   const S = SER.dispatch, BT = TR.backtest;
   const YR = []; for (let y = 2013; y <= 2024; y++) YR.push(y);
@@ -15,12 +15,11 @@
   const ERR = [2022, 2023, 2024].map((y) => [y, BT.errPct[yk(y)]]);
   const errAbs = ERR.map(([, e]) => Math.abs(e));
   const E_LO = Math.round(Math.min(...errAbs)), E_HI = Math.round(Math.max(...errAbs));   // 7〜9%
-  // (b) 高齢者内の比率（人口1,000人あたり）。全国・横浜は SPEC の確定値、福岡は DATA.rates
+  // (b) 高齢者内の比率（人口1,000人あたり）。全国は SPEC の確定値、福岡はサイトと同じ表示値
   const GRP = ['e1', 'e2', 'e3'];
   const SERIES = [
     { name: '全国', c: COL.grey, v: { e1: 59.5, e2: 120.1, e3: 248.9 }, d: 1 },
-    { name: '横浜', c: '#7fa6d6', v: { e1: 63, e2: 123, e3: 248 }, d: 0 },
-    { name: '福岡', c: COL.navy, v: { e1: DATA.rates.e1 * 1000, e2: DATA.rates.e2 * 1000, e3: DATA.rates.e3 * 1000 }, d: 1 },
+    { name: '福岡', c: COL.navy, v: { e1: 70.7, e2: 142.8, e3: 295.8 }, d: 1 },   // DATA.rates×1000 をサイト・スライドの表示値に揃える（e3 0.29585 は toFixed で 295.9 になるため固定）
   ];
   const T_B = 21.0;
 
@@ -32,8 +31,8 @@
     subs: [
       [1.6, 9.6, `コロナ前の傾きでは${E_LO}〜${E_HI}%低く出る`],
       [10.0, 20.4, 'だから“上限”も置いた'],
-      [21.6, 30.0, '年齢別の運ばれ方を、ほかと比べる'],
-      [30.4, 39.6, '年を取るほど運ばれる形は、どこでも同じ'],
+      [21.6, 30.0, '年齢別の運ばれ方を、全国と比べる'],
+      [30.4, 39.6, '年を取るほど運ばれる形は、全国と同じ'],
     ],
     setup(ctx) {},
     draw(ctx, lt, t) {
@@ -86,13 +85,13 @@
       chip(lt, 14.0, 20.6, `中間＝コロナ前の伸び 年${(TR.slopePre * 100).toFixed(1)}%`, LX, 522, { c: COL.orange });
       chip(lt, 15.0, 20.6, '下限＝人口の変化だけ', LX, 574, { c: COL.navy });
 
-      /* ── (b) 高齢者内の比率（全国／横浜／福岡） ─── */
+      /* ── (b) 高齢者内の比率（全国／福岡） ─── */
       if (lt >= T_B) {
         const C = { x0: 960, x1: 1760, y0: 200, y1: 780 };
         C.Y = (v) => lerp(C.y1, C.y0, v / 320);
-        const GW = (C.x1 - C.x0) / 3, BW = 58, GAP = 10;
+        const GW = (C.x1 - C.x0) / 3, BW = 72, GAP = 12;
         const gx = (k) => C.x0 + GW * k + GW / 2;                     // 群の中心
-        const bx = (k, s) => gx(k) + (s - 1) * (BW + GAP) - BW / 2;  // 棒の左端
+        const bx = (k, s) => gx(k) + (s - 0.5) * (BW + GAP) - BW / 2;  // 棒の左端（2本を群の中心に）
         axes(lt, T_B, C, [], [[0, '0'], [100, '100人'], [200, '200人'], [300, '300人']]);
         wtext(lt, T_B + 0.3, null, '人口1,000人あたり、1年に救急車で運ばれる人', C.x0, 168, { size: 20, c: COL.sub });
         GRP.forEach((a, k) => wtext(lt, T_B + 0.4, null, AGEL[a], gx(k), C.y1 + 36, { size: 20, c: COL.ink, align: 'center' }));
@@ -106,13 +105,13 @@
             line(x0 + wAll * v, C.y1 + 50, x0 + wAll * u, C.y1 + 50, COL.red, 2);
           }
         }
-        // 棒: 9本が 1.2 秒以内に伸びる。値は棒の上に
+        // 棒: 6本が 1.2 秒以内に伸びる。値は棒の上に
         SERIES.forEach((s, si) => GRP.forEach((a, k) => {
-          const u = E.outCubic(P(lt, T_B + 0.8 + (k * 3 + si) * 0.05, 0.9));
+          const u = E.outCubic(P(lt, T_B + 0.8 + (k * 2 + si) * 0.05, 0.9));
           if (u <= 0) return;
           const v = s.v[a], x = bx(k, si), yt = C.Y(v * u);
           g.fillStyle = s.c; g.fillRect(x, yt, BW, C.y1 - yt);
-          if (u > 0.95) text(v.toFixed(s.d), x + BW / 2, C.Y(v) - 10, { size: 20, num: true, c: si === 2 ? COL.ink : COL.sub, align: 'center' });
+          if (u > 0.95) text(v.toFixed(s.d), x + BW / 2, C.Y(v) - 10, { size: 20, num: true, c: si === 1 ? COL.ink : COL.sub, align: 'center' });
         }));
         // 凡例
         wipe(E.outCubic(P(lt, T_B + 0.6, 0.5)), C.x0 - 4, 216, 560, 36, () => {
@@ -122,7 +121,7 @@
         // 左カラム
         wtext(lt, T_B + 0.4, null, '年齢別の運ばれ方', LX, 240, { size: 48 });
         wtext(lt, T_B + 0.7, null, '65歳以上を3つに分けて\n人口1,000人あたりで比べる', LX, 330, { size: 28, lead: 44 });
-        chip(lt, 26.0, 39.8, '3地域とも、年齢が上がるほど高い', LX, 470, { c: COL.navy });
+        chip(lt, 26.0, 39.8, '全国も福岡も、年齢が上がるほど高い', LX, 470, { c: COL.navy });
         chip(lt, 32.0, 39.8, '福岡の65歳以上全体 135.8（全国 118.2）', LX, 522, { c: COL.red });
         chip(lt, 34.4, 39.8, '数の水準は違っても、形は同じ', LX, 574, { c: COL.navy });
       }
