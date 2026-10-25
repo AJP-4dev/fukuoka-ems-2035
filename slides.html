@@ -93,6 +93,7 @@ table.tb{border-collapse:collapse;width:100%;font-size:clamp(13px,.6vw + 9px,17p
 .navy a{color:var(--sky)}
 /* chrome */
 #bar{position:fixed;z-index:20;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + var(--sat)) clamp(12px,3vw,24px) 0;pointer-events:none}
+@media (max-width:899px){#bar{height:calc(52px + var(--sat));padding-top:var(--sat);align-items:center;background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);pointer-events:auto}body.dk #bar{background:rgba(20,33,61,.96);border-color:rgba(255,255,255,.15)}#bar a,#cnt{box-shadow:none;background:var(--paper)}}
 #bar a,#cnt{pointer-events:auto;background:rgba(255,255,255,.92);color:var(--navy);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 1px 6px rgba(20,33,61,.18)}
 #cnt{font-family:Manrope,sans-serif;letter-spacing:.04em}
 #nxt{position:fixed;z-index:20;right:clamp(12px,3vw,24px);bottom:calc(12px + var(--sab));width:44px;height:44px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 2px 10px rgba(20,33,61,.35);border:1px solid rgba(255,255,255,.35)}
@@ -249,8 +250,8 @@ CH.s16=(el,w)=>{
   return svg(w,r.h,r.b,'住民1,000人あたり出場（2025年）');};
 CH.s17=(el,w)=>{
   const mob=MOBILE(),lw=mob?w:Math.round(w*.58),rw=mob?w:w-lw-24;
-  const dat=W.slice().sort((a,b)=>b.loadPerUnit24-a.loadPerUnit24),avg=SER.dispatch[2024]/SER.units[2024];
-  const r=hbars(lw,dat.map(x=>({l:x.name,v:x.loadPerUnit24,c:RED,t:fmt(x.loadPerUnit24)})),{lw:mob?44:56,vw:70,rh:mob?30:36,max:4200,vline:avg,vlab:'平均 '+fmt(avg)+' 件/隊',vfs:FS+1});
+  const dat=W.slice().sort((a,b)=>b.loadPerUnit24-a.loadPerUnit24),avg=2968;
+  const r=hbars(lw,dat.map(x=>({l:x.name,v:x.loadPerUnit24,c:RED,t:fmt(x.loadPerUnit24)})),{lw:mob?44:56,vw:70,rh:mob?30:36,max:4200,vline:avg,vlab:'年報の一隊当たり平均（24時間隊）2,968件',vfs:FS+1});
   const U=DATA.standard.units,items=[['現行',DATA.standard.current,NAVY],['2025',U['2025'],GRN],['2035',U['2035'],GRN],['2050',U['2050'],GRN]].map(x=>({l:x[0],v:x[1],c:x[2],t:x[1]+'隊'}));
   const h=Math.max(r.h+0,mob?210:230),bars=vbars(rw,h,items,{max:46,gap:Math.max(6,rw*.06),vfs:FS+3,lfs:FS});
   return `<div class="${mob?'':'pair'}" style="align-items:end;${mob?'':'grid-template-columns:'+lw+'px '+rw+'px'}"><div><div class="lab" style="margin-bottom:4px"><b>区別 1隊あたり出場</b>（2024年実績・件/隊）</div>${svg(lw,r.h,r.b,'区別 1隊あたり出場')}</div><div><div class="lab" style="margin:${mob?'14px':'0'} 0 4px"><b>基準の隊数</b>（整備指針）</div>${svg(rw,h,bars,'基準隊数')}</div></div>`;};
@@ -379,7 +380,7 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
 /* ---------- ナビ ---------- */
 const slides=[...document.querySelectorAll('.slide')],cnt=document.getElementById('cnt'),nxt=document.getElementById('nxt');
 let cur=0;
-function upd(){let c=0;slides.forEach((s,i)=>{if(s.getBoundingClientRect().top<=innerHeight*.4)c=i});cur=c;cnt.textContent=(c+1)+' / '+slides.length;nxt.hidden=c===slides.length-1;history.replaceState(null,'','#'+(c+1))}
+function upd(){let c=0;slides.forEach((s,i)=>{if(s.getBoundingClientRect().top<=innerHeight*.4)c=i});cur=c;document.body.classList.toggle('dk',slides[c].classList.contains('navy'));cnt.textContent=(c+1)+' / '+slides.length;nxt.hidden=c===slides.length-1;history.replaceState(null,'','#'+(c+1))}
 deck.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true});
 const go=i=>{i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:'smooth',block:'start'})};
 nxt.addEventListener('click',()=>go(cur+1));
