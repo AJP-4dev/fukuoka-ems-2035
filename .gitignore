@@ -3,3 +3,4 @@ src/raw/
 out/
 .pytest_cache/
 __pycache__/
+slides/node_modules/
