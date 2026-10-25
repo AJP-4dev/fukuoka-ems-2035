@@ -46,6 +46,19 @@ scripts/build.sh --full    # 先に生データから再抽出（src/raw/ が必
 
 `--full` は `src/raw/shouraijinkousuikei.pdf`、`src/raw/ipss/suikei_kekka.xlsx`、登録人口等の Excel/CSV を使います（無いファイルがあるとスクリプトがそのファイル名を示して止まります）。e-Stat の 1km メッシュは `build_small_areas.py` が自動でダウンロードします。`index.html` は生成物ですが、GitHub Pages 用にコミットします。
 
+## スライド
+
+- Web 版: https://ajp-4dev.github.io/fukuoka-ems-2035/slides.html
+- PPTX: `slides/fukuoka-ems-2035-slides.pptx`
+- 再生成: `node slides/build_pptx.mjs`
+
+## 動画
+
+レポートの「動画」タブで、約6分40秒・無音・字幕つきの解説動画（`media/fukuoka-ems-2035.mp4`）を再生できます。章リストをクリックするとその位置へ移動します。`data.js` から決定論的にレンダしています（Playwright＋ffmpeg）。
+
+- 再レンダ: `cd video && node scripts/render.mjs`
+- 仕様: `video/SPEC.md`／契約: `video/CONTRACT.md`
+
 ## 出典
 
 | 資料（年） | URL | 用途 |

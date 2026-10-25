@@ -80,3 +80,9 @@ def test_slides_page():
     assert s.count('SL.push(') == 21
     assert 'class="slide' in s
     assert 'href="slides.html"' in (ROOT / 'template.html').read_text(encoding='utf-8')
+
+
+def test_video_tab_present():
+    t = _t()
+    assert 'id="tab-video"' in t
+    assert 'https://ajp-4dev.github.io/fukuoka-ems-2035/media/fukuoka-ems-2035.mp4' in t

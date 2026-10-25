@@ -383,6 +383,16 @@ tr.hotrow td{background:#fff4f5}
   <div id="mthTail"></div>
 </div></div></section>
 
+<!-- ================= VIDEO ================= -->
+<section class="page" id="page-video"><div class="scroll"><div class="wrap" id="tab-video">
+  <h2>動画 — 地図に聞く</h2>
+  <p class="lead">約6分40秒・無音・字幕つき。『地図に聞く』の流れでこのレポートの要点を追えます</p>
+  <video id="emsVideo" controls playsinline preload="metadata" poster="media/poster.jpg" src="https://ajp-4dev.github.io/fukuoka-ems-2035/media/fukuoka-ems-2035.mp4" style="width:100%;max-width:960px;display:block;background:#000;border-radius:8px"></video>
+  <p class="note" id="vidMissing" hidden>動画は準備中です</p>
+  <ol class="vidch" style="list-style:none;padding:0;margin:12px 0;display:grid;gap:6px;max-width:960px"><li><button type="button" data-t="0"><span class="num">0</span> 冒頭 <small>0:00</small></button></li><li><button type="button" data-t="8"><span class="num">1</span> 問い <small>0:08</small></button></li><li><button type="button" data-t="26.8"><span class="num">2</span> データの出どころ <small>0:27</small></button></li><li><button type="button" data-t="53.6"><span class="num">3</span> どう計算したか <small>0:54</small></button></li><li><button type="button" data-t="114.4"><span class="num">4</span> 結果① 市全体 <small>1:54</small></button></li><li><button type="button" data-t="155.2"><span class="num">5</span> 結果② 誰が <small>2:35</small></button></li><li><button type="button" data-t="196"><span class="num">6</span> 結果③ どこで <small>3:16</small></button></li><li><button type="button" data-t="251.8"><span class="num">7</span> 妥当性 <small>4:12</small></button></li><li><button type="button" data-t="292.6"><span class="num">8</span> 隊の負担 <small>4:53</small></button></li><li><button type="button" data-t="333.4"><span class="num">9</span> 署所（推定） <small>5:33</small></button></li><li><button type="button" data-t="369.2"><span class="num">10</span> 長期と示唆 <small>6:09</small></button></li></ol>
+  <p class="src">制作：本レポートのデータ（data.js）から決定論レンダ（Playwright＋ffmpeg）。音声なし</p>
+</div></div></section>
+
 <!-- ================= INTRO ================= -->
 <div id="intro" role="dialog" aria-label="このサイトの見方">
   <div class="box">
@@ -452,7 +462,7 @@ const BASE_LBL='2025年（人口変化のみ）比';
 const metric=w=>{const m=state.metric,v=cityVal([w],state.year,state.sc,m);return isDiff()?(v/baseVal([w],m)-1)*100:v};
 
 /* ---------- navigation ---------- */
-const PAGES=[['map','地図','<path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/><path d="M9 7v13M15 4v13"/>'],['pop','人口','<circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 3-6 6-6s6 2 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14c3 0 5 2 5 5"/>'],['city','市全体','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],['wards','区別','<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>'],['st','署所','<path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.800-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>'],['insight','考察','<path d="M12 3a7 7 0 0 0-4 12.7V18h8v-2.3A7 7 0 0 0 12 3z"/><path d="M9 21h6"/>'],['method','方法','<path d="M4 6h16M4 12h10M4 18h16"/><circle cx="18" cy="12" r="2"/>']];
+const PAGES=[['map','地図','<path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/><path d="M9 7v13M15 4v13"/>'],['pop','人口','<circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 3-6 6-6s6 2 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14c3 0 5 2 5 5"/>'],['city','市全体','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],['wards','区別','<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>'],['st','署所','<path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.800-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>'],['insight','考察','<path d="M12 3a7 7 0 0 0-4 12.7V18h8v-2.3A7 7 0 0 0 12 3z"/><path d="M9 21h6"/>'],['method','方法','<path d="M4 6h16M4 12h10M4 18h16"/><circle cx="18" cy="12" r="2"/>'],['video','動画','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/>']];
 const nav=document.getElementById('nav'), hdt=document.querySelector('.hdtabs');
 PAGES.forEach(([id,lab,ico],i)=>{
   nav.insertAdjacentHTML('beforeend',`<button role="tab" data-page="${id}" aria-selected="${i===0}"><svg viewBox="0 0 24 24">${ico}</svg>${lab}</button>`);
@@ -473,6 +483,9 @@ function go(id){
   if(id!=='map')sheet.classList.remove('open');
   const sc=document.querySelector('#page-'+id+' .scroll'); if(sc)sc.scrollTop=0;
 }
+const vid=document.getElementById('emsVideo');
+if(vid){vid.addEventListener('error',()=>{document.getElementById('vidMissing').hidden=false});
+document.querySelectorAll('#tab-video .vidch button').forEach(b=>b.onclick=()=>{try{vid.currentTime=+b.dataset.t;vid.play().catch(()=>{})}catch(e){}})}
 nav.insertAdjacentHTML('beforeend','<a class="slidego" href="slides.html" aria-label="スライド（別ページ）"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg>スライド</a>');
 hdt.insertAdjacentHTML('beforeend','<a class="slidego" href="slides.html">スライド</a>');
 document.querySelectorAll('[role=tab][data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));
