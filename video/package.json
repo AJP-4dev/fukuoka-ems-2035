@@ -1,0 +1,1 @@
+{ "name": "fukuoka-ems-2035-video", "private": true, "type": "module", "scripts": { "frames": "node scripts/render.mjs --frames", "draft": "node scripts/render.mjs --scale 0.5", "render": "node scripts/render.mjs" }, "dependencies": { "playwright": "^1.63.0" } }

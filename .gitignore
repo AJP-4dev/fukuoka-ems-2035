@@ -6,3 +6,4 @@ __pycache__/
 slides/node_modules/
 .shots-slides/
 .superpowers-*.md
+video/node_modules

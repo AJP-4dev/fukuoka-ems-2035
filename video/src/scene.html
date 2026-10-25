@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>福岡市 救急需要の未来地図 2025→2035</title>
+<style>
+  /* 決定論: CSS transition / animation は使わない。全状態は seek(t) が描く */
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #f4f6f9; }
+  canvas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  #gl { display: none; }
+</style>
+</head>
+<body>
+<canvas id="gl" width="1920" height="1080"></canvas>
+<canvas id="cv" width="1920" height="1080"></canvas>
+<script type="module">
+/* scene.html — 骨格: THREE の用意 → data.js / lib.js / 全章の読み込み → タイムライン → seek(t)
+ * 章の中身は chapters/chNN.js（契約は ../CONTRACT.md）。ここは章ごとの作業では触らない。 */
+import * as THREE_NS from '../vendor/three.module.js';
+window.THREE = THREE_NS;
+
+// 確定タイムライン（秒）。章ファイルの duration と一致していること
+const BASE = [8, 18, 26, 60, 40, 40, 55, 40, 40, 35, 30];
+// 問いカード・結論カードを読む「一拍」: 第1章以降は前後に QPAD/CPAD 秒を足す（章ファイルの lt はそのまま）
+const QPAD = 0.8, CPAD = 0;   // 結論カードは廃止（依頼主の指示: テンポが悪くなる）
+const TL = BASE.map((d, i) => (i >= 1 ? d + QPAD + CPAD : d));
+window.CHAPTERS = [];
+const load = (src) => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('load ' + src)); document.body.appendChild(s); });
+await load('data.js');
+await load('lib.js');
+for (let n = 0; n < TL.length; n++) await load(`chapters/ch${String(n).padStart(2, '0')}.js`);
+
+const START = []; let acc = 0; TL.forEach((d, i) => { START[i] = acc; acc += d; });
+const DURATION = acc;
+const CHS = TL.map((d, i) => window.CHAPTERS[i] || { title: `第${i}章`, duration: d, draw() {} });
+const SUBS = []; CHS.forEach((c, i) => { const off = START[i] + (i >= 1 ? QPAD : 0); (c.subs || []).forEach(([a, b, s]) => SUBS.push([off + a, off + b, s])); });
+const pad2 = (n) => String(n).padStart(2, '0');
+const ctx = { g, W, H, M, LX, LW, RX0, RX1, TL, START, DURATION };
+CHS.forEach((c) => c.setup && c.setup(ctx));
+const CHAPTERS = CHS;
+
+/* ══════════════════════════════════════════════════════════════
+   共通オーバーレイ（章レール・章見出し・問いカード・結論カード・字幕帯）
+   ══════════════════════════════════════════════════════════════ */
+// 章レール: 上端の1本の細い紺罫が進行に合わせて満ちる。章の切替点に小さな目盛
+function drawRail(ci, lt, t) {
+  if (ci < 1) return;
+  const x0 = M, x1 = W - M, y = 44, T0 = START[1], T1 = DURATION;
+  const X = (tt) => lerp(x0, x1, (tt - T0) / (T1 - T0));
+  const grow = ci === 1 ? E.outCubic(P(lt, 0, 0.6)) : 1;
+  line(x0, y, lerp(x0, x1, grow), y, '#dfe4ec', 1);
+  for (let k = 1; k < TL.length; k++) { const xx = X(START[k]); if (xx <= lerp(x0, x1, grow) + 0.5) line(xx, y - 5, xx, y + 5, k <= ci ? COL.navy : '#c3ccd8', 1); }
+  line(x0, y, X(t), y, COL.navy, 2);
+}
+function drawHeader(ci, lt) {
+  if (ci < 1) return;
+  const c = CHAPTERS[ci];
+  wipe(E.outCubic(P(lt, 1.0, 0.5)), M, 64, 700, 40, () => {
+    const w1 = numText(pad2(ci), M, 92, { size: 20, w: 600, c: COL.sub });
+    text(c.title, M + w1 + 12, 92, { size: 20, w: 600, c: COL.sub });
+  });
+}
+// 問いカード（1.2s）: 白板が左→右にワイプで入り、「？」と問いが走るように現れ、0.3s保持して抜ける
+function drawQCard(ci, lt) {
+  if (ci < 1 || lt >= 1.2 + QPAD) return;
+  const c = CHAPTERS[ci];
+  const inU = E.outCubic(P(lt, 0, 0.25)), outU = E.inOut(P(lt, 0.9 + QPAD, 0.3));
+  clipRect(W * outU, 0, W * (inU - outU), H, () => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, W, H);
+    wipe(E.outCubic(P(lt, 0.1, 0.3)), M, 300, 200, 170, () => text('？', M, 440, { size: 120, w: 800, c: COL.navy }));
+    wipe(E.outCubic(P(lt, 0.2, 0.4)), M, 500, 1700, 90, () => text(c.q, M, 572, { size: 64, w: 800, c: COL.ink }));
+    line(M, 616, M + 1760 * E.outCubic(P(lt, 0.3, 0.5)), 616, COL.navy, 1);
+  });
+}
+// 結論カード（末尾0.8s）: 白地に紺の1文を左揃え、下に細い罫線が伸びる
+function drawConcl(ci, lt) {
+  const c = CHAPTERS[ci];
+  return;   // 結論カードは廃止
+  if (!c.concl || lt < TL[ci] - 0.8 - CPAD) return;
+  const l = lt - (TL[ci] - 0.8 - CPAD);
+  clipRect(0, 0, W * E.outCubic(P(l, 0, 0.18)), H, () => { g.fillStyle = '#ffffff'; g.fillRect(0, 0, W, H); });
+  wipe(E.outCubic(P(l, 0.08, 0.35)), M, 440, 1760, 110, () => text(c.concl, M, 520, { size: 48, w: 800, c: COL.ink }));
+  line(M, 560, M + tw(c.concl, 48, 800) * E.outCubic(P(l, 0.2, 0.5)), 560, COL.navy, 2);
+}
+// 字幕帯: 画面下（y=944, 高さ56）、左揃え、白地に紺文字、左端に4pxの赤い縦線。切替はクロスフェード
+function drawSub(t) {
+  for (const [a, b, s] of SUBS) {
+    if (t < a || t > b) continue;
+    const al = win(t, a, b, 0.25);
+    const wT = tw(s, 34, 600);
+    withAlpha(al, () => {
+      g.save(); g.shadowColor = 'rgba(20,33,61,0.10)'; g.shadowBlur = 12; g.shadowOffsetY = 2; g.fillStyle = '#fff'; g.fillRect(M, 944, wT + 52, 56); g.restore();
+      g.fillStyle = COL.red; g.fillRect(M, 944, 4, 56);
+      text(s, M + 26, 973, { size: 34, w: 600, c: COL.ink, base: 'middle' });
+      // 表示時間の細い進行線（下端を左→右に走る）— 静止を避ける唯一の常時の動き
+      line(M + 4, 999, M + 4 + (wT + 48) * clamp((t - a) / (b - a)), 999, mix(COL.red, '#ffffff', 0.45), 2);
+    });
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   seek(t) — フレームは t だけの純関数
+   ══════════════════════════════════════════════════════════════ */
+async function seek(tIn) {
+  const t = clamp(+tIn || 0, 0, DURATION - 1e-6);
+  let ci = START.findIndex((s, i) => t < s + TL[i]); if (ci < 0) ci = TL.length - 1;
+  const c = CHS[ci], lt = t - START[ci];
+  const ltB = ci >= 1 ? clamp(lt - QPAD, 0, BASE[ci]) : lt;   // 章ファイルに渡す時間（カードの一拍ぶんをずらす）
+  DBG.chips = 0; DBG.texts = [];
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.clearRect(0, 0, W, H);
+  const use3D = c.uses3D ? !!c.uses3D(ltB) : false;
+  show3D(use3D);
+  if (!use3D) { g.fillStyle = COL.bg; g.fillRect(0, 0, W, H); }
+  g.save(); c.draw(ctx, ltB, t); g.restore();
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1;
+  drawHeader(ci, ltB);
+  drawConcl(ci, lt);
+  drawSub(t);
+  drawQCard(ci, lt);
+  drawRail(ci, lt, t);
+  DBG.ci = ci; DBG.lt = ltB;
+}
+
+await document.fonts.load('600 36px "Hiragino Sans"');
+await document.fonts.load('600 36px "Avenir Next"');
+window.DURATION = DURATION;
+window.seek = seek;
+window.__dbg = () => ({ chips: DBG.chips, texts: DBG.texts, ci: DBG.ci, lt: DBG.lt, subs: SUBS });
+await seek(0);
+</script>
+</body>
+</html>
