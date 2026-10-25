@@ -66,3 +66,17 @@ def test_final_review_wording():
     assert 'TYPE_RULE にまとめ' not in t and 'small_areas.json の注記' not in t   # 開発者向け文言なし
     assert '2025年（人口変化のみ）比' in t
     assert '到着の目安（市平均 8:12 に合わせた相対値）' in t
+
+
+def test_slides_page():
+    import subprocess, sys
+    t = (ROOT / 'slides_template.html').read_text(encoding='utf-8')
+    assert t.count('/*__DATA__*/') == 1
+    subprocess.run([sys.executable, '-I', str(ROOT / 'src' / 'build_html.py')], check=True)
+    s = (ROOT / 'slides.html').read_text(encoding='utf-8')
+    assert 'const DATA=' in s and '/*__DATA__*/' not in s
+    assert '推定' in s
+    # スライドは SL.push 21 回で生成される（section class="slide" はテンプレートで1回描画）
+    assert s.count('SL.push(') == 21
+    assert 'class="slide' in s
+    assert 'href="slides.html"' in (ROOT / 'template.html').read_text(encoding='utf-8')

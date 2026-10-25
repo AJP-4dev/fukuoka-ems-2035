@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>福岡市 救急需要の未来地図 2025→2035｜スライド</title>
+<meta name="description" content="福岡市の救急出場件数が2035年までにどう変わるかを、21枚のスライドで10分で説明します。公表資料の再計算であり、市の公式見解ではありません。">
+<meta name="theme-color" content="#14213d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#14213d;--red:#e63946;--purple:#8e3b8f;--orange:#f4a259;--blue:#3a7bd5;--sky:#9ad0f5;--green:#1b998b;
+  --ink2:#5b6b82;--ink3:#8e9bae;--line:#dfe4ec;--paper:#f4f6f9;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--navy);color:var(--navy);font-family:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+#deck{height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y proximity;scroll-behavior:smooth;overscroll-behavior:contain}
+@media (min-width:900px){#deck{scroll-snap-type:y mandatory}}
+.slide{position:relative;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;justify-content:center;background:#fff;overflow:hidden}
+@media (min-width:900px){.slide{height:100dvh}}
+.slide.navy{background:var(--navy);color:#fff}
+.in{position:relative;z-index:1;width:100%;max-width:1180px;display:flex;flex-direction:column;gap:clamp(10px,1.8vh,18px);
+  padding:calc(clamp(52px,8vh,64px) + var(--sat)) clamp(16px,4vw,48px) calc(clamp(18px,3.5vh,30px) + var(--sab))}
+h1,h2{text-wrap:balance;margin:0;font-weight:700;line-height:1.3}
+h2{font-size:clamp(24px,3.4vw + 8px,40px);letter-spacing:.01em}
+h1{font-size:clamp(34px,6vw + 6px,64px)}
+.kick{font-size:clamp(12px,1.4vw,14px);font-weight:700;color:var(--ink2);letter-spacing:.08em}
+.navy .kick{color:var(--sky)}
+.vis{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.vis svg{max-width:100%}
+.t{margin:0;font-size:clamp(16px,1.3vw + 10px,20px);line-height:1.65}
+.t b{font-weight:700}
+.t.m{color:var(--ink2);font-size:clamp(14px,1vw + 9px,17px)}
+.navy .t.m{color:#b7c3d9}
+.src{margin:0;padding-right:52px;font-size:clamp(11px,.5vw + 8px,13px);color:var(--ink3);line-height:1.5;padding-top:8px;border-top:1px solid var(--line)}
+.navy .src{color:#8e9bae;border-color:rgba(255,255,255,.18)}
+.num{font-family:Manrope,"Zen Kaku Gothic New",sans-serif;font-weight:800;line-height:1;font-size:clamp(48px,7vw + 14px,72px);letter-spacing:-.01em}
+.num small{font-size:.32em;font-weight:700;margin-left:.2em;letter-spacing:0}
+.num.r{color:var(--red)}.num.p{color:var(--purple)}.num.g{color:var(--green)}
+.lab{font-size:clamp(12px,.7vw + 9px,15px);color:var(--ink2);line-height:1.4}
+.tag{display:inline-block;font-size:clamp(12px,.8vw + 9px,15px);font-weight:700;color:#fff;background:var(--orange);border-radius:999px;padding:2px 12px;vertical-align:middle;margin-left:8px;letter-spacing:.04em}
+.tag.big{font-size:clamp(16px,1.2vw + 10px,22px);padding:4px 16px;margin:0}
+/* cards / grids */
+.grid{display:grid;gap:clamp(10px,1.6vw,18px)}
+.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:720px){.g3,.g2,.g4{grid-template-columns:1fr}.g2.keep{grid-template-columns:1fr 1fr}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(12px,1.6vw,20px)}
+.card h3{margin:0 0 4px;font-size:clamp(16px,1vw + 11px,22px);line-height:1.35}
+.card p{margin:0;font-size:clamp(14px,.7vw + 10px,17px);line-height:1.6;color:var(--navy)}
+.card .no{display:inline-flex;width:1.7em;height:1.7em;border-radius:50%;background:var(--navy);color:#fff;align-items:center;justify-content:center;font-size:.85em;margin-right:8px;flex:none;font-weight:700}
+.card.mini p{font-size:clamp(13px,.5vw + 10px,15px);color:var(--ink2)}
+.card.mini h3{font-size:clamp(14px,.6vw + 10px,17px)}
+.card .bar{height:4px;border-radius:2px;margin-bottom:8px;background:var(--blue)}
+/* flow */
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .st{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.flow .st.end{background:var(--navy);color:#fff;border-color:var(--navy)}
+.flow .st.end .why{color:#b7c3d9}
+.flow .st b{font-size:clamp(15px,.6vw + 11px,18px);line-height:1.35}
+.flow .why{font-size:clamp(12.5px,.4vw + 10px,14.5px);color:var(--ink2);line-height:1.5}
+.flow .no{font-family:Manrope,sans-serif;font-weight:800;color:var(--red);font-size:1.3em;line-height:1}
+.flow .ar{flex:none;width:26px;align-self:center;text-align:center;color:var(--ink3);font-size:22px}
+.flow .ar:before{content:"\25B6"}
+@media (max-width:900px){.flow{flex-direction:column}.flow .ar{width:auto;height:24px;line-height:24px}.flow .ar:before{content:"\25BC"}}
+/* table */
+table.tb{border-collapse:collapse;width:100%;font-size:clamp(13px,.6vw + 9px,17px)}
+.tb th,.tb td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+.tb th:first-child,.tb td:first-child{text-align:left}
+.tb th{color:var(--ink2);font-weight:500;font-size:.85em}
+.tb td small{display:block;color:var(--ink3);font-size:.78em;white-space:nowrap}
+.tb td b{font-family:Manrope,"Zen Kaku Gothic New",sans-serif}
+.tb tr.sum td{border-top:2px solid var(--navy);font-weight:700}
+.tb tr.fin td{background:var(--navy);color:#fff;border:0}.tb tr.fin td small{color:#b7c3d9}
+.tb .dot{display:inline-block;width:.7em;height:.7em;border-radius:3px;margin-right:6px}
+/* checklist */
+.chk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px)}
+.chk li{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:clamp(10px,1.4vw,16px);font-size:clamp(15px,.8vw + 10px,19px);line-height:1.55}
+.chk .no{flex:none;width:1.8em;height:1.8em;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em}
+.chk li.est .no{background:var(--orange)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:clamp(12px,.6vw + 9px,15px);color:var(--ink2)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend i.ln{height:3px;border-radius:2px;vertical-align:4px;width:20px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vw,28px);align-items:end}
+@media (max-width:720px){.pair.stack{grid-template-columns:1fr}}
+.row{display:flex;flex-wrap:wrap;gap:clamp(10px,3vw,40px);align-items:flex-end}
+.kpi{display:flex;flex-direction:column;gap:4px}
+.navy .lab{color:#b7c3d9}
+.cover-map{position:absolute;right:-4%;bottom:-6%;width:min(70%,820px);opacity:1;pointer-events:none;z-index:0}
+.fin3{display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px)}
+.fin3 .l{display:flex;gap:14px;align-items:flex-start;font-size:clamp(18px,1.4vw + 11px,28px);line-height:1.45;font-weight:700}
+.fin3 .l span{flex:none;font-family:Manrope,sans-serif;color:var(--red);font-weight:800}
+.next{display:flex;flex-wrap:wrap;gap:8px}
+.next span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 14px;font-size:clamp(14px,.6vw + 10px,17px)}
+.navy a{color:var(--sky)}
+/* chrome */
+#bar{position:fixed;z-index:20;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + var(--sat)) clamp(12px,3vw,24px) 0;pointer-events:none}
+#bar a,#cnt{pointer-events:auto;background:rgba(255,255,255,.92);color:var(--navy);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 1px 6px rgba(20,33,61,.18)}
+#cnt{font-family:Manrope,sans-serif;letter-spacing:.04em}
+#nxt{position:fixed;z-index:20;right:clamp(12px,3vw,24px);bottom:calc(12px + var(--sab));width:44px;height:44px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 2px 10px rgba(20,33,61,.35);border:1px solid rgba(255,255,255,.35)}
+#nxt[hidden]{display:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media print{#deck{height:auto;overflow:visible}.slide{height:auto;min-height:0;page-break-after:always}#bar,#nxt{display:none}}
+</style>
+</head>
+<body>
+<div id="bar"><a href="index.html">← レポート</a><span id="cnt">1 / 21</span></div>
+<main id="deck" tabindex="0" aria-label="スライド"></main>
+<button id="nxt" aria-label="次のスライド">↓</button>
+<script>
+/*__DATA__*/
+</script>
+<script>
+"use strict";
+const fmt=n=>Math.round(n).toLocaleString('ja-JP');
+const man=(n,d=1)=>(n/10000).toFixed(d);
+const pc=(v,d=1)=>(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(d)+'%';
+const NAVY='#14213d',RED='#e63946',PUR='#8e3b8f',ORG='#f4a259',BLU='#3a7bd5',SKY='#9ad0f5',GRN='#1b998b',INK2='#5b6b82',INK3='#8e9bae',LN='#dfe4ec';
+const AG=['k','j','w','e1','e2','e3'];
+const AGL={k:'0–6歳',j:'7–17歳',w:'18–64歳',e1:'65–74歳',e2:'75–84歳',e3:'85歳以上'};
+const AGC={k:SKY,j:'#6aa9e8',w:BLU,e1:ORG,e2:'#d4739c',e3:PUR};
+const W=DATA.wards, YR=DATA.years, TR=DATA.trend, SER=DATA.series, R=DATA.rates, DR=DATA.dispRatio, DAYF=DATA.dayf;
+const wdisp=(w,y)=>w.disp[y];
+const cityL=y=>W.reduce((s,w)=>s+w.disp[y],0);
+const mult=(sc,y)=>sc==='M'?Math.pow(1+TR.slopePre,Math.min(y,TR.capYear)-2024):sc==='H'?Math.pow(1+TR.slopeAll,y-2024):1;
+const cityS=(y,sc)=>cityL(y)*mult(sc,+y);
+const cpop=(y,a)=>W.reduce((s,w)=>s+(a?w.pop[y][a]:AG.reduce((q,g)=>q+w.pop[y][g],0)),0);
+const wpop=(w,y)=>AG.reduce((s,a)=>s+w.pop[y][a],0);
+const MOBILE=()=>innerWidth<720;
+let FS=14;
+
+/* ---------- SVG helpers (座標は実ピクセル。幅=コンテナ幅で描くので文字が縮まない) ---------- */
+const svg=(w,h,b,label)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${label||''}" style="display:block">${b}</svg>`;
+const tx=(x,y,s,o={})=>`<text x="${x}" y="${y}" font-size="${o.fs||FS}" fill="${o.c||NAVY}" text-anchor="${o.a||'middle'}" font-weight="${o.w||400}"${o.f?` font-family="${o.f}"`:''}>${s}</text>`;
+const NUMF='Manrope,sans-serif';
+function vbars(w,h,items,o={}){/* items:[{l,l2,v,c,t}] */
+  const top=o.top||26,bot=o.bot||(o.two?42:26),n=items.length,max=o.max||Math.max(...items.map(i=>i.v));
+  const gap=o.gap??Math.max(3,w/n*.18), bw=(w-gap*(n+1))/n, ph=h-top-bot; let b='';
+  b+=`<line x1="0" x2="${w}" y1="${h-bot}" y2="${h-bot}" stroke="${LN}"/>`;
+  items.forEach((it,i)=>{const x=gap+i*(bw+gap),bh=it.v/max*ph,y=h-bot-bh;
+    b+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="3" fill="${it.c||RED}"/>`;
+    if(it.t!==''&&(it.t||!o.sparse||it.show))b+=tx(x+bw/2,y-6,it.t||fmt(it.v),{fs:o.vfs||FS,w:700,f:NUMF});
+    if(!o.sparse||it.show||it.l2)b+=tx(x+bw/2,h-bot+16,it.l,{fs:o.lfs||FS-1,c:INK2});
+    if(it.l2)b+=tx(x+bw/2,h-bot+16+FS+2,it.l2,{fs:o.lfs||FS-2,c:INK3});});
+  return b;}
+function hbars(w,items,o={}){/* items:[{l,v,t,c,sub}] */
+  const lw=o.lw||(MOBILE()?58:96),vw=o.vw||(MOBILE()?70:96),rh=o.rh||(MOBILE()?34:38),max=o.max||Math.max(...items.map(i=>i.v)),bw=w-lw-vw;let b='';
+  items.forEach((it,i)=>{const y=i*rh,bl=Math.max(2,it.v/max*bw);
+    b+=tx(lw-8,y+rh/2+5,it.l,{a:'end',fs:o.lfs||FS+1});
+    b+=`<rect x="${lw}" y="${y+5}" width="${bl}" height="${rh-12}" rx="3" fill="${it.c||RED}"/>`;
+    b+=tx(lw+bl+7,y+rh/2+5,it.t||fmt(it.v),{a:'start',fs:o.vfs||FS+1,w:700,f:NUMF});});
+  if(o.vline!=null){const x=lw+o.vline/max*bw;b+=`<line x1="${x}" x2="${x}" y1="0" y2="${items.length*rh}" stroke="${NAVY}" stroke-dasharray="4 3"/>`+tx(x,items.length*rh+14,o.vlab||'',{fs:FS-1,c:INK2});}
+  return {b,h:items.length*rh+(o.vline!=null?20:0)};}
+function lineChart(w,h,o){/* o:{x:[a,b],y:[a,b],xt:[],yt:[],yf,series:[{p:[[x,y]],c,dash,sw,dot}],notes:[]} */
+  const L=o.L||(MOBILE()?40:52),Rr=o.R||(MOBILE()?58:84),T=16,B=28,pw=w-L-Rr,ph=h-T-B;
+  const sx=v=>L+(v-o.x[0])/(o.x[1]-o.x[0])*pw, sy=v=>T+ph-(v-o.y[0])/(o.y[1]-o.y[0])*ph; let b='';
+  o.yt.forEach(v=>{b+=`<line x1="${L}" x2="${w-Rr}" y1="${sy(v)}" y2="${sy(v)}" stroke="${LN}"/>`+tx(L-6,sy(v)+4,o.yf?o.yf(v):v,{a:'end',fs:FS-1,c:INK2});});
+  o.xt.forEach(v=>{b+=tx(sx(v),h-8,v,{fs:FS-1,c:INK2});});
+  o.series.forEach(s=>{const d=s.p.map((p,i)=>(i?'L':'M')+sx(p[0]).toFixed(1)+' '+sy(p[1]).toFixed(1)).join('');
+    b+=`<path d="${d}" fill="none" stroke="${s.c}" stroke-width="${s.sw||3}" stroke-linejoin="round" stroke-linecap="round"${s.dash?` stroke-dasharray="${s.dash}"`:''}/>`;
+    if(s.dots)s.p.forEach(p=>{b+=`<circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="3.5" fill="${s.c}"/>`;});});
+  (o.notes||[]).forEach(n=>{b+=tx(sx(n.x)+(n.dx||0),sy(n.y)+(n.dy||0),n.t,{a:n.a||'start',c:n.c||NAVY,w:700,fs:n.fs||FS,f:n.f});});
+  return {b,sx,sy};}
+const colorScale=(t)=>{/* 0..1 -> 薄赤→赤 */const a=[253,224,226],z=[230,57,70];return `rgb(${a.map((v,i)=>Math.round(v+(z[i]-v)*t)).join(',')})`};
+
+/* ---------- 数値（すべて DATA から） ---------- */
+const N=(()=>{
+  const d13=SER.dispatch[2013],d24=SER.dispatch[2024];
+  const L25=cityL('2025'),L35=cityL('2035'),M35=cityS('2035','M'),H35=cityS('2035','H');
+  const p25=cpop('2025'),p35=cpop('2035');
+  const wardG=W.map(w=>({n:w.name,g:(w.disp['2035']/w.disp['2025']-1)*100,w})).sort((a,b)=>b.g-a.g);
+  const sts=DATA.stations.filter(s=>s.units>0&&s.perUnit&&s.perUnit['2035']!=null);
+  return {d13,d24,L25,L35,M35,H35,p25,p35,wardG,sts,
+    over25:sts.filter(s=>s.perUnit['2025']>3000).length, over35:sts.filter(s=>s.perUnit['2035']>3000).length};
+})();
+
+/* ---------- 各スライドのチャート ---------- */
+const CH={};
+CH.s1=()=>{/* 7区の輪郭（背景） */
+  const pts=W.flatMap(w=>w.rings.flat());const k=Math.cos(33.6*Math.PI/180);
+  const lo=Math.min(...pts.map(p=>p[0])),hi=Math.max(...pts.map(p=>p[0])),la0=Math.min(...pts.map(p=>p[1])),la1=Math.max(...pts.map(p=>p[1]));
+  const W0=1000,sc=W0/((hi-lo)*k),H0=(la1-la0)*sc;
+  const d=w=>w.rings.map(r=>'M'+r.map(p=>((p[0]-lo)*k*sc).toFixed(1)+' '+((la1-p[1])*sc).toFixed(1)).join('L')+'Z').join('');
+  return `<svg viewBox="0 0 ${W0} ${H0}" class="cover-map" aria-hidden="true">${W.map(w=>`<path d="${d(w)}" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-linejoin="round"/>`).join('')}</svg>`;};
+
+CH.s3=(el,w)=>{/* 出場件数の推移 2013-2024 */
+  const ys=Object.keys(SER.dispatch).map(Number),h=MOBILE()?230:Math.min(300,innerHeight*.34);
+  const items=ys.map(y=>({l:MOBILE()?String(y).slice(2):y,v:SER.dispatch[y],c:y===2024?RED:'#f08c94',show:y===2013||y===2024,t:(y===2013||y===2024)?fmt(SER.dispatch[y]):''}));
+  return svg(w,h,vbars(w,h,items,{max:120000,sparse:false,vfs:FS-(MOBILE()?2:0)}),'出場件数の推移');};
+CH.s4=(el,w)=>{
+  const h=MOBILE()?270:Math.min(330,innerHeight*.4),ys=YR.slice(0,11);
+  const pop=ys.map(y=>[y,cpop(String(y))/N.p25*100]),dis=ys.map(y=>[y,cityL(String(y))/N.L25*100]);
+  const c=lineChart(w,h,{x:[2025,2035],y:[98,114],xt:[2025,2030,2035],yt:[100,105,110],yf:v=>v,series:[{p:pop,c:NAVY},{p:dis,c:RED}],
+    notes:[{x:2035,y:dis[10][1],t:pc(dis[10][1]-100),c:RED,dx:8,dy:5,f:NUMF,fs:FS+3},{x:2035,y:pop[10][1],t:pc(pop[10][1]-100),dx:8,dy:5,f:NUMF,fs:FS+3}]});
+  return svg(w,h,c.b,'人口と出場件数の伸び（2025年=100）');};
+CH.s5=(el,w)=>{
+  const h=MOBILE()?280:Math.min(330,innerHeight*.4),items=AG.map(a=>({l:AGL[a].replace('歳以上','歳+').replace('歳',''),l2:'',v:R[a]*100,c:AGC[a],t:(R[a]*100).toFixed(1)}));
+  const lab={k:'0–6',j:'7–17',w:'18–64',e1:'65–74',e2:'75–84',e3:'85'};items.forEach((it,i)=>it.l=lab[AG[i]]+(AG[i]==='e3'?'歳以上':'歳'));
+  return svg(w,h,vbars(w,h,items,{max:33,gap:Math.max(2,w*.012),vfs:FS+3}),'年齢帯別の搬送率（100人あたり/年）');};
+CH.s6=(el,w)=>{
+  const h=MOBILE()?300:Math.min(340,innerHeight*.42),top=22,bot=28,ph=h-top-bot,max=Math.max(N.p25,N.p35);
+  const colw=Math.min(w*.22,120),xs=[w*.18,w*.52];let b='';
+  [['2025',N.p25],['2035',N.p35]].forEach(([y,tot],ci)=>{let acc=0;const x=xs[ci]-colw/2;
+    AG.forEach(a=>{const v=cpop(y,a),bh=v/max*ph,yy=h-bot-acc-bh;acc+=bh;
+      b+=`<rect x="${x}" y="${yy}" width="${colw}" height="${bh}" fill="${AGC[a]}" stroke="#fff" stroke-width="1"/>`;
+      if(a==='e3')b+=tx(x+colw/2,yy+bh/2+5,man(v)+'万',{c:'#fff',w:700,f:NUMF,fs:FS+2});});
+    b+=tx(xs[ci],h-8,y+'年',{w:700,fs:FS+1})+tx(xs[ci],h-bot-acc-6,man(tot)+'万人',{fs:FS-1,c:INK2});});
+  /* 凡例（右側） */
+  const lx=xs[1]+colw/2+16;AG.slice().reverse().forEach((a,i)=>{const y=top+10+i*26;b+=`<rect x="${lx}" y="${y-11}" width="13" height="13" rx="3" fill="${AGC[a]}"/>`+tx(lx+20,y,AGL[a],{a:'start',fs:FS,w:a==='e3'?700:400});});
+  return svg(w,h,b,'年齢帯別の人口 2025と2035');};
+CH.s11=(el,w)=>{
+  const h=MOBILE()?290:Math.min(340,innerHeight*.42),bt=TR.backtest,ys=Object.keys(SER.dispatch).map(Number);
+  const act=ys.map(y=>[y,SER.dispatch[y]/1000]),pred=[[2019,SER.dispatch[2019]/1000],...[2022,2023,2024].map(y=>[y,bt.pred[y]/1000])];
+  const c=lineChart(w,h,{x:[2013,2024],y:[60,105],xt:[2013,2016,2019,2022],yt:[60,70,80,90,100],yf:v=>v+'k',R:MOBILE()?60:90,
+    series:[{p:act,c:RED,dots:true},{p:pred,c:NAVY,dash:'2 6',sw:3.5}],
+    notes:[{x:2024,y:SER.dispatch[2024]/1000,t:'実績',c:RED,dx:8,dy:-6},{x:2024,y:bt.pred[2024]/1000,t:'予測線',dx:8,dy:14}]});
+  let b=c.b;if(!MOBILE())[2022,2023,2024].forEach(y=>{b+=tx(c.sx(y),c.sy((bt.actual[y]+bt.pred[y])/2000)+4,pc(bt.errPct[y]),{fs:FS-(MOBILE()?2:0),w:700,c:NAVY,a:y===2022?'end':'middle',f:NUMF});});
+  return svg(w,h,b,'過去で当ててみた');};
+CH.s12=(el,w)=>{
+  const h=MOBILE()?280:Math.min(320,innerHeight*.4),G=[['65–74歳',5.9,6.3],['75–84歳',12.0,12.3],['85歳以上',24.9,24.8]];
+  const gw=w/3,bw=Math.min(54,gw*.32),top=24,bot=28,ph=h-top-bot,max=28;let b=`<line x1="0" x2="${w}" y1="${h-bot}" y2="${h-bot}" stroke="${LN}"/>`;
+  G.forEach((g,i)=>{const cx=gw*(i+.5);[[g[1],INK3,-1],[g[2],BLU,1]].forEach(([v,c,s])=>{const bh=v/max*ph,x=cx+(s<0?-bw-2:2);
+    b+=`<rect x="${x}" y="${h-bot-bh}" width="${bw}" height="${bh}" rx="3" fill="${c}"/>`+tx(x+bw/2,h-bot-bh-6,v.toFixed(1),{w:700,f:NUMF,fs:FS+1});});
+    b+=tx(cx,h-8,g[0],{fs:FS,c:INK2});});
+  return svg(w,h,b,'全国と横浜の年齢別利用率');};
+CH.s13=(el,w)=>{
+  const h=MOBILE()?290:Math.min(330,innerHeight*.4),top=24,bot=40,ph=h-top-bot,gw=w/7,bw=Math.min(30,gw*.34),max=Math.max(...W.map(x=>x.disp24/x.fac))*1.04;let b=`<line x1="0" x2="${w}" y1="${h-bot}" y2="${h-bot}" stroke="${LN}"/>`;
+  W.forEach((x,i)=>{const cx=gw*(i+.5),e=x.disp24/x.fac;
+    [[e,INK3,-1],[x.disp24,RED,1]].forEach(([v,c,s])=>{const bh=v/max*ph,xx=cx+(s<0?-bw-1:1);b+=`<rect x="${xx}" y="${h-bot-bh}" width="${bw}" height="${bh}" rx="2" fill="${c}"/>`;});
+    b+=tx(cx,h-bot+16,x.name,{fs:FS+1,w:700})+tx(cx,h-bot+16+FS+3,'×'+x.fac.toFixed(2),{fs:FS-1,c:x.fac>1?RED:INK2,w:700,f:NUMF});});
+  return svg(w,h,b,'7区の計算値と実績');};
+CH.s14=(el,w)=>{
+  const it=[['2024 実績',N.d24,NAVY,''],['2035 下限',N.L35,RED,pc((N.L35/N.L25-1)*100)],['2035 中間',N.M35,RED,pc((N.M35/N.L25-1)*100)],['2035 上限',N.H35,RED,pc((N.H35/N.L25-1)*100)]];
+  const items=it.map((x,i)=>({l:x[0],v:x[1],c:x[2]===NAVY?NAVY:['#f4a6ad','#ee6c77',RED][i-1],t:fmt(x[1])+(x[3]?'  '+x[3]:'')}));
+  const r=hbars(w,items,{lw:MOBILE()?74:100,vw:MOBILE()?112:170,rh:MOBILE()?44:52,max:150000,vfs:FS+(MOBILE()?1:3)});
+  return svg(w,r.h,r.b,'2035年の出場件数 3シナリオ');};
+CH.s15=(el,w)=>{
+  const items=N.wardG.map(x=>({l:x.n,v:x.g,c:RED,t:'+'+x.g.toFixed(1)+'%'}));
+  const mob=MOBILE(),mw=mob?w:Math.round(w*.34),bw=mob?w:w-mw-24,r=hbars(bw,items,{lw:mob?44:56,vw:mob?66:76,rh:mob?32:42,max:16,vfs:FS+1});
+  /* 地図 */
+  const pts=W.flatMap(x=>x.rings.flat()),k=Math.cos(33.6*Math.PI/180),lo=Math.min(...pts.map(p=>p[0])),hi=Math.max(...pts.map(p=>p[0])),la0=Math.min(...pts.map(p=>p[1])),la1=Math.max(...pts.map(p=>p[1]));
+  const mW=mob?Math.min(w,300):mw,sc=mW/((hi-lo)*k),mH=(la1-la0)*sc,gmin=Math.min(...N.wardG.map(x=>x.g)),gmax=Math.max(...N.wardG.map(x=>x.g));
+  let m='';W.forEach(x=>{const g=(x.disp['2035']/x.disp['2025']-1)*100,t=(g-gmin)/(gmax-gmin);const d=x.rings.map(r=>'M'+r.map(p=>((p[0]-lo)*k*sc).toFixed(1)+' '+((la1-p[1])*sc).toFixed(1)).join('L')+'Z').join('');
+    m+=`<path d="${d}" fill="${colorScale(.25+.75*t)}" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>`+tx(((x.c[0]-lo)*k*sc),((la1-x.c[1])*sc)+4,x.name,{fs:FS-1,w:700,c:t>.55?'#fff':NAVY});});
+  const bars=svg(bw,r.h,r.b,'区別の増加率'),map=svg(mW,mH,m,'区別の増加率の地図');
+  return `<div class="${mob?'':'pair'}" style="align-items:center;${mob?'':'grid-template-columns:'+bw+'px '+mw+'px'}">${bars}<div style="${mob?'align-self:center;margin:6px auto 0':''}">${map}</div></div>`;};
+CH.s16=(el,w)=>{
+  const dat=W.map(x=>({n:x.name,v:x.disp['2025']/wpop(x,'2025')*1000,dn:x.dn,ex:x.dayExtra})).sort((a,b)=>b.v-a.v);
+  const items=dat.map(x=>({l:x.n,v:x.v,c:x.dn>1.3?RED:'#f4a6ad',t:Math.round(x.v)+(x.dn>1.3?'　昼夜間比 '+x.dn.toFixed(2):'')}));
+  const r=hbars(w,items,{lw:MOBILE()?44:56,vw:MOBILE()?170:230,rh:MOBILE()?36:40,max:100,vfs:FS+1});
+  return svg(w,r.h,r.b,'住民1,000人あたり出場（2025年）');};
+CH.s17=(el,w)=>{
+  const mob=MOBILE(),lw=mob?w:Math.round(w*.58),rw=mob?w:w-lw-24;
+  const dat=W.slice().sort((a,b)=>b.loadPerUnit24-a.loadPerUnit24),avg=SER.dispatch[2024]/SER.units[2024];
+  const r=hbars(lw,dat.map(x=>({l:x.name,v:x.loadPerUnit24,c:RED,t:fmt(x.loadPerUnit24)})),{lw:mob?44:56,vw:70,rh:mob?30:36,max:4200,vline:avg,vlab:'平均 '+fmt(avg)+' 件/隊',vfs:FS+1});
+  const U=DATA.standard.units,items=[['現行',DATA.standard.current,NAVY],['2025',U['2025'],GRN],['2035',U['2035'],GRN],['2050',U['2050'],GRN]].map(x=>({l:x[0],v:x[1],c:x[2],t:x[1]+'隊'}));
+  const h=Math.max(r.h+0,mob?210:230),bars=vbars(rw,h,items,{max:46,gap:Math.max(6,rw*.06),vfs:FS+3,lfs:FS});
+  return `<div class="${mob?'':'pair'}" style="align-items:end;${mob?'':'grid-template-columns:'+lw+'px '+rw+'px'}"><div><div class="lab" style="margin-bottom:4px"><b>区別 1隊あたり出場</b>（2024年実績・件/隊）</div>${svg(lw,r.h,r.b,'区別 1隊あたり出場')}</div><div><div class="lab" style="margin:${mob?'14px':'0'} 0 4px"><b>基準の隊数</b>（整備指針）</div>${svg(rw,h,bars,'基準隊数')}</div></div>`;};
+CH.s18=(el,w)=>{
+  const top=N.sts.slice().sort((a,b)=>b.perUnit['2035']-a.perUnit['2035']).slice(0,6);
+  const r=hbars(w,top.map(s=>({l:s.name.replace(/(消防署|出張所)$/,''),v:s.perUnit['2035'],c:ORG,t:fmt(s.perUnit['2035'])+(s.units===1?'　1隊':'')})),{lw:MOBILE()?52:80,vw:MOBILE()?110:150,rh:MOBILE()?38:44,max:8200,vline:3000,vlab:'3,000件/隊',vfs:FS+2,lfs:FS+2});
+  return svg(w,r.h,r.b,'署所別 1隊あたり出場（2035年・推定）');};
+CH.s19=(el,w)=>{
+  const h=MOBILE()?280:Math.min(340,innerHeight*.42),ys=YR;
+  const pop=ys.map(y=>[y,cpop(String(y))/N.p25*100]),dis=ys.map(y=>[y,cityL(String(y))/N.L25*100]);
+  const pk=pop.reduce((a,b)=>b[1]>a[1]?b:a);
+  const c=lineChart(w,h,{x:[2025,2050],y:[95,125],xt:[2025,2035,2040,2050],yt:[100,110,120],series:[{p:pop,c:NAVY},{p:dis,c:RED}],R:MOBILE()?52:84,
+    notes:[{x:2050,y:dis[25][1],t:pc(dis[25][1]-100,0),c:RED,dx:8,dy:5,f:NUMF,fs:FS+3},{x:2050,y:pop[25][1],t:pc(pop[25][1]-100,1),dx:8,dy:5,f:NUMF,fs:FS+1},{x:pk[0],y:pk[1],t:'ピーク '+pk[0],dy:-9,a:'middle',fs:FS-1,c:INK2}]});
+  return svg(w,h,c.b,'人口と出場件数 2025→2050（2025年=100）');};
+
+/* ---------- スライド本体 ---------- */
+const SRC={nenpo:'福岡市消防年報',proj:'福岡市の将来人口推計（令和6年4月）',model:'本資料の推計'};
+const e35=N.L35,inc=N.L35-N.L25,eld=['e1','e2','e3'].reduce((s,a)=>s+W.reduce((q,w)=>q+(w.byAge['2035'][a]-w.byAge['2025'][a]),0),0);
+const e3a=cpop('2025','e3'),e3b=cpop('2035','e3'),e65a=['e1','e2','e3'].reduce((s,a)=>s+cpop('2025',a),0),e65b=['e1','e2','e3'].reduce((s,a)=>s+cpop('2035',a),0);
+const EX=W.find(w=>w.name==='東'),day=DAYF*(EX.in-EX.out)*R.w;
+const exRows=y=>AG.map(a=>({a,pop:EX.pop[y][a],tr:EX.pop[y][a]*R[a]}));
+const exSum=y=>exRows(y).reduce((s,r)=>s+r.tr,0);
+const src=t=>`<p class="src">${t}</p>`;
+const V=(n,extra='')=>`<div class="vis" data-ch="${n}" ${extra}></div>`;
+const SL=[];
+/* 1 */
+SL.push({cls:'navy',h:`<div class="vis" style="justify-content:center;gap:18px"><div class="kick">福岡市 救急需要の未来地図　2025→2035</div><h1>10年後、救急車は<br>何回出る？</h1><p class="t m" style="max-width:34em">作成 2026-10　／　公表資料の再計算であり、市の公式見解ではありません。</p></div>`,cover:1});
+/* 2 */
+SL.push({t:'この資料で分かる3つのこと',h:`<div class="vis"><div class="grid g3">
+ <div class="card"><h3><span class="no">1</span>何件になる？</h3><p>2035年の救急出場件数。「最低でも」と「ここまであり得る」の幅で見ます。</p></div>
+ <div class="card"><h3><span class="no">2</span>誰が増える？</h3><p>増えるのは何歳の人か。年齢ごとの「運ばれやすさ」で説明します。</p></div>
+ <div class="card"><h3><span class="no">3</span>どこが先に詰まる？</h3><p>7区と署所のうち、1隊あたりの負担が先に重くなる場所を示します。</p></div></div>
+ <div class="card mini"><h3>その数字はどこから？どれくらい確か？</h3><p>後半で、使った公開資料と、過去で当ててみた答え合わせを見せます。</p></div></div>`,s:''});
+/* 3 */
+SL.push({t:'いま：1日274件、5分に1回',h:`<div class="vis"><div class="pair stack" style="align-items:center"><div class="kpi"><div class="num r">${fmt(N.d24)}<small>件</small></div><div class="lab">2024年の救急出場件数（${(N.d24/N.d13).toFixed(2)}倍／2013年 ${fmt(N.d13)}件比）</div></div>
+ <div class="kpi"><div class="num" style="font-size:clamp(36px,5vw + 10px,56px)">${SER.units[2013]} → ${SER.units[2024]}<small>隊</small></div><div class="lab">救急隊の数（2013年 → 2024年）</div></div></div>${V('s3')}</div>
+ <p class="t">搬送した人は <b>${fmt(SER.transport[2024])}人</b>。市民<b>${Math.round(N.p25/SER.transport[2024])}人に1人</b>が1年に救急車を利用した計算です。</p>`,s:SRC.nenpo+' 令和6年版'});
+/* 4 */
+SL.push({t:'人口は少し増えるだけ。出場はもっと増える',h:`<div class="vis"><div class="legend"><span><i class="ln" style="background:${NAVY}"></i>人口 ${man(N.p25)}万 → ${man(N.p35)}万人（${pc((N.p35/N.p25-1)*100)}）</span><span><i class="ln" style="background:${RED}"></i>出場件数 ${fmt(N.L25)} → ${fmt(N.L35)}件（${pc((N.L35/N.L25-1)*100)}）</span></div>${V('s4')}<div class="lab">2025年を100とした指数。出場は「下限」シナリオ（人口の変化だけ）。</div></div>
+ <p class="t"><b>なぜ差が出る？ → 答えは年齢です。</b></p>`,s:SRC.proj+'、'+SRC.model});
+/* 5 */
+SL.push({t:'答えの核心：年を取るほど運ばれやすい',h:`<div class="vis"><div class="lab"><b>1年に救急車で運ばれる人の割合</b>（100人あたり・搬送率）</div>${V('s5')}</div>
+ <p class="t"><b>85歳以上は3.4人に1人</b>が1年に運ばれます。18–64歳の<b>${(R.e3/R.w).toFixed(1)}倍</b>です。</p>`,s:'福岡市消防年報 R6（年齢区分別搬送人員）、福岡市 登録人口、消防庁 救急・救助の現況（高齢者内の内訳）'});
+/* 6 */
+SL.push({t:'85歳以上が1.5倍になる',h:`<div class="vis"><div class="row"><div class="kpi"><div class="num p">×${(e3b/e3a).toFixed(2)}</div><div class="lab">85歳以上 ${man(e3a)}万 → ${man(e3b)}万人</div></div><div class="kpi"><div class="num" style="font-size:clamp(32px,4vw + 10px,52px)">${(e65a/N.p25*100).toFixed(1)}→${(e65b/N.p35*100).toFixed(1)}<small>%</small></div><div class="lab">65歳以上 ${man(e65a)}万 → ${man(e65b)}万人</div></div></div>${V('s6')}</div>
+ <p class="t">増える出場 約${fmt(Math.round(inc/100)*100)}件の、ほぼ全部（${fmt(eld)}件分）が<b>65歳以上</b>です。</p>`,s:SRC.proj});
+/* 7 */
+const cards7=[['福岡市の将来人口推計','令和6年4月・福岡市','未来の人口'],['福岡市消防年報','令和3〜6年版・福岡市消防局','区別出場・年齢・隊'],['福岡市 登録人口','2024年12月末・2013〜24年','いまの人口'],['令和2年国勢調査','総務省','昼間人口・1kmメッシュ人口'],['救急・救助の現況','令和7年版・消防庁','全国の高齢者内訳'],['日本の地域別将来推計人口','令和5年推計・社人研','2035年以降の区別年齢'],['面積調・国土数値情報','国土地理院・国土交通省','面積・区界']];
+SL.push({t:'データの出どころ：全部、公開資料',h:`<div class="vis"><div class="grid g4">${cards7.map((c,i)=>`<div class="card mini"><div class="bar" style="background:${[NAVY,RED,BLU,GRN,ORG,PUR,SKY][i]}"></div><h3>${i+1}. ${c[0]}</h3><p>${c[1]}<br><b style="color:${NAVY}">${c[2]}</b></p></div>`).join('')}</div></div>
+ <p class="t m">URLはサイトの「方法」タブに載せています。</p>`,s:''});
+/* 8 */
+const st8=[['いまの人口','区 × 年齢帯の人数','区ごとに、年齢6帯の人数から出発します。'],['未来の人口に','市の推計で2035年へ','市の人口推計を使って、将来の人数に置き換えます。'],['運ばれる割合を掛ける','年齢帯ごとの搬送率','85歳以上は18–64歳の約10倍運ばれるから、年齢で分けます。'],['昼に来る人を足す','昼間補正','住んでいない人も、通勤・通学先で倒れるから。'],['実際に合わせる倍率','校正係数','病院・繁華街など人口で見えない事情を、区ごとに1つの倍率にまとめます。']];
+SL.push({t:'計算のしくみ：5ステップ',h:`<div class="vis"><div class="flow">${st8.map((s,i)=>`<div class="st"><span class="no">${i+1}</span><b>${s[0]}</b><span class="lab">${s[1]}</span><span class="why"><b style="font-size:1em">なぜ？</b> ${s[2]}</span></div><div class="ar"></div>`).join('')}<div class="st end"><span class="no" style="color:#ff8c94">→</span><b>出場件数</b><span class="why">2035年の区ごとの件数。7区を足すと市全体です。</span></div></div></div>
+ <p class="t m">搬送率＝1年に救急車で運ばれる人の割合／校正係数＝人口から計算した件数と実際の件数の差を埋める倍率</p>`,s:SRC.model});
+/* 9 */
+const s25=exSum('2025'),s35=exSum('2035'),tot25=s25+day,tot35=s35+day;
+SL.push({t:'実例：東区でやってみる',h:`<div class="vis"><table class="tb"><thead><tr><th>年齢帯（人口×割合）</th><th>2025年</th><th>2035年</th></tr></thead><tbody>
+${AG.slice().reverse().map(a=>{const r1=EX.pop['2025'][a],r2=EX.pop['2035'][a];return `<tr><td><span class="dot" style="background:${AGC[a]}"></span>${AGL[a]}</td><td><small>${fmt(r1)}×${R[a].toFixed(3)}</small><b>${fmt(r1*R[a])}</b></td><td><small>${fmt(r2)}×${R[a].toFixed(3)}</small><b>${fmt(r2*R[a])}</b></td></tr>`}).join('')}
+<tr class="sum"><td>搬送人員の合計</td><td>${fmt(s25)}</td><td>${fmt(s35)}</td></tr>
+<tr><td>昼間補正（流入−流出）</td><td>${day>0?'+':'−'}${fmt(Math.abs(day))}</td><td>${day>0?'+':'−'}${fmt(Math.abs(day))}</td></tr>
+<tr><td>× 出場/搬送比 ${DR.toFixed(3)}</td><td>${fmt(tot25*DR)}</td><td>${fmt(tot35*DR)}</td></tr>
+<tr class="fin"><td>× 校正係数 ${EX.fac.toFixed(3)} ＝ 出場件数</td><td><b>${fmt(EX.disp['2025'])}</b></td><td><b>${fmt(EX.disp['2035'])}</b></td></tr></tbody></table></div>
+ <p class="t">2035年の東区は <b>${pc((EX.disp['2035']/EX.disp['2025']-1)*100)}</b>。増加分の中心は<b>85歳以上</b>です。</p>`,s:'本資料の推計モデル（サイトの方法タブの実例と同じ数字）'});
+/* 10 */
+SL.push({t:'借りた値と、その理由',h:`<div class="vis"><div class="grid g3">
+ <div class="card"><h3><span class="no">1</span>高齢者の中の比率</h3><p>65–74／75–84／85歳以上 ＝ <b>1：2.0：4.2</b>。全国値を借りました。</p><p class="lab" style="margin-top:6px">← 福岡の年報は65歳以上が一括で載っているから</p></div>
+ <div class="card"><h3><span class="no">2</span>昼間補正の係数 ${DAYF}</h3><p>通勤・通学者が区内にいる時間（8.5時間／24時間）。横浜版と同じ考え方です。</p><p class="lab" style="margin-top:6px">← 昼に来る人のぶんを足すため</p></div>
+ <div class="card"><h3><span class="no">3</span>2035年以降の区別の年齢</h3><p>社人研の年齢構成比を借りました。</p><p class="lab" style="margin-top:6px">← 市の推計の区別表が2034年までだから</p></div></div></div>
+ <p class="t m">借りた値は、方法タブで全部公開しています。</p>`,s:'消防庁、総務省 人口推計、国立社会保障・人口問題研究所'});
+/* 11 */
+SL.push({t:'妥当性① 答え合わせ：過去で当ててみた',h:`<div class="vis"><div class="legend"><span><i class="ln" style="background:${RED}"></i>実績</span><span><i class="ln" style="background:${NAVY}"></i>2013〜2019年の傾きで引いた予測線</span></div>${V('s11')}<div class="lab">2022〜24年の差（予測−実績）：${[2022,2023,2024].map(y=>pc(TR.backtest.errPct[y])).join('／')}</div></div>
+ <p class="t">コロナ前の傾きだと、いまを<b>7〜9%低く</b>見積もります。だから「上限」シナリオを置きました。</p>`,s:SRC.nenpo+'、'+SRC.model});
+/* 12 */
+SL.push({t:'妥当性② 他の都市と比べても同じ形',h:`<div class="vis"><div class="legend"><span><i style="background:${INK3}"></i>全国</span><span><i style="background:${BLU}"></i>横浜市</span><span>（人口1,000人あたり）</span></div>${V('s12')}<div class="lab">福岡の65歳以上全体は <b>135.8</b>（全国 118.2 より約15%高い）</div></div>
+ <p class="t">年を取るほど運ばれる<b>“形”は地域によらず同じ</b>。水準は福岡の実測に合わせました。</p>`,s:'消防庁 救急・救助の現況（令和7年版）、横浜市消防年報 R6'});
+/* 13 */
+const ratio=W.reduce((s,w)=>s+w.disp24/w.fac,0)/W.reduce((s,w)=>s+w.disp24,0);
+SL.push({t:'妥当性③ 計算値と実績のずれは '+((ratio-1)*100).toFixed(1)+'%',h:`<div class="vis"><div class="legend"><span><i style="background:${INK3}"></i>校正前の計算値</span><span><i style="background:${RED}"></i>実績（2024年）</span><span>文字＝校正係数</span></div>${V('s13')}<div class="lab">市全体では計算値が実績の ${ratio.toFixed(3)}倍。校正係数は博多 ${W.find(w=>w.name==='博多').fac.toFixed(2)}、中央 ${W.find(w=>w.name==='中央').fac.toFixed(2)}、他は 0.88〜0.91。</div></div>
+ <p class="t">都心だけ高い理由は<b>昼間人口</b>です（次のスライド）。</p>`,s:SRC.model});
+/* 14 */
+SL.push({t:'結果① 市全体：2035年は '+pc((N.L35/N.L25-1)*100,0)+'〜'+pc((N.H35/N.L25-1)*100,0),h:`<div class="vis">${V('s14')}</div>
+ <p class="t"><b>下限</b>＝1人あたりの利用は今のまま（人口の変化だけ）。<b>中間</b>＝コロナ前の伸び（年${(TR.slopePre*100).toFixed(1)}%）が${TR.capYear}年まで続く。<b>上限</b>＝コロナ後の伸び（年${(TR.slopeAll*100).toFixed(1)}%）が続く。</p>
+ <p class="lab">増減率は2025年（${fmt(N.L25)}件）との比較。2024年の実績は ${fmt(N.d24)}件。</p>`,s:SRC.model});
+/* 15 */
+const wg=N.wardG;
+SL.push({t:'結果② 7区すべて '+'+'+Math.round(wg[wg.length-1].g)+'〜'+Math.round(wg[0].g)+'%',h:`<div class="vis"><div class="lab"><b>2025→2035の増加率</b>（下限シナリオ）。地図は濃いほど増える区。</div>${V('s15')}</div>
+ <p class="t">どの区も増えます。<b>差は小さい</b>です。</p>`,s:SRC.model});
+/* 16 */
+const hk=W.find(w=>w.name==='博多'),cn=W.find(w=>w.name==='中央');
+SL.push({t:'結果③ 都心は“住んでいない人”が運ばれる',h:`<div class="vis"><div class="lab"><b>住民1,000人あたり出場</b>（2025年・件）。赤は昼夜間人口比が高い区。</div>${V('s16')}</div>
+ <p class="t">昼夜間人口比 博多 <b>${hk.dn.toFixed(2)}</b>・中央 <b>${cn.dn.toFixed(2)}</b>。昼に来る人のぶん（昼間補正）は 博多 <b>+${fmt(hk.dayExtra)}件</b>／中央 <b>+${fmt(cn.dayExtra)}件</b>。</p>`,s:'令和2年国勢調査、'+SRC.model});
+/* 17 */
+const U=DATA.standard.units;
+SL.push({t:'結果④ 1隊あたりの負担と、基準の隊数',h:`<div class="vis">${V('s17')}</div>
+ <p class="t">基準では今すでに<b>${U['2025']-DATA.standard.current}隊足りない</b>計算（現行 ${DATA.standard.current}隊 → 基準 ${U['2025']}隊）。2035年には基準 ${U['2035']}隊で、<b>${U['2035']-DATA.standard.current}隊</b>の差になります。</p>`,s:'福岡市消防年報 R6、消防力の整備指針 第13条（横浜市の算定例）'});
+/* 18 */
+SL.push({t:'結果⑤ 署所：先に詰まるのはここ<span class="tag">推定</span>',h:`<div class="vis"><div class="lab"><b>1隊あたり出場</b>（2035年・上位6署所・件/隊）　3,000件/隊を超える署所：<b>${N.over25}→${N.over35}</b>（${N.sts.length}署所中）</div>${V('s18')}</div>
+ <p class="t"><span class="tag big" style="margin:0 8px 0 0">推定</span>1kmメッシュの人口を最寄りの署所に按分した目安で、<b>公式の統計ではありません</b>。出張所1隊の署所に負担が集中しやすい傾向があります。</p>`,s:'令和2年国勢調査・経済センサス（メッシュ）、本資料の推定'});
+/* 19 */
+const d50=cityL('2050');
+SL.push({t:'長期 2050：人口が減っても出場は減らない',h:`<div class="vis"><div class="legend"><span><i class="ln" style="background:${NAVY}"></i>人口（2040年に ${man(cpop('2040'))}万人でピーク → 2050年 ${man(cpop('2050'))}万人）</span><span><i class="ln" style="background:${RED}"></i>出場件数・下限（2050年 ${fmt(d50)}件）</span></div>${V('s19')}<div class="lab">2025年を100とした指数。</div></div>
+ <p class="t">2040年以降に増えるのは<b>75〜84歳と85歳以上</b>です。</p>`,s:SRC.proj+'、社人研、'+SRC.model});
+/* 20 */
+SL.push({t:'使うときの注意',h:`<div class="vis"><ul class="chk">
+ <li><span class="no">1</span><span>全体は公表資料の再計算で、<b>市の公式見解ではありません</b>。</span></li>
+ <li class="est"><span class="no">2</span><span>署所別は<b>推定</b>（目安）です。</span></li>
+ <li><span class="no">3</span><span>上限シナリオは年${(TR.slopeAll*100).toFixed(1)}%の複利で、2050年に約2倍になる<b>強い前提</b>です。</span></li>
+ <li><span class="no">4</span><span>人口は登録人口ベース（推計人口より約5万人少ない）です。</span></li>
+ <li><span class="no">5</span><span>区別の不搬送率・時間帯別は公表データが無く、載せていません。</span></li></ul></div>`,s:''});
+/* 21 */
+SL.push({cls:'navy',t:'まとめ：3行と、次の一歩',h:`<div class="vis" style="gap:clamp(14px,2.4vh,26px)"><div class="fin3">
+ <div class="l"><span>1</span><div>10年で <u style="text-decoration-color:${RED}">+12%は確実</u>、+25〜38%もあり得る</div></div>
+ <div class="l"><span>2</span><div>増えるのは<b style="color:#d9a3da">85歳以上</b></div></div>
+ <div class="l"><span>3</span><div>基準隊数は今すでに不足。先に詰まるのは<b>1隊の出張所</b></div></div></div>
+ <div><div class="kick" style="margin-bottom:8px">次の一歩</div><div class="next"><span>増隊の目安づくり</span><span>昼間人口を考慮した配置</span><span>適正利用の啓発</span></div></div>
+ <p class="t m">詳しい数字と計算：<a href="https://ajp-4dev.github.io/fukuoka-ems-2035/">https://ajp-4dev.github.io/fukuoka-ems-2035/</a>（<a href="index.html">レポートを開く</a>）</p></div>`,s:''});
+
+/* ---------- 描画 ---------- */
+const deck=document.getElementById('deck');
+deck.innerHTML=SL.map((s,i)=>`<section class="slide${s.cls?' '+s.cls:''}" id="s${i+1}" aria-label="${i+1} / ${SL.length}"><div class="in">${s.cover?CH.s1():''}${s.t?`<h2>${s.t}</h2>`:''}${s.h}${s.s!=null&&!s.cls?src('出典：'+s.s):''}</div></section>`.replace('<p class="src">出典：</p>','')).join('');
+function draw(){FS=MOBILE()?13:15;document.querySelectorAll('[data-ch]').forEach(el=>{const f=CH[el.dataset.ch];const w=Math.floor(el.clientWidth);if(w>0)el.innerHTML=f(el,w)});}
+draw();
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(draw,120)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
+
+/* ---------- ナビ ---------- */
+const slides=[...document.querySelectorAll('.slide')],cnt=document.getElementById('cnt'),nxt=document.getElementById('nxt');
+let cur=0;
+function upd(){let c=0;slides.forEach((s,i)=>{if(s.getBoundingClientRect().top<=innerHeight*.4)c=i});cur=c;cnt.textContent=(c+1)+' / '+slides.length;nxt.hidden=c===slides.length-1;history.replaceState(null,'','#'+(c+1))}
+deck.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true});
+const go=i=>{i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:'smooth',block:'start'})};
+nxt.addEventListener('click',()=>go(cur+1));
+addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)&&!e.shiftKey){e.preventDefault();go(cur+1)}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)||(e.key===' '&&e.shiftKey)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home'){e.preventDefault();go(0)}else if(e.key==='End'){e.preventDefault();go(slides.length-1)}});
+const h0=parseInt(location.hash.slice(1));if(h0>1&&h0<=slides.length)slides[h0-1].scrollIntoView({block:'start'});
+upd();deck.focus({preventScroll:true});
+</script>
+</body>
+</html>

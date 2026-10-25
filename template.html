@@ -33,6 +33,8 @@ a.mapgo:before{content:'▶ ';font-size:9px}
 #head .help{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:700;color:var(--ink2);flex:none}
 #nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav) + var(--sab));padding-bottom:var(--sab);z-index:30;display:flex;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
 #nav button{flex:1;border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:var(--ink3);padding:6px 0 4px}
+#nav a.slidego{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:var(--red);text-decoration:none;padding:6px 0 4px;font-weight:700}
+#nav a.slidego svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 #nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 #nav button[aria-selected="true"]{color:var(--navy);font-weight:700}
 #nav button[aria-selected="true"] svg{stroke-width:2.3}
@@ -44,6 +46,7 @@ a.mapgo:before{content:'▶ ';font-size:9px}
   .hdtabs{display:flex;gap:2px;background:var(--surface2);border-radius:999px;padding:3px}
   .hdtabs button{border:0;background:none;padding:7px 14px;border-radius:999px;cursor:pointer;font-size:13px;color:var(--ink2)}
   .hdtabs button[aria-selected="true"]{background:var(--navy);color:#fff;font-weight:700}
+  .hdtabs a.slidego{padding:7px 14px;border-radius:999px;font-size:13px;color:var(--red);font-weight:700;text-decoration:none}
   #head .t{font-size:17px}
 }
 
@@ -470,6 +473,8 @@ function go(id){
   if(id!=='map')sheet.classList.remove('open');
   const sc=document.querySelector('#page-'+id+' .scroll'); if(sc)sc.scrollTop=0;
 }
+nav.insertAdjacentHTML('beforeend','<a class="slidego" href="slides.html" aria-label="スライド（別ページ）"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg>スライド</a>');
+hdt.insertAdjacentHTML('beforeend','<a class="slidego" href="slides.html">スライド</a>');
 document.querySelectorAll('[role=tab][data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));
 document.querySelectorAll('.next[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
 

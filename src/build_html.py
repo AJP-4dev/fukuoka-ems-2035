@@ -1,8 +1,9 @@
-"""template.html の /*__DATA__*/ に data.js を注入して index.html を生成"""
+"""template.html / slides_template.html の /*__DATA__*/ に data.js を注入して index.html / slides.html を生成"""
 import pathlib
 R = pathlib.Path(__file__).parent.parent
-t = (R / 'template.html').read_text(encoding='utf-8')
 d = (R / 'data.js').read_text(encoding='utf-8').rstrip('\n')
-assert t.count('/*__DATA__*/') == 1
-(R / 'index.html').write_text(t.replace('/*__DATA__*/', d), encoding='utf-8')
-print('index.html', (R / 'index.html').stat().st_size, 'bytes')
+for src, dst in (('template.html', 'index.html'), ('slides_template.html', 'slides.html')):
+    t = (R / src).read_text(encoding='utf-8')
+    assert t.count('/*__DATA__*/') == 1, src
+    (R / dst).write_text(t.replace('/*__DATA__*/', d), encoding='utf-8')
+    print(dst, (R / dst).stat().st_size, 'bytes')
