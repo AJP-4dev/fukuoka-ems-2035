@@ -285,7 +285,7 @@ tr.hotrow td{background:#fff4f5}
   <div id="ctl">
     <div id="strip">
       <div class="srow" id="srow1">
-        <label class="fld" id="rowMode"><span class="k">指標</span><select id="metricSel" aria-label="指標"><option value="pop">人口</option><option value="elder">高齢者人口</option><option value="aging">高齢化率</option><option value="day">昼夜間比</option><option value="disp" selected>出場件数</option><option value="percap">出場件数/千人</option><option value="density">出場件数/km²</option><option value="std">基準隊数充足</option></select></label>
+        <label class="fld" id="rowMode"><span class="k">指標</span><select id="metricSel" aria-label="指標"><option value="pop">人口</option><option value="elder">高齢者人口</option><option value="aging">高齢化率</option><option value="day">昼夜間比</option><option value="disp" selected>出場件数</option><option value="percap">出場件数/千人</option><option value="density">出場件数/km²</option><option value="load">出場件数/隊</option><option value="std">基準隊数充足（人口按分）</option><option value="stdd">基準隊数充足（出場按分）</option></select></label>
         <div class="fld" id="rowView"><span class="k">表示</span><div class="seg" id="viewSeg"><button aria-pressed="true" data-v="abs">実数</button><button aria-pressed="false" data-v="diff">2025年比</button></div></div>
         <div class="fld" id="rowSc"><span class="k">シナリオ</span><div class="seg alt" id="scSeg"><button aria-pressed="true" data-s="L" title="人口変化のみ（利用率は現在のまま）">人口変化のみ</button><button aria-pressed="false" data-s="M" title="コロナ前のトレンドが続く">コロナ前の傾向</button><button aria-pressed="false" data-s="H" title="コロナ後の伸びも続く">コロナ後の傾向</button></div></div>
         <div class="fld" id="rowSt"><div class="seg"><button id="stBtn" aria-pressed="false" title="署所を表示">署所</button></div></div>
@@ -446,13 +446,17 @@ const agingRate=(w,y)=>elderOf(w,y)/popTot(w,y)*100;
 const AREA_CITY=W.reduce((s,w)=>s+w.area,0);
 const cityPop=(y,a)=>W.reduce((s,w)=>s+(a?w.pop[y][a]:popTot(w,y)),0);
 const cityOf=(y,sc)=>W.reduce((s,w)=>s+annualOf(w,String(y),sc),0);
-/* 基準隊数（整備指針の式）: 区の需要人口 = Σ 年齢帯の人口 × 係数。市の基準隊数を需要人口で按分 */
+/* 基準隊数（整備指針の式）: 市の基準隊数は需要人口（Σ 年齢帯の人口 × 係数）の式。区への按分は2通り: stdWard＝需要人口の比（整備指針どおり）、stdWardD＝推計出場件数（人口変化のみ）の比 */
 const demandOf=(w,y)=>AGES.reduce((s,a)=>s+w.pop[y][a]*DATA.standard.coef[a],0);
 const _dtot={};const demandTot=y=>_dtot[y]||(_dtot[y]=W.reduce((s,w)=>s+demandOf(w,y),0));
 const stdWard=(w,y)=>DATA.standard.units[y]*demandOf(w,y)/demandTot(y);
+const _dsum={};const dispTot=y=>_dsum[y]||(_dsum[y]=W.reduce((s,w)=>s+w.disp[y],0));
+const stdWardD=(w,y)=>DATA.standard.units[y]*w.disp[y]/dispTot(y);
+/* 1隊あたり出場 = 区の推計出場（年・シナリオ）÷ 区の現有隊数（2025年、増隊なし） */
+const loadOf=(w,y,sc)=>annualOf(w,y,sc)/w.unitsPerWard;
 /* 指標: 区の値も市の値も cityVal(区の配列,年,シナリオ,指標) で同じ式から出す */
-const MET={pop:{diff:1,zero:1},elder:{diff:1,zero:1},aging:{},day:{static:1},disp:{diff:1,zero:1,scn:1},percap:{diff:1,scn:1},density:{diff:1,zero:1,scn:1},std:{}};
-const COUNT_MODES=['disp','percap','density','pop','elder'], SCN_MODES=['disp','percap','density'], STATIC_MODES=['day'];
+const MET={pop:{diff:1,zero:1},elder:{diff:1,zero:1},aging:{},day:{static:1},disp:{diff:1,zero:1,scn:1},percap:{diff:1,scn:1},density:{diff:1,zero:1,scn:1},load:{scn:1},std:{},stdd:{}};
+const COUNT_MODES=['disp','percap','density','pop','elder'], SCN_MODES=['disp','percap','density','load'], STATIC_MODES=['day'];
 function cityVal(ws,y,sc,m){const sum=f=>ws.reduce((s,w)=>s+f(w),0);
   switch(m){
     case 'pop':return sum(w=>popTot(w,y));
@@ -462,7 +466,9 @@ function cityVal(ws,y,sc,m){const sum=f=>ws.reduce((s,w)=>s+f(w),0);
     case 'disp':return sum(w=>annualOf(w,y,sc));
     case 'percap':return sum(w=>annualOf(w,y,sc))/sum(w=>popTot(w,y))*1000;
     case 'density':return sum(w=>annualOf(w,y,sc))/sum(w=>w.area);
-    case 'std':return sum(w=>w.unitsPerWard)/sum(w=>stdWard(w,y))*100;}}
+    case 'load':return sum(w=>annualOf(w,y,sc))/sum(w=>w.unitsPerWard);
+    case 'std':return sum(w=>w.unitsPerWard)/sum(w=>stdWard(w,y))*100;
+    case 'stdd':return sum(w=>w.unitsPerWard)/sum(w=>stdWardD(w,y))*100;}}
 const isDiff=()=>state.view==='diff'&&COUNT_MODES.includes(state.metric);
 /* 増減率・2025年比の基準は全画面で L の 2025 年（市外への出場を除く 7区計）。シナリオを変えても基準は動かない */
 const baseVal=(ws,m)=>cityVal(ws,'2025','L',m);
@@ -512,7 +518,7 @@ const C=h=>{const n=parseInt(h.slice(1),16);return [n>>16&255,n>>8&255,n&255]};
 const hex=c=>'#'+c.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
 const ramp=(stops,t)=>{t=Math.max(0,Math.min(1,t));const n=stops.length-1;const i=Math.min(n-1,Math.floor(t*n));const A=C(stops[i]),B=C(stops[i+1]),k=t*n-i;return hex(A.map((v,j)=>v+(B[j]-v)*k))};
 const BLUE=['#dbe7f3','#7fa6d6','#3a5f99','#14213d'];
-const RAMPS={disp:BLUE,pop:['#e4f3ef','#8fd0c3','#2a9d8f','#14213d'],percap:BLUE,density:BLUE,elder:['#fdf0dc','#f4a259','#c0392b','#5a1a2e'],aging:['#cfe8e3','#f4a259','#c0392b'],day:['#1b998b','#d8dee7','#f4a259','#e63946'],std:['#e63946','#f4a259','#d8dee7','#1b998b'],diff:['#2b6cb0','#8fb4dc','#eceff3','#f4a259','#e63946']};
+const RAMPS={disp:BLUE,pop:['#e4f3ef','#8fd0c3','#2a9d8f','#14213d'],percap:BLUE,density:BLUE,elder:['#fdf0dc','#f4a259','#c0392b','#5a1a2e'],aging:['#cfe8e3','#f4a259','#c0392b'],day:['#1b998b','#d8dee7','#f4a259','#e63946'],load:['#d8dee7','#f4a259','#e63946'],std:['#e63946','#f4a259','#d8dee7','#1b998b'],stdd:['#e63946','#f4a259','#d8dee7','#1b998b'],diff:['#2b6cb0','#8fb4dc','#eceff3','#f4a259','#e63946']};
 /* 増減率の尺度: ±30% で飽和（それを超える区は端の色。負側は寒色の端） */
 const PCT_RANGE=30;
 const colorPct=p=>ramp(RAMPS.diff,(clamp(p,-PCT_RANGE,PCT_RANGE)+PCT_RANGE)/(2*PCT_RANGE));
@@ -645,12 +651,14 @@ function statusText(){const y=yearLabel(),base=state.year==='2025',M=modeTag(),m
     case 'percap':return [`${M}　${y}の出場件数/千人${sc}`,'高さと色＝出場件数 ÷ 区の人口 × 1,000。来街者・病院・繁華街の需要が多い区ほど高い。'];
     case 'density':return [`${M}　${y}の出場密度（件/km²）${sc}`,'高さと色＝出場件数 ÷ 区の面積。面積は水面・山林を含む。'];
     case 'day':return [`${M}　昼夜間人口比率（2020年国勢調査、全年共通）`,'高さと色＝昼間人口÷夜間人口×100。100より大きいと昼に人が集まる区。将来推計はありません。'];
-    case 'std':return [`${M}　${y}の基準隊数に対する現有隊数の充足率`,'基準隊数＝整備指針の式で出した市の隊数を、区の需要人口（年齢帯の人口×係数）で按分。100%未満＝基準に足りない。現有＝2025年の隊数。']}}
+    case 'load':return [`${M}　${y}の1隊あたり出場件数${sc}`,`高さと色＝出場件数 ÷ 区の現有隊数（2025年の${W.reduce((s,w)=>s+w.unitsPerWard,0)}隊、増隊なし）。目安は${fmt(ST_GUIDE)}件/隊、2024年の市平均は${fmt(ST_NENPO_AVG)}件（消防年報）。隊は区をまたいで出場するため目安。`];
+    case 'std':return [`${M}　${y}の基準隊数（人口按分）に対する現有隊数の充足率`,'基準隊数＝整備指針の式で出した市の隊数を、区の需要人口（年齢帯の人口×係数）の比で按分。100%未満＝基準に足りない。現有＝2025年の隊数。来街者や病院の需要は入らないので、出場按分と見比べてください。'];
+    case 'stdd':return [`${M}　${y}の基準隊数（出場按分）に対する現有隊数の充足率`,'基準隊数＝整備指針の式で出した市の隊数を、区の推計出場件数（人口変化のみ）の比で按分。100%未満＝基準に足りない。現有＝2025年の隊数。人口按分との違いは「方法」タブの表。']}}
 function affects(){const m=state.metric;return{year:!STATIC_MODES.includes(m),sc:SCN_MODES.includes(m),view:COUNT_MODES.includes(m)}}
-const LEG={disp:'出場件数（件/年）',pop:'人口（人）',percap:'出場件数/千人（件）',density:'出場密度（件/km²）',elder:'65歳以上人口（人）',aging:'65歳以上の割合',day:'昼夜間人口比率',std:'基準隊数に対する充足率'};
-const LEGF=(m,v)=>m==='pop'||m==='elder'?man(v):m==='aging'?v.toFixed(0)+'%':m==='std'?v.toFixed(0)+'%':m==='day'?v.toFixed(0):fmt(v);
+const LEG={disp:'出場件数（件/年）',pop:'人口（人）',percap:'出場件数/千人（件）',density:'出場密度（件/km²）',elder:'65歳以上人口（人）',aging:'65歳以上の割合',day:'昼夜間人口比率',load:'1隊あたり出場（件/年）',std:'基準隊数（人口按分）に対する充足率',stdd:'基準隊数（出場按分）に対する充足率'};
+const LEGF=(m,v)=>m==='pop'||m==='elder'?man(v):m==='aging'?v.toFixed(0)+'%':(m==='std'||m==='stdd')?v.toFixed(0)+'%':m==='day'?v.toFixed(0):fmt(v);
 const DIFFL={pop:'人口',elder:'65歳以上人口',percap:'出場件数/千人',density:'出場密度',disp:'出場件数'};
-function subOf(m,v){if(isDiff())return state.year==='2025'?'基準':pct(v);return m==='pop'||m==='elder'?man(v):m==='aging'?v.toFixed(1)+'%':m==='std'?v.toFixed(0)+'%':m==='day'?v.toFixed(0):fmt(v)}
+function subOf(m,v){if(isDiff())return state.year==='2025'?'基準':pct(v);return m==='pop'||m==='elder'?man(v):m==='aging'?v.toFixed(1)+'%':(m==='std'||m==='stdd')?v.toFixed(0)+'%':m==='day'?v.toFixed(0):fmt(v)}
 function applyMetric(){
   const y=state.year,m=state.metric;
   meshes.forEach(mm=>{const w=W[mm.userData.i],v=metric(w);mm.userData.target=heightFor(w);mm.material.color.set(colorFor(v));mm.userData.split=0;mm.userData.top.visible=false;
@@ -666,7 +674,8 @@ function applyMetric(){
   else if(m==='percap'){tv.textContent=cur.toFixed(1);tu.textContent='市全体の出場件数/千人';d.textContent=rel();d.className=cls()}
   else if(m==='density'){tv.textContent=fmt(cur);tu.textContent=`市全体の出場密度（件/km²・${fmt(AREA_CITY)}km²）`;d.textContent=rel();d.className=cls()}
   else if(m==='day'){tv.textContent=cur.toFixed(1);tu.textContent='市全体の昼夜間人口比率（2020年）';d.textContent='100を下回る＝市外へ通勤する人の方が多い';d.className='d num'}
-  else if(m==='std'){const su=W.reduce((s,w)=>s+w.unitsPerWard,0);tv.textContent=DATA.standard.units[y]+'隊';tu.textContent='市全体の基準隊数（現有'+su+'隊）';d.textContent=`充足率 ${cur.toFixed(0)}%（現有÷基準）`;d.className='d num '+(cur<100?'up':'')}
+  else if(m==='load'){const su=W.reduce((s,w)=>s+w.unitsPerWard,0);tv.textContent=fmt(cur);tu.textContent=`市全体の1隊あたり出場（件/年・現有${su}隊のまま）`;d.textContent=y==='2025'?`目安${fmt(ST_GUIDE)}件／年報の2024年平均${fmt(ST_NENPO_AVG)}件`:`${BASE_LBL} ${pct((cur/c0-1)*100)} ／ 目安${fmt(ST_GUIDE)}件`;d.className='d num '+(cur>ST_GUIDE?'up':'')}
+  else if((m==='std'||m==='stdd')){const su=W.reduce((s,w)=>s+w.unitsPerWard,0);tv.textContent=DATA.standard.units[y]+'隊';tu.textContent=`市全体の基準隊数（現有${su}隊・区は${m==='std'?'需要人口':'出場件数'}で按分）`;d.textContent=`充足率 ${cur.toFixed(0)}%（現有÷基準）`;d.className='d num '+(cur<100?'up':'')}
   else{tv.textContent=fmt(cur);tu.textContent='市全体の救急出場件数（件/年）';
     if(y==='2025'){d.textContent=`2024年実績に基づく ／ 1日 ${fmt(cur/365)}件`;d.className='d num'}else{const dd=(cur/c0-1)*100;d.textContent=`${BASE_LBL} ${pct(dd)} ／ 1日 ${fmt(cur/365)}件`;d.className='d num '+(dd>=0?'up':'dn')}}
   let L;if(isDiff()){L=[(DIFFL[m]||'')+'の'+BASE_LBL,'','+'+PCT_RANGE+'%以上']}else{const [lo,hi]=rng();L=[LEG[m],LEGF(m,lo),LEGF(m,hi)]}
@@ -698,7 +707,7 @@ function drawMini(){if(miniEl.hidden)return;
   const ser={};scs.forEach(sc=>ser[sc]=YEARS.map(y=>valAt(ws,y,sc)));
   const all=[].concat(...scs.map(sc=>ser[sc]));let lo=Math.min(...all),hi=Math.max(...all);if(isDiff()||m==='aging')lo=Math.min(lo,0);const pad=(hi-lo)*0.12||1;lo-=pad;hi+=pad;
   const Wd=220,H=96,x0=34,x1=Wd-16,y0=10,y1=H-16;const X=i=>x0+i/(YEARS.length-1)*(x1-x0),Y=v=>y1-(v-lo)/(hi-lo)*(y1-y0);
-  const f=v=>isDiff()||m==='aging'||m==='std'?(v>0&&isDiff()?'+':'')+v.toFixed(0)+'%':m==='percap'?v.toFixed(0):(v>=100000?(v/10000).toFixed(0)+'万':v>=10000?(v/10000).toFixed(1)+'万':fmt(v));
+  const f=v=>isDiff()||m==='aging'||(m==='std'||m==='stdd')?(v>0&&isDiff()?'+':'')+v.toFixed(0)+'%':m==='percap'?v.toFixed(0):(v>=100000?(v/10000).toFixed(0)+'万':v>=10000?(v/10000).toFixed(1)+'万':fmt(v));
   const ci=YEARS.indexOf(state.year),cur=ser[multi?state.sc:'L'];
   let g=`<line x1="${x0}" x2="${x1}" y1="${Y(lo+pad)}" y2="${Y(lo+pad)}" stroke="var(--line)"/><line x1="${x0}" x2="${x1}" y1="${Y(hi-pad)}" y2="${Y(hi-pad)}" stroke="var(--line)"/>`;
   {const i35=YEARS.indexOf('2035'),i36=YEARS.indexOf('2036');g+=`<rect x="${X(i36)}" y="${y0}" width="${x1-X(i36)}" height="${y1-y0}" fill="#8e3b8f" opacity=".07"/><line x1="${X(i35)}" x2="${X(i35)}" y1="${y0}" y2="${y1}" stroke="var(--navy)" stroke-dasharray="3 3" opacity=".7"/>`}
@@ -709,7 +718,7 @@ function drawMini(){if(miniEl.hidden)return;
   if(ci>=0){g+=`<line x1="${X(ci)}" x2="${X(ci)}" y1="${y0}" y2="${y1}" stroke="var(--ink3)" stroke-width="1"/><circle cx="${X(ci)}" cy="${Y(cur[ci])}" r="3.5" fill="${COL[multi?state.sc:'L']}"/>`;
     const tx=ci>YEARS.length/2?X(ci)-6:X(ci)+6;g+=`<text x="${tx}" y="${Y(cur[ci])-6}" font-size="10" font-weight="800" font-family="Manrope" fill="var(--ink)" text-anchor="${ci>YEARS.length/2?'end':'start'}">${f(cur[ci])}</text>`}
   S.innerHTML=g;
-  const lab={disp:'出場件数',percap:'出場件数/千人',density:'出場密度',pop:'人口',elder:'65歳以上人口',aging:'高齢化率',std:'基準隊数の充足率'}[m];
+  const lab={disp:'出場件数',percap:'出場件数/千人',density:'出場密度',pop:'人口',elder:'65歳以上人口',aging:'高齢化率',load:'1隊あたり出場',std:'基準隊数の充足率（人口按分）',stdd:'基準隊数の充足率（出場按分）'}[m];
   T.textContent=`${name}・${lab}${isDiff()?'の増減率':''} 2025→2050${multi?'（紺＝人口変化のみ／橙＝コロナ前のトレンド／赤＝コロナ後の伸びも）':''}`;
 }
 function seg(id,attr,cb){const s=document.getElementById(id);s.querySelectorAll('button').forEach(b=>b.onclick=()=>{s.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');cb(b.dataset[attr])})}
@@ -717,7 +726,7 @@ const ctl=document.getElementById('ctl'),ctlT=document.getElementById('ctlToggle
 function setCollapsed(v){ctl.classList.toggle('collapsed',v);ctlT.textContent=v?'条件を変える':'条件を閉じる';ctlT.setAttribute('aria-expanded',!v);requestAnimationFrame(updCam)}
 ctlT.onclick=()=>setCollapsed(!ctl.classList.contains('collapsed'));
 const QTEXT={
- mode:'<b>各指標の式と出典</b><br><b>人口</b>＝区の年齢6帯の合計。2025年は福岡市 登録人口（2024年12月末）、以降は福岡市の将来人口推計（令和6年4月）、2035年以降の区別の年齢帯は社人研 令和5年推計の区シェア。<br><b>高齢者人口</b>＝65–74＋75–84＋85歳以上（同じ出典）。<b>高齢化率</b>＝高齢者人口÷人口。<br><b>昼夜間比</b>＝昼間人口÷夜間人口×100（国勢調査2020、全年共通。将来推計はありません）。<br><b>出場件数</b>＝［Σ（年齢帯の人口×搬送率）＋昼間補正］×出場/搬送比×区の校正係数（×シナリオの倍率）。搬送率と2024年実績は福岡市消防年報 令和6年版、2025年は2024年実績に一致。<br><b>出場件数/千人</b>＝出場件数÷人口×1,000。<b>出場件数/km²</b>＝出場件数÷区の面積（国土地理院 面積調 令和6年）。<br><b>基準隊数充足</b>＝区の現有隊数÷区の基準隊数。基準隊数＝（需要人口−10万人）÷5万人＋5（消防力の整備指針 第13条）を市全体で出し、区の需要人口（年齢帯の人口×係数）の比で按分。現有隊数は福岡市消防年報 令和6年版（令和7年3月31日現在）。100%未満は基準に足りない区です。式の詳細は「方法」タブ。',
+ mode:'<b>各指標の式と出典</b><br><b>人口</b>＝区の年齢6帯の合計。2025年は福岡市 登録人口（2024年12月末）、以降は福岡市の将来人口推計（令和6年4月）、2035年以降の区別の年齢帯は社人研 令和5年推計の区シェア。<br><b>高齢者人口</b>＝65–74＋75–84＋85歳以上（同じ出典）。<b>高齢化率</b>＝高齢者人口÷人口。<br><b>昼夜間比</b>＝昼間人口÷夜間人口×100（国勢調査2020、全年共通。将来推計はありません）。<br><b>出場件数</b>＝［Σ（年齢帯の人口×搬送率）＋昼間補正］×出場/搬送比×区の校正係数（×シナリオの倍率）。搬送率と2024年実績は福岡市消防年報 令和6年版、2025年は2024年実績に一致。<br><b>出場件数/千人</b>＝出場件数÷人口×1,000。<b>出場件数/km²</b>＝出場件数÷区の面積（国土地理院 面積調 令和6年）。<br><b>出場件数/隊</b>＝出場件数÷区の現有隊数（2025年、増隊なし）。目安3,000件/隊、2024年の市平均は2,968件（消防年報）。隊は区をまたいで出場するため目安。<br><b>基準隊数充足</b>＝区の現有隊数÷区の基準隊数。基準隊数＝（需要人口−10万人）÷5万人＋5（消防力の整備指針 第13条）を市全体で出し、区へ按分。<b>人口按分</b>＝区の需要人口（年齢帯の人口×係数）の比（整備指針どおり、来街者は入らない）、<b>出場按分</b>＝区の推計出場件数（人口変化のみ）の比。現有隊数は福岡市消防年報 令和6年版（令和7年3月31日現在）。100%未満は基準に足りない区です。式の詳細は「方法」タブ。',
  view:'<b>実数</b>はその年の値そのもの。<b>2025年比の増減率</b>は2025年からの変化率で、色は±'+PCT_RANGE+'%で飽和します（それを超えても端の色）。負は寒色、正は暖色。出場件数・人口・高齢者人口などで使えます。',
  year:'<b>10年モード</b>（2025〜2035）が既定です。2035年がこのレポートの中心年。<b>「長期を見る」</b>で2035〜2050年に切り替わり、色の尺度も長期用に固定されます（モードを切り替えない限り、年やシナリオを動かしても尺度は変わりません）。2036年以降は参考値です。',
  st:'<b>署所の点（推定）。</b>点の大きさ＝救急隊数（2025年）、色＝選択年の<b>隊あたり出場</b>（0〜7,000件に固定した同じ青の尺度）、中空の○＝救急隊のない出張所、◆＝機動救急（移動待機、按分に入れない）。値は区の出場件数を、国勢調査2020の1kmメッシュ人口（夜間×0.65＋従業者×0.35）で最寄りの署所に按分した<b>推定</b>で、公式の統計ではありません。点をクリックすると名称と数値が出ます。出典：福岡市消防年報 令和6年版 第1-4-2表（隊数）、国勢調査2020、経済センサス2021。',
@@ -793,7 +802,7 @@ function cityBase(){const ws=W,pop=ws.reduce((s,w)=>s+popTot(w,'2025'),0),ea=ws.
     ag35:cityVal(ws,'2035','L','aging'),e3g:(cityPop('2035','e3')/cityPop('2025','e3')-1)*100,dg:(cityOf(2035,'L')/cityOf(2025,'L')-1)*100,dn:cityVal(ws,'2025','L','day')/100,std:DATA.standard.units['2035']}}
 const CB=cityBase();
 function wardDecomp(w){const pop=popTot(w,'2025'),ea=eAge(w),ed=eDay(w);return {pc:pcOf(w,'2025'),ageR:(ea/pop*1000)/CB.agePc,dayR:((ea+ed)/ea)/CB.dayR,facR:w.fac/CB.fac,ratio:pcOf(w,'2025')/CB.pc}}
-function wardMetrics(w){const e3g=(w.pop['2035'].e3/w.pop['2025'].e3-1)*100,dg=(w.disp['2035']/w.disp['2025']-1)*100,sw=stdWard(w,'2035');
+function wardMetrics(w){const e3g=(w.pop['2035'].e3/w.pop['2025'].e3-1)*100,dg=(w.disp['2035']/w.disp['2025']-1)*100,sw=stdWard(w,'2035'),swd=stdWardD(w,'2035');
   return [
    {l:'出場件数/千人（2025）',v:pcOf(w,'2025'),c:CB.pc,f:v=>v.toFixed(0)+'件'},
    {l:'校正係数',v:w.fac,c:CB.fac,f:v=>v.toFixed(2)},
@@ -802,12 +811,13 @@ function wardMetrics(w){const e3g=(w.pop['2035'].e3/w.pop['2025'].e3-1)*100,dg=(
    {l:'昼夜間人口比',v:w.dn*100,c:CB.dn*100,f:v=>v.toFixed(0)},
    {l:'出場の増減（2035・人口のみ）',v:dg,c:CB.dg,f:v=>pct(v)},
    {l:'1隊あたり出場（2024実績）',v:w.loadPerUnit24,c:CB.disp/CB.units,f:v=>fmt(v)+'件',hot:1},
-   {l:'基準隊数の充足率（2035）',v:w.unitsPerWard/sw*100,c:CB.units/CB.std*100,f:v=>v.toFixed(0)+'%',s:`現行${w.unitsPerWard}隊／基準${sw.toFixed(1)}隊`,low:1}]}
+   {l:'基準隊数の充足率（2035）',v:w.unitsPerWard/sw*100,c:CB.units/CB.std*100,f:v=>v.toFixed(0)+'%',s:`現行${w.unitsPerWard}隊／基準${sw.toFixed(1)}隊（需要人口で按分）`,low:1},
+   {l:'基準隊数の充足率（2035・出場按分）',v:w.unitsPerWard/swd*100,c:CB.units/CB.std*100,f:v=>v.toFixed(0)+'%',s:`現行${w.unitsPerWard}隊／基準${swd.toFixed(1)}隊（出場件数で按分）`,low:1}]}
 function profHTML(ms){return `<div class="prof">${ms.map(m=>{const idx=m.v/m.c*100,tt=clamp((idx-100)/60,-1,1),up=tt>=0,col=m.low?(up?'#3a7bd5':'#e63946'):m.hot?(up?'#e63946':'#3a7bd5'):(up?'#d9822b':'#3a7bd5');
   return `<div class="pl">${m.l}</div><div class="pb"><i style="${up?'left':'right'}:50%;width:${Math.abs(tt)*50}%;background:${col}"></i></div><div class="pv">${m.f(m.v)}<small>${m.s||'市平均比 '+idx.toFixed(0)}</small></div>`}).join('')}</div>`}
 function wardText(w){
   const t=wardType(w),d=wardDecomp(w),ag35=agingRate(w,'2035'),ag25=agingRate(w,'2025'),e3x=w.pop['2035'].e3/w.pop['2025'].e3,
-    L=w.disp['2035'],M=Math.round(L*annualMult('M',2035)),H=Math.round(L*annualMult('H',2035)),g=(L/w.disp['2025']-1)*100,net=w.in-w.out,u=w.unitsPerWard,sw=stdWard(w,'2035');
+    L=w.disp['2035'],M=Math.round(L*annualMult('M',2035)),H=Math.round(L*annualMult('H',2035)),g=(L/w.disp['2025']-1)*100,net=w.in-w.out,u=w.unitsPerWard,sw=stdWard(w,'2035'),swd=stdWardD(w,'2035');
   const future=`2035年の${w.name}区は、出場が${fmt(L)}件（2025年比${pct(g)}、人口変化のみ）と見込まれます。コロナ前のトレンドが続けば${fmt(M)}件、コロナ後の伸びも続けば${fmt(H)}件です。85歳以上は${e3x.toFixed(2)}倍、高齢化率は${ag25.toFixed(1)}%から${ag35.toFixed(1)}%になります。`;
   let kind;
   if(t==='core')kind=`【都心・来街型】昼夜間人口比が${w.dn.toFixed(2)}（基準${TYPE_RULE.dnMin.toFixed(2)}以上）で、昼は夜より人が${((w.dn-1)*100).toFixed(0)}%多い区です。`;
@@ -819,7 +829,7 @@ function wardText(w){
     :big==='day'?`差の主因は昼間人口で、通勤・通学は${net>=0?'流入':'流出'}超過${fmt(Math.abs(net))}人、年${w.dayExtra>=0?'+':'−'}${fmt(Math.abs(w.dayExtra))}件ぶんです。`
     :w.dn>=1?`差の主因は人口や通勤では説明しきれない需要（来街者・繁華街・病院など）で、昼間人口の上乗せ（年${w.dayExtra>=0?'+':'−'}${fmt(Math.abs(w.dayExtra))}件）と合わせて昼間の人の多さが効いています。`
     :`差の主因は年齢構成でも昼間人口でも説明できない部分（校正係数）で、${w.fac<1?'人口から期待される件数より実績が少ない':'人口から期待される件数より実績が多い'}区です。`;
-  const supply=`現行${u}隊で、2024年実績は1隊あたり${fmt(w.loadPerUnit24)}件。2035年の出場（人口変化のみ）を現行隊数で受けると1隊あたり${fmt(L/u)}件（目安${fmt(ST_GUIDE)}件${L/u>ST_GUIDE?'超':'以内'}）、整備指針の式で按分した2035年の基準隊数は${sw.toFixed(1)}隊で現行の${(sw/u).toFixed(2)}倍です。隊は区をまたいで出場するため目安です。`;
+  const supply=`現行${u}隊で、2024年実績は1隊あたり${fmt(w.loadPerUnit24)}件。2035年の出場（人口変化のみ）を現行隊数で受けると1隊あたり${fmt(L/u)}件（目安${fmt(ST_GUIDE)}件${L/u>ST_GUIDE?'超':'以内'}）、整備指針の式による市の基準隊数を区へ按分すると、2035年の${w.name}区は需要人口の比で${sw.toFixed(1)}隊（現行の${(sw/u).toFixed(2)}倍）、出場件数の比で${swd.toFixed(1)}隊（${(swd/u).toFixed(2)}倍）です。隊は区をまたいで出場するため目安です。`;
   return `<span class="wp">${future}</span><span class="wp">${kind} ${lead}${why}</span><span class="wp">${supply}</span>`}
 function buildWards(){
   const by={core:[],mature:[],grow:[]};W.forEach(w=>by[wardType(w)].push(w));
@@ -1081,7 +1091,7 @@ function buildInsight(){
   /* 9 */
   const gp=y=>STD.units[y]-STD.current;
   sec('2035','施策の方向（数字が支えるものだけ）',tblHTML(['年','基準隊数（下限）','現行との差','中間','上限'],[2025,2030,2035,2040,2050].map(y=>[y,STD.units[y],sgn(gp(y)),Math.round(stdUnits(y,'M')),Math.round(stdUnits(y,'H'))])),
-   `<ul><li><b>増隊の目安</b>：整備指針の式では、現行${STD.current}隊に対して2025年に${sgn(gp(2025))}隊、2035年に${sgn(gp(2035))}隊（下限）〜${sgn(Math.round(stdUnits(2035,'H'))-STD.current)}隊（上限）が基準です。区別の按分では${W.slice().sort((a,b)=>stdWard(b,'2035')/b.unitsPerWard-stdWard(a,'2035')/a.unitsPerWard).slice(0,2).map(w=>`${w.name}区（現行${w.unitsPerWard}隊・基準${f1(stdWard(w,'2035'))}隊）`).join('、')}で現行との開きが大きくなります。</li>
+   `<ul><li><b>増隊の目安</b>：整備指針の式では、現行${STD.current}隊に対して2025年に${sgn(gp(2025))}隊、2035年に${sgn(gp(2035))}隊（下限）〜${sgn(Math.round(stdUnits(2035,'H'))-STD.current)}隊（上限）が基準です。区別の按分（需要人口の比）では${W.slice().sort((a,b)=>stdWard(b,'2035')/b.unitsPerWard-stdWard(a,'2035')/a.unitsPerWard).slice(0,2).map(w=>`${w.name}区（現行${w.unitsPerWard}隊・基準${f1(stdWard(w,'2035'))}隊）`).join('、')}で現行との開きが大きくなります。出場件数の比で按分すると${W.slice().sort((a,b)=>stdWardD(b,'2035')/b.unitsPerWard-stdWardD(a,'2035')/a.unitsPerWard).slice(0,2).map(w=>`${w.name}区（基準${f1(stdWardD(w,'2035'))}隊）`).join('、')}が先に来ます。</li>
     <li><b>昼間人口を考慮した配置</b>：基準隊数は夜間人口が基礎で、昼間人口を含みません。${core.map(w=>`${w.name}区は昼間補正が年${sgn(w.dayExtra)}件・昼夜間人口比${f1(w.dn,2)}`).join('、')}で、2035年の1隊あたりは現行隊数のままで${core.map(w=>fmt(w.disp['2035']/w.unitsPerWard)+'件').join('・')}です。</li>
     <li><b>適正利用の啓発</b>：出場の${f1(NEN.typeDispatch.急病/Object.values(NEN.typeDispatch).reduce((a,b)=>a+b)*100,0)}%は急病、搬送の${share65.toFixed(0)}%は65歳以上、不搬送は出場の${f1(NEN.nonTrRate*100,1)}%です。利用の中身（軽症の割合など）は年報から区別に取れないため、啓発による減少幅は見積もれません。</li></ul><p class="m">どの施策も、増える需要に対する「数字の上での目安」であり、整備計画や予算の提案ではありません。</p>`,
    `消防力の整備指針 第13条、${S_NENPO}、国勢調査2020、${S_MODEL}。`);
@@ -1167,7 +1177,7 @@ function buildMethod(){
   const c35=DATA.city['2035'],dem=y=>STD.demandPop[y];
   const figF=`<svg class="chart" viewBox="0 0 600 130" role="img" aria-label="基準隊数の計算">`+bx(4,30,110,60,'人口（6帯）','2035年')+op(126,64,'×')+bx(138,30,110,60,'係数','搬送率÷全年齢の搬送率')+op(260,64,'＝')+bx(272,30,120,60,'需要人口',fmt(dem(2035))+'人')+arR(396,420,60)+bx(424,30,174,60,'基準隊数','（需要人口−10万）÷5万＋5','#14213d','#14213d','#fff')+`<text x="300" y="116" font-size="11" fill="#5b6b82" text-anchor="middle">係数は福岡の搬送率から作成、算式は消防力の整備指針 第13条</text></svg>`;
   const exF=tblHTML(['福岡市全体','係数','2025年 人口','× 係数','2035年 人口','× 係数'],AGES.map(a=>[LAB[a],f1(STD.coef[a],3),fmt(cityPop('2025',a)),fmt(cityPop('2025',a)*STD.coef[a]),fmt(cityPop('2035',a)),fmt(cityPop('2035',a)*STD.coef[a])]).concat([{cls:'sumrow',c:['需要人口（Σ）','',fmt(dem(2025)),'',fmt(dem(2035)),'']},
-    ['基準隊数 ＝（需要人口−100,000）÷50,000＋5','',f1((dem(2025)-100000)/50000+5,2)+' → <b>'+STD.units[2025]+'隊</b>','',f1((dem(2035)-100000)/50000+5,2)+' → <b>'+STD.units[2035]+'隊</b>',''],['現行隊数（令和7年3月31日）','',STD.current+'隊','',STD.current+'隊','']]),{left:[0]})+`<p class="m">区への按分は「区の需要人口 ÷ 市の需要人口 × 市の基準隊数」。中間・上限は、基準隊数に使われ方の倍率（(e)）を掛けた参考値です。</p>`;
+    ['基準隊数 ＝（需要人口−100,000）÷50,000＋5','',f1((dem(2025)-100000)/50000+5,2)+' → <b>'+STD.units[2025]+'隊</b>','',f1((dem(2035)-100000)/50000+5,2)+' → <b>'+STD.units[2035]+'隊</b>',''],['現行隊数（令和7年3月31日）','',STD.current+'隊','',STD.current+'隊','']]),{left:[0]})+`<p class="m">市の基準隊数は上の式（人口が基礎）。区への按分は2通りを併記します。<b>人口按分</b>＝「区の需要人口 ÷ 市の需要人口 × 市の基準隊数」（整備指針の考え方どおり。住民の年齢だけで、来街者や病院の需要は入らない）、<b>出場按分</b>＝「区の推計出場件数（人口変化のみ）÷ 市の出場件数 × 市の基準隊数」（校正係数込みの実需に近い）。来街者の多い区は人口按分で小さく、出場按分で大きく出ます。整備指針は市町村単位の基準なので、区の値はどちらも参考です。中間・上限は、基準隊数に使われ方の倍率（(e)）を掛けた参考値です。</p>`+tblHTML(['区（2035年）','現行隊数','人口按分','出場按分','1隊あたり出場（現行のまま）'],W.map(w=>[w.name+'区',w.unitsPerWard+'隊',f1(stdWard(w,'2035'))+'隊',f1(stdWardD(w,'2035'))+'隊',fmt(w.disp['2035']/w.unitsPerWard)+'件']).concat([{cls:'sumrow',c:['福岡市',STD.current+'隊',STD.units[2035]+'隊',STD.units[2035]+'隊',fmt(dispTot('2035')/STD.current)+'件']}]),{left:[0]});
   mth('f','整備指針の基準隊数','<b>基準隊数 ＝（年齢帯ごとの人口 × 係数を足した「救急需要人口」− 10万人）÷ 5万人 ＋ 5</b>。係数は各帯の搬送率を全年齢の搬送率で割った値で、算式は消防力の整備指針 第13条によります。',figF,exF,
     `消防力の整備指針 第13条、${S_NENPO}（現行隊数）、${S_MODEL}。`);
   /* (g) */
